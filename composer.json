@@ -1,0 +1,19 @@
+{
+    "name": "cipcard/platform",
+    "description": "CIPCard - NFC Smart Business Card Platform (cipcard.ir)",
+    "type": "project",
+    "license": "proprietary",
+    "require": {
+        "php": ">=8.2"
+    },
+    "autoload": {
+        "psr-4": {
+            "App\\": "app/"
+        }
+    },
+    "config": {
+        "optimize-autoloader": true,
+        "preferred-install": "dist",
+        "sort-packages": true
+    }
+}

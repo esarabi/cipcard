@@ -1,0 +1,7 @@
+/vendor/
+.env
+*.log
+public/uploads/avatars/*
+!public/uploads/avatars/.gitkeep
+public/uploads/designs/*
+!public/uploads/designs/.gitkeep

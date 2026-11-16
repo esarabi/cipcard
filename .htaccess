@@ -1,0 +1,72 @@
+# ==============================================================================
+# CIPCard Platform - Root Apache Configuration (.htaccess)
+# Domain: cipcard.ir
+# Clean URLs, Security Hardening, Dynamic Routing for @09xxxxxxxxx & Front Controller
+# ==============================================================================
+
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteBase /
+
+    # 1. Force HTTPS (Production Standard)
+    # RewriteCond %{HTTPS} !=on
+    # RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+    # 2. Block direct access to hidden files and sensitive directories
+    RewriteRule ^(\.git|\.env|composer\.(json|lock)|database|app|views|storage)/ - [F,L,NC]
+    RewriteRule \.(sql|log|ini|sh|bak)$ - [F,L,NC]
+
+    # 3. Direct access to public assets & uploads
+    RewriteRule ^(assets|uploads)/(.*)$ public/$1/$2 [L,NC]
+
+    # 4. Profile Short URL Routing: cipcard.ir/@09123456789 or @9123456789
+    RewriteRule ^@0?(9[0-9]{9})/?$ public/index.php?route=profile&mobile=0$1 [QSA,L]
+
+    # 5. Route all other requests to public/index.php
+    RewriteCond %{REQUEST_URI} !^/public/
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteRule ^(.*)$ public/index.php [QSA,L]
+
+    # If already in public directory
+    RewriteCond %{REQUEST_URI} ^/public/
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteRule ^public/(.*)$ public/index.php [QSA,L]
+</IfModule>
+
+# ==============================================================================
+# Security Headers & MIME Types
+# ==============================================================================
+<IfModule mod_headers.c>
+    Header set X-Content-Type-Options "nosniff"
+    Header set X-Frame-Options "SAMEORIGIN"
+    Header set X-XSS-Protection "1; mode=block"
+    Header set Referrer-Policy "strict-origin-when-cross-origin"
+</IfModule>
+
+# ==============================================================================
+# Performance: Compression & Caching
+# ==============================================================================
+<IfModule mod_deflate.c>
+    AddOutputFilterByType DEFLATE text/plain
+    AddOutputFilterByType DEFLATE text/html
+    AddOutputFilterByType DEFLATE text/xml
+    AddOutputFilterByType DEFLATE text/css
+    AddOutputFilterByType DEFLATE application/xml
+    AddOutputFilterByType DEFLATE application/xhtml+xml
+    AddOutputFilterByType DEFLATE application/rss+xml
+    AddOutputFilterByType DEFLATE application/javascript
+    AddOutputFilterByType DEFLATE application/x-javascript
+    AddOutputFilterByType DEFLATE application/json
+    AddOutputFilterByType DEFLATE font/truetype
+    AddOutputFilterByType DEFLATE font/opentype
+</IfModule>
+
+# Custom vCard and Font MIME types
+AddType text/vcard .vcf
+AddType font/woff2 .woff2
+AddType font/woff .woff
+
+# Disable directory browsing
+Options -Indexes -MultiViews
