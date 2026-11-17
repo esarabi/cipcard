@@ -4,9 +4,9 @@ $theme = $profile['theme_color'] ?? 'gold_black';
 $themeMode = $profile['theme_mode'] ?? 'light';
 
 $darkPalettes = [
-    'gold_black'   => ['neon' => '#FACC15', 'shadow' => 'rgba(250, 204, 21, 0.4)', 'bg' => '#030305', 'card' => '#0B0B10', 'text' => '#FFFFFF', 'sub' => '#9CA3AF', 'itemBg' => 'rgba(0,0,0,0.6)', 'border' => '#27272a'],
-    'blue_white'   => ['neon' => '#38BDF8', 'shadow' => 'rgba(56, 189, 248, 0.4)', 'bg' => '#030712', 'card' => '#0B1120', 'text' => '#FFFFFF', 'sub' => '#9CA3AF', 'itemBg' => 'rgba(0,0,0,0.6)', 'border' => '#1e293b'],
-    'emerald_gray' => ['neon' => '#34D399', 'shadow' => 'rgba(52, 211, 153, 0.4)', 'bg' => '#02120B', 'card' => '#071F14', 'text' => '#FFFFFF', 'sub' => '#9CA3AF', 'itemBg' => 'rgba(0,0,0,0.6)', 'border' => '#064e3b']
+    'gold_black'   => ['neon' => '#D97706', 'shadow' => 'rgba(217, 119, 6, 0.4)', 'bg' => '#030305', 'card' => '#0B0B10', 'text' => '#FFFFFF', 'sub' => '#9CA3AF', 'itemBg' => 'rgba(0,0,0,0.6)', 'border' => '#27272a'],
+    'blue_white'   => ['neon' => '#0284C7', 'shadow' => 'rgba(2, 132, 199, 0.4)', 'bg' => '#030712', 'card' => '#0B1120', 'text' => '#FFFFFF', 'sub' => '#9CA3AF', 'itemBg' => 'rgba(0,0,0,0.6)', 'border' => '#1e293b'],
+    'emerald_gray' => ['neon' => '#059669', 'shadow' => 'rgba(5, 150, 105, 0.4)', 'bg' => '#02120B', 'card' => '#071F14', 'text' => '#FFFFFF', 'sub' => '#9CA3AF', 'itemBg' => 'rgba(0,0,0,0.6)', 'border' => '#064e3b']
 ];
 
 $lightPalettes = [
@@ -39,7 +39,7 @@ $social = $profile['social_links'] ?? [];
             --text-sub: <?= $dColors['sub'] ?>;
             --item-bg: <?= $dColors['itemBg'] ?>;
             --border: <?= $dColors['border'] ?>;
-            --btn-text: #000000;
+            --btn-text: #FFFFFF;
         }
 
         html[data-theme="light"] {

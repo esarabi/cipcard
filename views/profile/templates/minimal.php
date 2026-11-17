@@ -4,14 +4,14 @@ $theme = $profile['theme_color'] ?? 'gold_black';
 $themeMode = $profile['theme_mode'] ?? 'light';
 
 $darkPalettes = [
-    'gold_black'   => ['primary' => '#D4AF37', 'bg' => '#0A0A0C', 'card' => '#121217', 'textAccent' => '#F3E5AB', 'border' => 'rgba(212, 175, 55, 0.3)'],
-    'blue_white'   => ['primary' => '#38BDF8', 'bg' => '#080E1A', 'card' => '#0F172A', 'textAccent' => '#E0F2FE', 'border' => 'rgba(56, 189, 248, 0.3)'],
-    'emerald_gray' => ['primary' => '#10B981', 'bg' => '#06130D', 'card' => '#0C1E16', 'textAccent' => '#D1FAE5', 'border' => 'rgba(16, 185, 129, 0.3)']
+    'gold_black'   => ['primary' => '#D4AF37', 'bg' => '#0A0A0C', 'card' => '#121217', 'textAccent' => '#92400E', 'border' => 'rgba(212, 175, 55, 0.3)'],
+    'blue_white'   => ['primary' => '#0284C7', 'bg' => '#080E1A', 'card' => '#0F172A', 'textAccent' => '#1D4ED8', 'border' => 'rgba(56, 189, 248, 0.3)'],
+    'emerald_gray' => ['primary' => '#059669', 'bg' => '#06130D', 'card' => '#0C1E16', 'textAccent' => '#047857', 'border' => 'rgba(16, 185, 129, 0.3)']
 ];
 
 $lightPalettes = [
-    'gold_black'   => ['primary' => '#B8860B', 'bg' => '#F8FAFC', 'card' => '#FFFFFF', 'textAccent' => '#8C6507', 'border' => '#E2E8F0'],
-    'blue_white'   => ['primary' => '#0284C7', 'bg' => '#F0F9FF', 'card' => '#FFFFFF', 'textAccent' => '#0369A1', 'border' => '#BAE6FD'],
+    'gold_black'   => ['primary' => '#B8860B', 'bg' => '#F8FAFC', 'card' => '#FFFFFF', 'textAccent' => '#92400E', 'border' => '#E2E8F0'],
+    'blue_white'   => ['primary' => '#0284C7', 'bg' => '#F0F9FF', 'card' => '#FFFFFF', 'textAccent' => '#1D4ED8', 'border' => '#BAE6FD'],
     'emerald_gray' => ['primary' => '#059669', 'bg' => '#F0FDF4', 'card' => '#FFFFFF', 'textAccent' => '#047857', 'border' => '#A7F3D0']
 ];
 
@@ -114,7 +114,7 @@ $social = $profile['social_links'] ?? [];
 
             <!-- Direct Actions: vCard & Call -->
             <div class="pt-4 flex flex-col gap-3">
-                <a href="<?= \App\Core\Helper::url('vcard/@' . (!empty($profile['slug']) ? $profile['slug'] : $profile['mobile'])) ?>" class="w-full py-4 rounded-2xl font-black text-sm text-slate-950 flex items-center justify-center gap-2 shadow-xl hover:brightness-105 active:scale-95 transition-all" style="background: linear-gradient(135deg, var(--text-accent), var(--primary));">
+                <a href="<?= \App\Core\Helper::url('vcard/@' . (!empty($profile['slug']) ? $profile['slug'] : $profile['mobile'])) ?>" class="w-full py-4 rounded-2xl font-black text-sm text-white flex items-center justify-center gap-2 shadow-xl hover:brightness-105 active:scale-95 transition-all" style="background: linear-gradient(135deg, var(--primary), var(--text-accent));">
                     <i data-lucide="user-plus" class="w-5 h-5"></i>
                     <span>ذخیره در مخاطبین (Save Contact)</span>
                 </a>

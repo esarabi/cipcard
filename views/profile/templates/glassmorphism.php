@@ -4,9 +4,9 @@ $theme = $profile['theme_color'] ?? 'blue_white';
 $themeMode = $profile['theme_mode'] ?? 'light';
 
 $darkPalettes = [
-    'gold_black'   => ['primary' => '#EAB308', 'gradient' => 'linear-gradient(135deg, #18181b 0%, #09090b 100%)', 'glass' => 'rgba(24, 24, 27, 0.7)', 'accent' => '#FEF08A', 'border' => 'rgba(255, 255, 255, 0.12)', 'text' => '#FFFFFF', 'sub' => '#9CA3AF', 'itemBg' => 'rgba(255, 255, 255, 0.05)'],
-    'blue_white'   => ['primary' => '#38BDF8', 'gradient' => 'linear-gradient(135deg, #0f172a 0%, #020617 100%)', 'glass' => 'rgba(15, 23, 42, 0.7)', 'accent' => '#BAE6FD', 'border' => 'rgba(255, 255, 255, 0.12)', 'text' => '#FFFFFF', 'sub' => '#9CA3AF', 'itemBg' => 'rgba(255, 255, 255, 0.05)'],
-    'emerald_gray' => ['primary' => '#34D399', 'gradient' => 'linear-gradient(135deg, #064e3b 0%, #022c22 100%)', 'glass' => 'rgba(6, 78, 59, 0.7)', 'accent' => '#A7F3D0', 'border' => 'rgba(255, 255, 255, 0.12)', 'text' => '#FFFFFF', 'sub' => '#9CA3AF', 'itemBg' => 'rgba(255, 255, 255, 0.05)']
+    'gold_black'   => ['primary' => '#D97706', 'gradient' => 'linear-gradient(135deg, #18181b 0%, #09090b 100%)', 'glass' => 'rgba(24, 24, 27, 0.7)', 'accent' => '#B45309', 'border' => 'rgba(255, 255, 255, 0.12)', 'text' => '#FFFFFF', 'sub' => '#9CA3AF', 'itemBg' => 'rgba(255, 255, 255, 0.05)'],
+    'blue_white'   => ['primary' => '#0284C7', 'gradient' => 'linear-gradient(135deg, #0f172a 0%, #020617 100%)', 'glass' => 'rgba(15, 23, 42, 0.7)', 'accent' => '#2563EB', 'border' => 'rgba(255, 255, 255, 0.12)', 'text' => '#FFFFFF', 'sub' => '#9CA3AF', 'itemBg' => 'rgba(255, 255, 255, 0.05)'],
+    'emerald_gray' => ['primary' => '#059669', 'gradient' => 'linear-gradient(135deg, #064e3b 0%, #022c22 100%)', 'glass' => 'rgba(6, 78, 59, 0.7)', 'accent' => '#047857', 'border' => 'rgba(255, 255, 255, 0.12)', 'text' => '#FFFFFF', 'sub' => '#9CA3AF', 'itemBg' => 'rgba(255, 255, 255, 0.05)']
 ];
 
 $lightPalettes = [
@@ -39,7 +39,7 @@ $social = $profile['social_links'] ?? [];
             --text-main: <?= $dColors['text'] ?>;
             --text-sub: <?= $dColors['sub'] ?>;
             --item-bg: <?= $dColors['itemBg'] ?>;
-            --btn-text: #000000;
+            --btn-text: #FFFFFF;
         }
 
         html[data-theme="light"] {
