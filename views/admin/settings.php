@@ -136,4 +136,22 @@
             <span>ذخیره کلیه تنظیمات سیستم</span>
         </button>
     </form>
+
+    <!-- SMS Live Test Tool -->
+    <div class="mt-8 p-6 sm:p-8 rounded-3xl bg-brand-surface border border-brand-border/60 space-y-4">
+        <div class="flex items-center gap-3 border-r-2 border-sky-400 pr-3">
+            <i data-lucide="send" class="w-5 h-5 text-sky-400"></i>
+            <h3 class="text-sm font-bold text-white">ابزار تست زنده ارسال پیامک</h3>
+        </div>
+        <p class="text-xs text-gray-400">شماره موبایل خود را وارد کرده و دکمه تست را بزنید تا وضعیت اتصال به سامانه پیامک و اعتبار حساب بررسی و پاسخ وب‌سرویس فوراً نمایش داده شود.</p>
+
+        <form action="<?= \App\Core\Helper::url('admin/settings/test-sms') ?>" method="POST" class="flex flex-col sm:flex-row items-center gap-3 pt-2">
+            <?= \App\Core\Csrf::field() ?>
+            <input type="text" name="mobile" required placeholder="09120000000" dir="ltr" class="w-full sm:w-64 px-4 py-3 rounded-xl bg-brand-darker border border-brand-border text-white text-xs font-mono focus:border-brand-gold focus:outline-none text-left">
+            <button type="submit" class="w-full sm:w-auto px-6 py-3 rounded-xl bg-sky-600 hover:bg-sky-500 text-white font-bold text-xs flex items-center justify-center gap-2 transition-all shadow-lg shadow-sky-600/20">
+                <i data-lucide="smartphone" class="w-4 h-4"></i>
+                <span>ارسال پیامک تستی به این شماره</span>
+            </button>
+        </form>
+    </div>
 </div>

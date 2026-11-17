@@ -121,6 +121,7 @@ $router->post('/admin/users/edit/{id}', [AdminController::class, 'updateUser'], 
 $router->get('/admin/transactions', [AdminController::class, 'transactions'], [AdminMiddleware::class]);
 $router->get('/admin/settings', [AdminController::class, 'settings'], [AdminMiddleware::class]);
 $router->post('/admin/settings', [AdminController::class, 'updateSettings'], [AdminMiddleware::class]);
+$router->post('/admin/settings/test-sms', [AdminController::class, 'testSms'], [AdminMiddleware::class]);
 
 // -------------------------------------------------------------
 // Public NFC Profiles (cipcard.ir/@09xxxxxxxxx), vCard & QR

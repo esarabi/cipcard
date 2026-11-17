@@ -40,9 +40,16 @@ class AuthController
 
         $ip = $_SERVER['REMOTE_ADDR'] ?? null;
         $code = OtpCode::generate($mobile, $ip);
-        SmsService::sendOtp($mobile, $code);
+        $smsResult = SmsService::sendOtpDetails($mobile, $code);
 
-        error_log("CIPCard OTP for {$mobile}: {$code}");
+        error_log("CIPCard OTP for {$mobile}: {$code} | Result: " . ($smsResult['success'] ? 'SUCCESS' : 'FAILED: ' . $smsResult['error']));
+
+        if (!$smsResult['success']) {
+            Helper::jsonResponse([
+                'success' => false,
+                'message' => $smsResult['error']
+            ], 400);
+        }
 
         Helper::jsonResponse([
             'success' => true,

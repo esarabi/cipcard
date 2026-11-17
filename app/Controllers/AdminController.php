@@ -202,4 +202,26 @@ class AdminController
         Session::setFlash('success', 'تنظیمات سیستم با موفقیت بروزرسانی شد.');
         Helper::redirect('admin/settings');
     }
+
+    public function testSms(): void
+    {
+        Csrf::verifyOrAbort();
+
+        $rawMobile = trim($_POST['mobile'] ?? '');
+        $mobile = Helper::normalizeMobile($rawMobile);
+
+        if (!$mobile) {
+            Session::setFlash('error', 'شماره موبایل برای تست نامعتبر است.');
+            Helper::redirect('admin/settings');
+        }
+
+        $res = \App\Services\SmsService::sendWithDetails($mobile, 'پیامک تست اتصال وب‌سرویس از پلتفرم CIPCard');
+        if ($res['success']) {
+            Session::setFlash('success', 'ارسال پیامک تست موفقیت‌آمیز بود! پاسخ وب‌سرویس: ' . $res['response']);
+        } else {
+            Session::setFlash('error', $res['error'] . ' | پاسخ خام وب‌سرویس: ' . ($res['response'] ?: 'هیچ پاسخی دریافت نشد'));
+        }
+
+        Helper::redirect('admin/settings');
+    }
 }
