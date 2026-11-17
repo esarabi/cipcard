@@ -156,7 +156,7 @@ $social = $profile['social_links'] ?? [];
 
     <footer class="text-center py-6 text-xs space-y-1" style="color: var(--text-sub);">
         <p class="font-bold" style="color: var(--text-main);">CIPCard Corporate NFC Systems</p>
-        <p class="text-[11px]">Designed for VIP & Business Leaders by <a href="https://rastingroup.ir" target="_blank" rel="noopener" class="font-bold hover:underline" style="color: var(--badge);">rastingroup.ir</a></p>
+        <p class="text-[11px]">طراحی و توسعه توسط <a href="https://rastingroup.ir" target="_blank" rel="noopener" class="font-bold hover:underline" style="color: var(--badge);">تیم توسعه هوشمند راستین</a></p>
     </footer>
 
     <script>

@@ -263,7 +263,7 @@ $social = $profile['social_links'] ?? [];
 
     <footer class="text-center py-6 text-xs space-y-1" style="color: var(--card-sub);">
         <p class="font-medium">CIPCard 3D Interactive Card</p>
-        <p class="text-[11px]">Designed for VIP & Business Leaders by <a href="https://rastingroup.ir" target="_blank" rel="noopener" class="text-emerald-500 hover:underline font-bold">rastingroup.ir</a></p>
+        <p class="text-[11px]">طراحی و توسعه توسط <a href="https://rastingroup.ir" target="_blank" rel="noopener" class="text-emerald-500 hover:underline font-bold">تیم توسعه هوشمند راستین</a></p>
     </footer>
 
     <script>

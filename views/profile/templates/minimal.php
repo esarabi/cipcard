@@ -231,7 +231,7 @@ $social = $profile['social_links'] ?? [];
             <i data-lucide="nfc" class="w-4 h-4" style="color: var(--primary);"></i>
             <span>قدرت گرفته از کارت ویزیت هوشمند <strong>CIPCard</strong></span>
         </a>
-        <p class="text-[11px]">Designed for VIP & Business Leaders by <a href="https://rastingroup.ir" target="_blank" rel="noopener" class="font-bold hover:underline" style="color: var(--primary);">rastingroup.ir</a></p>
+        <p class="text-[11px]">طراحی و توسعه توسط <a href="https://rastingroup.ir" target="_blank" rel="noopener" class="font-bold hover:underline" style="color: var(--primary);">تیم توسعه هوشمند راستین</a></p>
     </footer>
 
     <script>

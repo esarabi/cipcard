@@ -250,10 +250,10 @@
             <!-- Footer Bottom Bar with Explicit Requested Branding -->
             <div class="pt-8 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-500 gap-4">
                 <p>© <?= date('Y') ?> تمامی حقوق برای پلتفرم هوشمند CIPCard (cipcard.ir) محفوظ است.</p>
-                <div class="flex items-center gap-2 font-medium">
-                    <span class="text-slate-700">Designed for VIP & Business Leaders by</span>
+                <div class="flex items-center gap-1.5 font-medium">
+                    <span class="text-slate-600">طراحی و توسعه توسط</span>
                     <a href="https://rastingroup.ir" target="_blank" rel="noopener" class="text-amber-600 hover:text-amber-700 font-extrabold underline decoration-amber-400 decoration-2 underline-offset-4 transition-colors">
-                        rastingroup.ir
+                        تیم توسعه هوشمند راستین
                     </a>
                 </div>
             </div>

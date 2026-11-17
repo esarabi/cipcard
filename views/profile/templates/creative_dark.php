@@ -161,7 +161,7 @@ $social = $profile['social_links'] ?? [];
 
     <footer class="text-center py-6 text-[11px] font-mono space-y-1" style="color: var(--text-sub);">
         <p class="font-bold" style="color: var(--text-main);">POWERED BY CIPCARD.IR</p>
-        <p>Designed for VIP & Business Leaders by <a href="https://rastingroup.ir" target="_blank" rel="noopener" class="font-bold hover:underline" style="color: var(--neon);">rastingroup.ir</a></p>
+        <p>طراحی و توسعه توسط <a href="https://rastingroup.ir" target="_blank" rel="noopener" class="font-bold hover:underline" style="color: var(--neon);">تیم توسعه هوشمند راستین</a></p>
     </footer>
 
     <script>

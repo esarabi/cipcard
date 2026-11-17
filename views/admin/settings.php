@@ -46,8 +46,8 @@
 
                 <div class="sm:col-span-2">
                     <label class="block text-xs font-bold text-gray-300 mb-1.5">متن امضا و طراح در فوتر (Branding & Credit)</label>
-                    <input type="text" name="branding_note" value="<?= \App\Core\Helper::e(\App\Models\Setting::get('branding_note', 'Designed for VIP & Business Leaders by rastingroup.ir')) ?>" class="w-full px-4 py-3 rounded-xl bg-brand-darker border border-brand-border text-brand-gold text-xs font-mono focus:border-brand-gold focus:outline-none" dir="ltr">
-                    <span class="text-[11px] text-gray-500 mt-1 block">پیش‌فرض: Designed for VIP & Business Leaders by rastingroup.ir</span>
+                    <input type="text" name="branding_note" value="<?= \App\Core\Helper::e(\App\Models\Setting::get('branding_note', 'طراحی و توسعه توسط تیم توسعه هوشمند راستین')) ?>" class="w-full px-4 py-3 rounded-xl bg-brand-darker border border-brand-border text-brand-gold text-xs font-mono focus:border-brand-gold focus:outline-none" dir="ltr">
+                    <span class="text-[11px] text-gray-500 mt-1 block">پیش‌فرض: طراحی و توسعه توسط تیم توسعه هوشمند راستین</span>
                 </div>
             </div>
 
