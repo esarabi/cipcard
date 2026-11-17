@@ -20,11 +20,11 @@ $lColors = $lightPalettes[$theme] ?? $lightPalettes['blue_white'];
 $social = $profile['social_links'] ?? [];
 ?>
 <!DOCTYPE html>
-<html lang="fa" dir="rtl" data-theme="<?= \App\Core\Helper::e($themeMode) ?>">
+<html lang="<?= $currentLang ?? 'fa' ?>" dir="<?= $langDir ?? 'rtl' ?>" data-theme="<?= \App\Core\Helper::e($themeMode) ?>">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?= \App\Core\Helper::e($profile['display_name']) ?> - کارت ویزیت هوشمند</title>
+    <title><?= \App\Core\Helper::e($profile['display_name']) ?> - <?= \App\Core\Helper::e($translations['card_title'] ?? 'کارت ویزیت هوشمند') ?></title>
     
     <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;600;700;900&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
@@ -40,6 +40,10 @@ $social = $profile['social_links'] ?? [];
             --text-sub: <?= $dColors['sub'] ?>;
             --item-bg: <?= $dColors['itemBg'] ?>;
             --btn-text: #FFFFFF;
+            --card: <?= $dColors['glass'] ?>;
+            --border: <?= $dColors['border'] ?>;
+            --box-bg: <?= $dColors['itemBg'] ?>;
+            --card-shadow: 0 15px 35px -5px rgba(0,0,0,0.5);
         }
 
         html[data-theme="light"] {
@@ -52,6 +56,10 @@ $social = $profile['social_links'] ?? [];
             --text-sub: <?= $lColors['sub'] ?>;
             --item-bg: <?= $lColors['itemBg'] ?>;
             --btn-text: #FFFFFF;
+            --card: <?= $lColors['glass'] ?>;
+            --border: <?= $lColors['border'] ?>;
+            --box-bg: <?= $lColors['itemBg'] ?>;
+            --card-shadow: 0 15px 35px -5px rgba(0,0,0,0.08);
         }
 
         body {
@@ -66,7 +74,7 @@ $social = $profile['social_links'] ?? [];
             backdrop-filter: blur(25px);
             -webkit-backdrop-filter: blur(25px);
             border: 1px solid var(--glass-border);
-            box-shadow: 0 15px 35px -5px rgba(0,0,0,0.08);
+            box-shadow: var(--card-shadow);
         }
     </style>
 </head>
@@ -75,15 +83,10 @@ $social = $profile['social_links'] ?? [];
     <div class="fixed top-10 -right-20 w-72 h-72 rounded-full blur-[100px] pointer-events-none opacity-20" style="background-color: var(--primary);"></div>
     <div class="fixed bottom-10 -left-20 w-80 h-80 rounded-full blur-[120px] pointer-events-none opacity-15" style="background-color: var(--accent);"></div>
 
-    <!-- Floating Theme Toggle -->
-    <div class="fixed top-4 left-4 z-50">
-        <button type="button" onclick="toggleGlassTheme()" class="px-3.5 py-1.5 rounded-full shadow-md text-xs font-bold flex items-center gap-1.5 transition-all glass-card">
-            <i id="theme-icon" data-lucide="<?= $themeMode === 'light' ? 'sun' : 'moon' ?>" class="w-3.5 h-3.5" style="color: var(--primary);"></i>
-            <span id="theme-text"><?= $themeMode === 'light' ? 'تم روشن' : 'تم تیره' ?></span>
-        </button>
-    </div>
+    <!-- Floating Top Nav: Theme Toggle & 6-Language Selector -->
+    <?php require __DIR__ . '/../partials/header_nav.php'; ?>
 
-    <div class="max-w-md w-full mx-auto space-y-6 pt-10 relative z-10">
+    <div class="max-w-md w-full mx-auto space-y-6 pt-12 relative z-10">
         
         <!-- Glass Profile Card -->
         <div class="glass-card rounded-[32px] p-6 sm:p-8 text-center space-y-5 shadow-2xl">
@@ -115,7 +118,7 @@ $social = $profile['social_links'] ?? [];
 
             <a href="<?= \App\Core\Helper::url('vcard/@' . (!empty($profile['slug']) ? $profile['slug'] : $profile['mobile'])) ?>" class="w-full py-4 rounded-2xl font-black text-sm flex items-center justify-center gap-2 shadow-xl hover:brightness-105 active:scale-95 transition-all" style="background: linear-gradient(135deg, var(--accent), var(--primary)); color: var(--btn-text);">
                 <i data-lucide="user-plus" class="w-5 h-5"></i>
-                <span>ذخیره مستقیم در گوشی (Save Contact)</span>
+                <span><?= \App\Core\Helper::e($translations['save_contact'] ?? 'ذخیره مستقیم در گوشی') ?></span>
             </a>
         </div>
 
@@ -124,30 +127,20 @@ $social = $profile['social_links'] ?? [];
             <?php if (!empty($profile['phone_mobile'])): ?>
                 <a href="tel:<?= \App\Core\Helper::e($profile['phone_mobile']) ?>" class="flex items-center justify-between p-3.5 rounded-2xl transition-all border border-white/10 text-sm" style="background-color: var(--item-bg); color: var(--text-main);">
                     <div class="flex items-center gap-3">
-                        <i data-lucide="phone" class="w-4 h-4" style="color: var(--primary);"></i>
-                        <span class="font-bold">تماس تلفنی</span>
+                        <i data-lucide="phone-call" class="w-4 h-4" style="color: var(--primary);"></i>
+                        <span class="font-bold text-xs"><?= \App\Core\Helper::e($translations['call_mobile'] ?? 'تماس همراه') ?></span>
                     </div>
                     <span class="text-xs font-mono" style="color: var(--text-sub);"><?= \App\Core\Helper::e($profile['phone_mobile']) ?></span>
                 </a>
             <?php endif; ?>
 
-            <?php if (!empty($social['whatsapp'])): ?>
-                <a href="https://wa.me/<?= preg_replace('/[^0-9]/', '', $social['whatsapp']) ?>" target="_blank" class="flex items-center justify-between p-3.5 rounded-2xl transition-all border border-white/10 text-sm" style="background-color: var(--item-bg); color: var(--text-main);">
+            <?php if (!empty($profile['phone_work'])): ?>
+                <a href="tel:<?= \App\Core\Helper::e($profile['phone_work']) ?>" class="flex items-center justify-between p-3.5 rounded-2xl transition-all border border-white/10 text-sm" style="background-color: var(--item-bg); color: var(--text-main);">
                     <div class="flex items-center gap-3">
-                        <i data-lucide="message-circle" class="w-4 h-4 text-emerald-500"></i>
-                        <span class="font-bold">واتساپ</span>
+                        <i data-lucide="phone" class="w-4 h-4" style="color: var(--primary);"></i>
+                        <span class="font-bold text-xs"><?= \App\Core\Helper::e($translations['call_work'] ?? 'تلفن کار') ?></span>
                     </div>
-                    <i data-lucide="external-link" class="w-4 h-4" style="color: var(--text-sub);"></i>
-                </a>
-            <?php endif; ?>
-
-            <?php if (!empty($social['instagram'])): ?>
-                <a href="https://instagram.com/<?= ltrim(\App\Core\Helper::e($social['instagram']), '@') ?>" target="_blank" class="flex items-center justify-between p-3.5 rounded-2xl transition-all border border-white/10 text-sm" style="background-color: var(--item-bg); color: var(--text-main);">
-                    <div class="flex items-center gap-3">
-                        <i data-lucide="instagram" class="w-4 h-4 text-pink-500"></i>
-                        <span class="font-bold">اینستاگرام</span>
-                    </div>
-                    <span class="text-xs font-mono" style="color: var(--text-sub);">@<?= ltrim(\App\Core\Helper::e($social['instagram']), '@') ?></span>
+                    <span class="text-xs font-mono" style="color: var(--text-sub);"><?= \App\Core\Helper::e($profile['phone_work']) ?></span>
                 </a>
             <?php endif; ?>
 
@@ -155,16 +148,35 @@ $social = $profile['social_links'] ?? [];
                 <a href="mailto:<?= \App\Core\Helper::e($profile['email']) ?>" class="flex items-center justify-between p-3.5 rounded-2xl transition-all border border-white/10 text-sm" style="background-color: var(--item-bg); color: var(--text-main);">
                     <div class="flex items-center gap-3">
                         <i data-lucide="mail" class="w-4 h-4" style="color: var(--primary);"></i>
-                        <span class="font-bold">ایمیل</span>
+                        <span class="font-bold text-xs"><?= \App\Core\Helper::e($translations['email'] ?? 'ارسال ایمیل') ?></span>
                     </div>
-                    <span class="text-xs font-mono" style="color: var(--text-sub);"><?= \App\Core\Helper::e($profile['email']) ?></span>
+                    <span class="text-xs font-mono truncate max-w-[150px]" style="color: var(--text-sub);"><?= \App\Core\Helper::e($profile['email']) ?></span>
+                </a>
+            <?php endif; ?>
+
+            <?php if (!empty($profile['website'])): ?>
+                <a href="<?= \App\Core\Helper::e($profile['website']) ?>" target="_blank" rel="noopener" class="flex items-center justify-between p-3.5 rounded-2xl transition-all border border-white/10 text-sm" style="background-color: var(--item-bg); color: var(--text-main);">
+                    <div class="flex items-center gap-3">
+                        <i data-lucide="globe" class="w-4 h-4" style="color: var(--primary);"></i>
+                        <span class="font-bold text-xs"><?= \App\Core\Helper::e($translations['website'] ?? 'وب‌سایت رسمی') ?></span>
+                    </div>
+                    <i data-lucide="external-link" class="w-4 h-4" style="color: var(--text-sub);"></i>
                 </a>
             <?php endif; ?>
         </div>
 
+        <!-- Working Hours & Days Card -->
+        <?php require __DIR__ . '/../partials/working_hours.php'; ?>
+
+        <!-- Map & Navigation Card -->
+        <?php require __DIR__ . '/../partials/location_map.php'; ?>
+
+        <!-- Iranian & International Social Networks -->
+        <?php require __DIR__ . '/../partials/social_links.php'; ?>
+
         <!-- Glass QR Code -->
         <div class="glass-card rounded-[32px] p-6 text-center space-y-3 shadow-xl">
-            <h3 class="text-xs font-bold uppercase tracking-wider" style="color: var(--text-main);">اسکن کیوآرکد اختصاصی</h3>
+            <h3 class="text-xs font-bold uppercase tracking-wider" style="color: var(--text-main);"><?= \App\Core\Helper::e($translations['scan_qr'] ?? 'اسکن کیوآرکد اختصاصی') ?></h3>
             <div class="w-40 h-40 mx-auto p-3 bg-white/95 rounded-2xl shadow-md flex items-center justify-center">
                 <img src="<?= $qrCodeDataUri ?>" alt="QR" class="w-full h-full object-contain">
             </div>
@@ -173,21 +185,18 @@ $social = $profile['social_links'] ?? [];
 
     </div>
 
-    <footer class="text-center py-6 text-xs relative z-10 space-y-1" style="color: var(--text-sub);">
-        <a href="<?= \App\Core\Helper::url() ?>" target="_blank" class="hover:underline transition-colors font-bold" style="color: var(--text-main);">
-            CIPCard Smart NFC Experience
-        </a>
-        <p class="text-[11px]">طراحی و توسعه توسط <a href="https://rastingroup.ir" target="_blank" rel="noopener" class="font-bold hover:underline" style="color: var(--primary);">تیم توسعه هوشمند راستین</a></p>
-    </footer>
+    <!-- CIPCard Brand Footer -->
+    <?php require __DIR__ . '/../partials/footer.php'; ?>
 
     <script>
-        function toggleGlassTheme() {
+        function toggleCardTheme() {
             var curr = document.documentElement.getAttribute('data-theme') || '<?= $themeMode ?>';
             var next = curr === 'light' ? 'dark' : 'light';
             document.documentElement.setAttribute('data-theme', next);
-            var txt = document.getElementById('theme-text');
-            var icon = document.getElementById('theme-icon');
-            if (txt) txt.innerText = next === 'light' ? 'تم روشن' : 'تم تیره';
+            var txt = document.getElementById('theme-btn-text');
+            var icon = document.getElementById('theme-btn-icon');
+            var isFa = '<?= $currentLang ?>' === 'fa';
+            if (txt) txt.innerText = next === 'light' ? (isFa ? 'تم روشن' : 'Light') : (isFa ? 'تم تیره' : 'Dark');
             if (icon) icon.setAttribute('data-lucide', next === 'light' ? 'sun' : 'moon');
             if (window.lucide) lucide.createIcons();
         }

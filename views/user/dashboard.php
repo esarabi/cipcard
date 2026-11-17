@@ -7,6 +7,10 @@
             <p class="text-xs text-gray-400 mt-1">مدیریت کارت ویزیت هوشمند، آمار بازدید و پیگیری سفارشات شما</p>
         </div>
         <div class="flex items-center gap-3">
+            <button type="button" onclick="openNewOrderModal()" class="px-4 py-2.5 rounded-xl bg-gradient-to-r from-brand-goldDark via-brand-gold to-brand-goldLight text-black font-extrabold text-xs shadow-lg shadow-brand-gold/20 hover:brightness-110 transition-all flex items-center gap-2">
+                <i data-lucide="plus-circle" class="w-4 h-4"></i>
+                <span>ثبت سفارش جدید</span>
+            </button>
             <?php if ($profile && $profile['is_active']): ?>
                 <a href="<?= \App\Core\Helper::e($profileUrl) ?>" target="_blank" class="px-4 py-2.5 rounded-xl bg-brand-surfaceHover border border-brand-gold/40 text-brand-gold hover:bg-brand-gold hover:text-black transition-all text-xs font-bold flex items-center gap-2">
                     <i data-lucide="external-link" class="w-4 h-4"></i>
@@ -263,4 +267,65 @@
         </form>
     </div>
 
+    <!-- User Orders List (Multiple Orders Support) -->
+    <div class="p-6 sm:p-8 rounded-3xl bg-brand-surface border border-brand-border/60 space-y-6">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-brand-border/40 pb-4">
+            <div>
+                <h3 class="font-bold text-white text-base">سفارشات کارت هوشمند شما</h3>
+                <p class="text-xs text-gray-400 mt-0.5">مشاهده تاریخچه سفارش‌های ثبت شده و وضعیت تولید و پرداخت آن‌ها</p>
+            </div>
+            <button type="button" onclick="openNewOrderModal()" class="px-4 py-2 rounded-xl bg-brand-gold/10 border border-brand-gold text-brand-gold hover:bg-brand-gold hover:text-black transition-all text-xs font-bold flex items-center gap-1.5 self-start sm:self-auto">
+                <i data-lucide="plus" class="w-4 h-4"></i>
+                <span>ثبت سفارش کارت جدید</span>
+            </button>
+        </div>
+
+        <?php if (empty($orders)): ?>
+            <div class="p-8 text-center rounded-2xl bg-brand-darker border border-brand-border/40 space-y-2">
+                <i data-lucide="package-x" class="w-8 h-8 text-gray-500 mx-auto"></i>
+                <p class="text-xs text-gray-400">هنوز سفارشی ثبت نکرده‌اید.</p>
+            </div>
+        <?php else: ?>
+            <div class="space-y-3">
+                <?php foreach ($orders as $ord): ?>
+                    <?php
+                    $statusLabels = [
+                        'unpaid'         => ['title' => 'پرداخت نشده', 'class' => 'bg-red-500/10 text-red-400 border-red-500/30'],
+                        'pending_design' => ['title' => 'در انتظار ارسال طرح', 'class' => 'bg-amber-500/10 text-amber-400 border-amber-500/30'],
+                        'printing'       => ['title' => 'در حال چاپ و برنامه‌ریزی', 'class' => 'bg-blue-500/10 text-blue-400 border-blue-500/30'],
+                        'shipped'        => ['title' => 'ارسال شده با پست', 'class' => 'bg-emerald-500/10 text-emerald-400 border-emerald-500/30'],
+                        'delivered'      => ['title' => 'تحویل داده شده', 'class' => 'bg-emerald-500/20 text-emerald-300 border-emerald-500/50'],
+                        'cancelled'      => ['title' => 'لغو شده', 'class' => 'bg-gray-800 text-gray-500 border-gray-700']
+                    ];
+                    $st = $statusLabels[$ord['status']] ?? ['title' => $ord['status'], 'class' => 'bg-gray-800 text-gray-300 border-gray-700'];
+                    ?>
+                    <div class="p-4 rounded-2xl bg-brand-darker border border-brand-border/60 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-xl bg-brand-gold/10 text-brand-gold flex items-center justify-center font-bold">
+                                <i data-lucide="credit-card" class="w-5 h-5"></i>
+                            </div>
+                            <div>
+                                <span class="font-mono font-bold text-white text-xs"><?= \App\Core\Helper::e($ord['order_number']) ?></span>
+                                <span class="block text-[11px] text-gray-400"><?= $ord['card_type'] === 'custom_design' ? 'طرح اختصاصی با لوگوی سازمانی' : 'طرح پیش‌فرض CIP' ?> (<?= \App\Core\Helper::formatPrice($ord['amount']) ?>)</span>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center gap-3">
+                            <span class="text-xs px-3 py-1 rounded-full border <?= $st['class'] ?> font-semibold"><?= $st['title'] ?></span>
+
+                            <?php if ($ord['status'] === 'unpaid'): ?>
+                                <a href="<?= \App\Core\Helper::url('order/retry/' . $ord['order_number']) ?>" class="px-3.5 py-1.5 rounded-xl bg-amber-500 text-black font-bold text-xs hover:brightness-110 flex items-center gap-1">
+                                    <i data-lucide="credit-card" class="w-3.5 h-3.5"></i>
+                                    <span>پرداخت</span>
+                                </a>
+                            <?php endif; ?>
+                        </div>
+                    </div>
+                <?php endforeach; ?>
+            </div>
+        <?php endif; ?>
+    </div>
+
 </div>
+
+<?php require __DIR__ . '/partials/new_order_modal.php'; ?>

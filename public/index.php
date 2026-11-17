@@ -108,6 +108,8 @@ $router->get('/dashboard/profile', [DashboardController::class, 'editProfile'], 
 $router->post('/dashboard/profile', [DashboardController::class, 'updateProfile'], [AuthMiddleware::class]);
 $router->post('/dashboard/switch-template', [DashboardController::class, 'switchTemplate'], [AuthMiddleware::class]);
 $router->get('/dashboard/tracking', [DashboardController::class, 'orderTracking'], [AuthMiddleware::class]);
+$router->get('/dashboard/orders', [DashboardController::class, 'orderTracking'], [AuthMiddleware::class]);
+$router->post('/dashboard/order/new', [DashboardController::class, 'newOrder'], [AuthMiddleware::class]);
 
 // -------------------------------------------------------------
 // Admin Panel (Protected by AdminMiddleware)

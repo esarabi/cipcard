@@ -8,6 +8,17 @@ use PDO;
 
 class Profile
 {
+    /**
+     * Reserved system slugs that cannot be registered by users
+     */
+    public const RESERVED_SLUGS = [
+        'admin', 'api', 'auth', 'dashboard', 'order', 'orders', 'vcard', 'qr',
+        'login', 'logout', 'payment', 'home', 'public', 'assets', 'uploads',
+        'terms', 'privacy', 'help', 'support', 'contact', 'about', 'cipcard',
+        'rastin', 'rastingroup', 'settings', 'profile', 'user', 'users', 'download',
+        'index', 'feed', 'sitemap', 'robot', 'robots', 'null', 'undefined'
+    ];
+
     public static function create(array $data): int
     {
         $db = Database::getConnection();
@@ -15,11 +26,15 @@ class Profile
             INSERT INTO profiles (
                 user_id, slug, display_name, job_title, company, bio,
                 avatar_url, cover_url, email, phone_work, phone_mobile,
-                website, address, social_links, template_id, theme_color, theme_mode, is_active
+                website, address, map_link, map_latitude, map_longitude,
+                working_days, working_hours, working_note, default_lang,
+                social_links, template_id, theme_color, theme_mode, is_active
             ) VALUES (
                 :user_id, :slug, :display_name, :job_title, :company, :bio,
                 :avatar_url, :cover_url, :email, :phone_work, :phone_mobile,
-                :website, :address, :social_links, :template_id, :theme_color, :theme_mode, :is_active
+                :website, :address, :map_link, :map_latitude, :map_longitude,
+                :working_days, :working_hours, :working_note, :default_lang,
+                :social_links, :template_id, :theme_color, :theme_mode, :is_active
             )
         ");
 
@@ -28,24 +43,31 @@ class Profile
             : ($data['social_links'] ?? null);
 
         $stmt->execute([
-            ':user_id'      => $data['user_id'],
-            ':slug'         => $data['slug'] ?? null,
-            ':display_name' => $data['display_name'],
-            ':job_title'    => $data['job_title'] ?? null,
-            ':company'      => $data['company'] ?? null,
-            ':bio'          => $data['bio'] ?? null,
-            ':avatar_url'   => $data['avatar_url'] ?? null,
-            ':cover_url'    => $data['cover_url'] ?? null,
-            ':email'        => $data['email'] ?? null,
-            ':phone_work'   => $data['phone_work'] ?? null,
-            ':phone_mobile' => $data['phone_mobile'] ?? null,
-            ':website'      => $data['website'] ?? null,
-            ':address'      => $data['address'] ?? null,
-            ':social_links' => $social,
-            ':template_id'  => $data['template_id'] ?? 'minimal',
-            ':theme_color'  => $data['theme_color'] ?? 'gold_black',
-            ':theme_mode'   => $data['theme_mode'] ?? 'light',
-            ':is_active'    => $data['is_active'] ?? 0
+            ':user_id'       => $data['user_id'],
+            ':slug'          => !empty($data['slug']) ? strtolower(trim((string)$data['slug'])) : null,
+            ':display_name'  => $data['display_name'],
+            ':job_title'     => $data['job_title'] ?? null,
+            ':company'       => $data['company'] ?? null,
+            ':bio'           => $data['bio'] ?? null,
+            ':avatar_url'    => $data['avatar_url'] ?? null,
+            ':cover_url'     => $data['cover_url'] ?? null,
+            ':email'         => $data['email'] ?? null,
+            ':phone_work'    => $data['phone_work'] ?? null,
+            ':phone_mobile'  => $data['phone_mobile'] ?? null,
+            ':website'       => $data['website'] ?? null,
+            ':address'       => $data['address'] ?? null,
+            ':map_link'      => $data['map_link'] ?? null,
+            ':map_latitude'  => !empty($data['map_latitude']) ? (float)$data['map_latitude'] : null,
+            ':map_longitude' => !empty($data['map_longitude']) ? (float)$data['map_longitude'] : null,
+            ':working_days'  => $data['working_days'] ?? null,
+            ':working_hours' => $data['working_hours'] ?? null,
+            ':working_note'  => $data['working_note'] ?? null,
+            ':default_lang'  => !empty($data['default_lang']) ? $data['default_lang'] : 'fa',
+            ':social_links'  => $social,
+            ':template_id'   => $data['template_id'] ?? 'minimal',
+            ':theme_color'   => $data['theme_color'] ?? 'gold_black',
+            ':theme_mode'    => $data['theme_mode'] ?? 'light',
+            ':is_active'     => $data['is_active'] ?? 0
         ]);
 
         return (int)$db->lastInsertId();
@@ -63,22 +85,66 @@ class Profile
         return $profile ?: null;
     }
 
-    public static function findByMobile(string $mobile): ?array
+    /**
+     * Find profile by Mobile or custom Slug (case-insensitive)
+     */
+    public static function findByMobile(string $identifier): ?array
     {
         $db = Database::getConnection();
+        $clean = trim($identifier);
+
         $stmt = $db->prepare("
             SELECT p.*, u.mobile, u.status AS user_status, u.full_name AS user_full_name
             FROM profiles p
             JOIN users u ON p.user_id = u.id
-            WHERE u.mobile = :mobile OR p.slug = :mobile2
+            WHERE u.mobile = :mobile OR LOWER(p.slug) = LOWER(:slug)
             LIMIT 1
         ");
-        $stmt->execute([':mobile' => $mobile, ':mobile2' => $mobile]);
+        $stmt->execute([
+            ':mobile' => $clean,
+            ':slug'   => $clean
+        ]);
         $profile = $stmt->fetch();
         if ($profile && !empty($profile['social_links'])) {
             $profile['social_links'] = json_decode($profile['social_links'], true) ?: [];
         }
         return $profile ?: null;
+    }
+
+    /**
+     * Check if a custom slug is valid and available for reservation
+     */
+    public static function isSlugAvailable(string $slug, int $excludeUserId = 0): bool
+    {
+        $slug = strtolower(trim($slug));
+
+        // Format validation: 3 to 40 alphanumeric characters, hyphens, underscores or dots
+        if (!preg_match('/^[a-z0-9_\-\.]{3,40}$/', $slug)) {
+            return false;
+        }
+
+        // Cannot be reserved word
+        if (in_array($slug, self::RESERVED_SLUGS, true)) {
+            return false;
+        }
+
+        $db = Database::getConnection();
+
+        // Ensure not colliding with any other user's mobile number
+        $stmtMobile = $db->prepare("SELECT id FROM users WHERE mobile = :mobile AND id != :uid LIMIT 1");
+        $stmtMobile->execute([':mobile' => $slug, ':uid' => $excludeUserId]);
+        if ($stmtMobile->fetch()) {
+            return false;
+        }
+
+        // Ensure not already used in profiles.slug
+        $stmtSlug = $db->prepare("SELECT id FROM profiles WHERE LOWER(slug) = LOWER(:slug) AND user_id != :uid LIMIT 1");
+        $stmtSlug->execute([':slug' => $slug, ':uid' => $excludeUserId]);
+        if ($stmtSlug->fetch()) {
+            return false;
+        }
+
+        return true;
     }
 
     public static function updateByUserId(int $userId, array $data): bool
@@ -96,8 +162,21 @@ class Profile
                 continue;
             }
 
+            if ($key === 'slug') {
+                $trimmed = strtolower(trim((string)$value));
+                $fields[] = "slug = :slug";
+                $params[':slug'] = !empty($trimmed) ? $trimmed : null;
+                continue;
+            }
+
+            if (in_array($key, ['map_latitude', 'map_longitude'], true)) {
+                $fields[] = "{$key} = :{$key}";
+                $params[":{$key}"] = (is_numeric($value) && (float)$value != 0) ? (float)$value : null;
+                continue;
+            }
+
             $fields[] = "{$key} = :{$key}";
-            $params[":{$key}"] = $value;
+            $params[":{$key}"] = ($value === '' ? null : $value);
         }
 
         if (empty($fields)) return false;

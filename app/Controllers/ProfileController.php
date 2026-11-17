@@ -7,6 +7,7 @@ use App\Core\Helper;
 use App\Core\View;
 use App\Models\Profile;
 use App\Services\QrCodeService;
+use App\Services\TranslationService;
 use App\Services\VCardService;
 
 class ProfileController
@@ -34,6 +35,12 @@ class ProfileController
             return;
         }
 
+        // Multi-Language resolution (6 languages supported: fa, en, ar, tr, ru, zh)
+        $currentLang = TranslationService::sanitizeLang($_GET['lang'] ?? $profile['default_lang'] ?? 'fa');
+        $langDir = TranslationService::getDirection($currentLang);
+        $translations = TranslationService::getAll($currentLang);
+        $supportedLangs = TranslationService::getSupportedLanguages();
+
         // Increment visit counter
         Profile::incrementViews((int)$profile['id']);
 
@@ -51,10 +58,14 @@ class ProfileController
         $viewName = "profile.templates.{$template}";
 
         View::render($viewName, [
-            'title'         => $profile['display_name'] . ' - کارت ویزیت هوشمند CIPCard',
-            'profile'       => $profile,
-            'profileUrl'    => $profileUrl,
-            'qrCodeDataUri' => $qrCodeDataUri
+            'title'          => $profile['display_name'] . ' - ' . ($translations['card_title'] ?? 'کارت ویزیت هوشمند CIPCard'),
+            'profile'        => $profile,
+            'profileUrl'     => $profileUrl,
+            'qrCodeDataUri'  => $qrCodeDataUri,
+            'currentLang'    => $currentLang,
+            'langDir'        => $langDir,
+            'translations'   => $translations,
+            'supportedLangs' => $supportedLangs
         ], null);
     }
 

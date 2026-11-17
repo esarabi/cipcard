@@ -80,11 +80,11 @@ $lColors = $lightPalettes[$theme] ?? $lightPalettes['gold_black'];
 $social = $profile['social_links'] ?? [];
 ?>
 <!DOCTYPE html>
-<html lang="fa" dir="rtl" data-theme="<?= \App\Core\Helper::e($themeMode) ?>">
+<html lang="<?= $currentLang ?? 'fa' ?>" dir="<?= $langDir ?? 'rtl' ?>" data-theme="<?= \App\Core\Helper::e($themeMode) ?>">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?= \App\Core\Helper::e($profile['display_name']) ?> - کارت ویزیت هوشمند CIP</title>
+    <title><?= \App\Core\Helper::e($profile['display_name']) ?> - <?= \App\Core\Helper::e($translations['card_title'] ?? 'کارت ویزیت هوشمند سه‌بعدی') ?></title>
     
     <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;600;700;900&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
@@ -93,29 +93,39 @@ $social = $profile['social_links'] ?? [];
         html[data-theme="dark"] {
             --page-bg: <?= $dColors['pageBg'] ?>;
             --card-bg: <?= $dColors['cardBg'] ?>;
+            --card: <?= $dColors['pageBg'] ?>;
             --primary: <?= $dColors['primary'] ?>;
             --border: <?= $dColors['border'] ?>;
             --card-text: <?= $dColors['cardText'] ?>;
             --card-sub: <?= $dColors['cardSub'] ?>;
             --action-bg: <?= $dColors['actionBg'] ?>;
+            --box-bg: <?= $dColors['actionBg'] ?>;
             --action-border: <?= $dColors['actionBorder'] ?>;
             --action-text: <?= $dColors['actionText'] ?>;
+            --text-main: <?= $dColors['actionText'] ?>;
+            --text-sub: <?= $dColors['cardSub'] ?>;
             --chip-bg: #1c1917;
             --shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
+            --card-shadow: 0 20px 40px -15px rgba(0,0,0,0.7);
         }
 
         html[data-theme="light"] {
             --page-bg: <?= $lColors['pageBg'] ?>;
             --card-bg: <?= $lColors['cardBg'] ?>;
+            --card: <?= $lColors['actionBg'] ?>;
             --primary: <?= $lColors['primary'] ?>;
             --border: <?= $lColors['border'] ?>;
             --card-text: <?= $lColors['cardText'] ?>;
             --card-sub: <?= $lColors['cardSub'] ?>;
             --action-bg: <?= $lColors['actionBg'] ?>;
+            --box-bg: <?= $lColors['actionBg'] ?>;
             --action-border: <?= $lColors['actionBorder'] ?>;
             --action-text: <?= $lColors['actionText'] ?>;
+            --text-main: <?= $lColors['actionText'] ?>;
+            --text-sub: <?= $lColors['cardSub'] ?>;
             --chip-bg: #fef3c7;
             --shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.12);
+            --card-shadow: 0 10px 30px -5px rgba(0,0,0,0.06);
         }
 
         body { 
@@ -141,19 +151,14 @@ $social = $profile['social_links'] ?? [];
 </head>
 <body class="min-h-screen flex flex-col justify-between p-4 sm:p-6">
 
-    <!-- Floating Theme Switcher -->
-    <div class="fixed top-4 left-4 z-50">
-        <button type="button" onclick="toggleModernCardTheme()" class="px-3.5 py-1.5 rounded-full border shadow-md text-xs font-bold flex items-center gap-1.5 transition-all" style="background-color: var(--action-bg); color: var(--action-text); border-color: var(--action-border);">
-            <i id="theme-btn-icon" data-lucide="<?= $themeMode === 'light' ? 'sun' : 'moon' ?>" class="w-3.5 h-3.5" style="color: var(--primary);"></i>
-            <span id="theme-btn-text"><?= $themeMode === 'light' ? 'تم روشن' : 'تم تیره' ?></span>
-        </button>
-    </div>
+    <!-- Floating Top Nav: Theme Toggle & 6-Language Selector -->
+    <?php require __DIR__ . '/../partials/header_nav.php'; ?>
 
-    <div class="max-w-md w-full mx-auto space-y-6 pt-4">
+    <div class="max-w-md w-full mx-auto space-y-6 pt-12">
         
         <div class="text-center space-y-1">
-            <span class="text-xs font-mono tracking-widest uppercase font-bold" style="color: var(--primary);">DIGITAL TWIN OF PHYSICAL CARD</span>
-            <p class="text-xs" style="color: var(--card-sub);">برای چرخش کارت روی دکمه چرخش یا خود کارت کلیک کنید.</p>
+            <span class="text-xs font-mono tracking-widest uppercase font-bold" style="color: var(--primary);">CIP NFC 3D SMART CARD</span>
+            <p class="text-xs" style="color: var(--card-sub);"><?= \App\Core\Helper::e($translations['flip_card'] ?? 'لمس کارت جهت چرخش سه‌بعدی') ?></p>
         </div>
 
         <!-- 3D Interactive Physical Card -->
@@ -182,15 +187,15 @@ $social = $profile['social_links'] ?? [];
                         </div>
                         <div class="truncate">
                             <h2 class="text-xl font-black truncate" style="color: var(--card-text);"><?= \App\Core\Helper::e($profile['display_name']) ?></h2>
-                            <p class="text-xs font-bold truncate mt-0.5" style="color: var(--primary);"><?= \App\Core\Helper::e($profile['job_title'] ?: 'مدیر ارشد') ?></p>
+                            <p class="text-xs font-bold truncate mt-0.5" style="color: var(--primary);"><?= \App\Core\Helper::e($profile['job_title'] ?: 'VIP Member') ?></p>
                         </div>
                     </div>
 
                     <div class="flex justify-between items-end border-t pt-3" style="border-color: var(--action-border);">
-                        <span class="text-[11px] font-medium" style="color: var(--card-sub);"><?= \App\Core\Helper::e($profile['company'] ?: 'CIPCard Member') ?></span>
+                        <span class="text-[11px] font-medium" style="color: var(--card-sub);"><?= \App\Core\Helper::e($profile['company'] ?: 'CIPCard Smart Member') ?></span>
                         <div class="flex items-center gap-1.5 text-[11px] font-bold" style="color: var(--card-text);">
                             <i data-lucide="rotate-cw" class="w-3.5 h-3.5" style="color: var(--primary);"></i>
-                            <span>مشاهده پشت کارت</span>
+                            <span><?= \App\Core\Helper::e($translations['flip_card'] ?? 'چرخش کارت') ?></span>
                         </div>
                     </div>
                 </div>
@@ -220,51 +225,44 @@ $social = $profile['social_links'] ?? [];
         <div class="space-y-3 pt-2">
             <a href="<?= \App\Core\Helper::url('vcard/@' . (!empty($profile['slug']) ? $profile['slug'] : $profile['mobile'])) ?>" class="w-full py-4 rounded-2xl font-black text-sm text-white flex items-center justify-center gap-2 shadow-xl hover:brightness-105 active:scale-95 transition-all" style="background-color: var(--primary);">
                 <i data-lucide="user-plus" class="w-5 h-5"></i>
-                <span>ذخیره مستقیم مخاطب (Save Contact)</span>
+                <span><?= \App\Core\Helper::e($translations['save_contact'] ?? 'ذخیره در مخاطبین') ?></span>
             </a>
 
-            <?php if (!empty($profile['phone_mobile'])): ?>
-                <a href="tel:<?= \App\Core\Helper::e($profile['phone_mobile']) ?>" class="w-full py-3.5 rounded-xl border text-xs font-bold flex items-center justify-center gap-2 shadow-sm hover:scale-[1.01] transition-all" style="background-color: var(--action-bg); border-color: var(--action-border); color: var(--action-text);">
-                    <i data-lucide="phone" class="w-4 h-4" style="color: var(--primary);"></i>
-                    <span>تماس سریع تلفنی</span>
-                </a>
-            <?php endif; ?>
+            <div class="grid grid-cols-2 gap-3">
+                <?php if (!empty($profile['phone_mobile'])): ?>
+                    <a href="tel:<?= \App\Core\Helper::e($profile['phone_mobile']) ?>" class="py-3 px-4 rounded-xl border text-xs font-bold flex items-center justify-center gap-2 shadow-sm hover:scale-[1.01] transition-all" style="background-color: var(--action-bg); border-color: var(--action-border); color: var(--action-text);">
+                        <i data-lucide="phone-call" class="w-4 h-4" style="color: var(--primary);"></i>
+                        <span><?= \App\Core\Helper::e($translations['call_mobile'] ?? 'تماس همراه') ?></span>
+                    </a>
+                <?php endif; ?>
 
-            <?php if (!empty($social['whatsapp'])): ?>
-                <a href="https://wa.me/<?= preg_replace('/[^0-9]/', '', $social['whatsapp']) ?>" target="_blank" class="w-full py-3.5 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-600 dark:text-emerald-400 text-xs font-bold flex items-center justify-center gap-2 transition-all">
-                    <i data-lucide="message-circle" class="w-4 h-4"></i>
-                    <span>ارسال پیام در واتساپ</span>
-                </a>
-            <?php endif; ?>
-
-            <?php if (!empty($social['telegram'])): ?>
-                <a href="https://t.me/<?= ltrim($social['telegram'], '@') ?>" target="_blank" class="w-full py-3.5 rounded-xl bg-sky-500/10 border border-sky-500/30 text-sky-600 dark:text-sky-400 text-xs font-bold flex items-center justify-center gap-2 transition-all">
-                    <i data-lucide="send" class="w-4 h-4"></i>
-                    <span>ارتباط در تلگرام</span>
-                </a>
-            <?php endif; ?>
-
-            <?php if (!empty($social['instagram'])): ?>
-                <a href="https://instagram.com/<?= ltrim($social['instagram'], '@') ?>" target="_blank" class="w-full py-3.5 rounded-xl bg-pink-500/10 border border-pink-500/30 text-pink-600 dark:text-pink-400 text-xs font-bold flex items-center justify-center gap-2 transition-all">
-                    <i data-lucide="instagram" class="w-4 h-4"></i>
-                    <span>صفحه اینستاگرام</span>
-                </a>
-            <?php endif; ?>
-
-            <?php if (!empty($social['website'])): ?>
-                <a href="<?= \App\Core\Helper::e($social['website']) ?>" target="_blank" class="w-full py-3.5 rounded-xl border text-xs font-bold flex items-center justify-center gap-2 transition-all" style="background-color: var(--action-bg); border-color: var(--action-border); color: var(--action-text);">
-                    <i data-lucide="globe" class="w-4 h-4" style="color: var(--primary);"></i>
-                    <span>مشاهده وب‌سایت</span>
-                </a>
-            <?php endif; ?>
+                <?php if (!empty($profile['phone_work'])): ?>
+                    <a href="tel:<?= \App\Core\Helper::e($profile['phone_work']) ?>" class="py-3 px-4 rounded-xl border text-xs font-bold flex items-center justify-center gap-2 shadow-sm hover:scale-[1.01] transition-all" style="background-color: var(--action-bg); border-color: var(--action-border); color: var(--action-text);">
+                        <i data-lucide="phone" class="w-4 h-4" style="color: var(--primary);"></i>
+                        <span><?= \App\Core\Helper::e($translations['call_work'] ?? 'تلفن کار') ?></span>
+                    </a>
+                <?php elseif (!empty($profile['email'])): ?>
+                    <a href="mailto:<?= \App\Core\Helper::e($profile['email']) ?>" class="py-3 px-4 rounded-xl border text-xs font-bold flex items-center justify-center gap-2 shadow-sm hover:scale-[1.01] transition-all" style="background-color: var(--action-bg); border-color: var(--action-border); color: var(--action-text);">
+                        <i data-lucide="mail" class="w-4 h-4" style="color: var(--primary);"></i>
+                        <span><?= \App\Core\Helper::e($translations['email'] ?? 'ایمیل') ?></span>
+                    </a>
+                <?php endif; ?>
+            </div>
         </div>
+
+        <!-- Working Hours Partial -->
+        <?php require __DIR__ . '/../partials/working_hours.php'; ?>
+
+        <!-- Location & Navigation Partial -->
+        <?php require __DIR__ . '/../partials/location_map.php'; ?>
+
+        <!-- Iranian & International Socials Partial -->
+        <?php require __DIR__ . '/../partials/social_links.php'; ?>
 
     </div>
 
-    <footer class="text-center py-6 text-xs space-y-1" style="color: var(--card-sub);">
-        <p class="font-medium">CIPCard 3D Interactive Card</p>
-        <p class="text-[11px]">طراحی و توسعه توسط <a href="https://rastingroup.ir" target="_blank" rel="noopener" class="text-emerald-500 hover:underline font-bold">تیم توسعه هوشمند راستین</a></p>
-    </footer>
+    <!-- CIPCard Brand Footer -->
+    <?php require __DIR__ . '/../partials/footer.php'; ?>
 
     <script>
         lucide.createIcons();
@@ -272,7 +270,7 @@ $social = $profile['social_links'] ?? [];
             document.getElementById('physical-card').classList.toggle('flipped');
         }
 
-        function toggleModernCardTheme() {
+        function toggleCardTheme() {
             const html = document.documentElement;
             const currentTheme = html.getAttribute('data-theme') || 'light';
             const newTheme = currentTheme === 'light' ? 'dark' : 'light';
@@ -280,8 +278,9 @@ $social = $profile['social_links'] ?? [];
             
             const btnText = document.getElementById('theme-btn-text');
             const btnIcon = document.getElementById('theme-btn-icon');
+            const isFa = '<?= $currentLang ?>' === 'fa';
             if (btnText && btnIcon) {
-                btnText.textContent = newTheme === 'light' ? 'تم روشن' : 'تم تیره';
+                btnText.textContent = newTheme === 'light' ? (isFa ? 'تم روشن' : 'Light') : (isFa ? 'تم تیره' : 'Dark');
                 btnIcon.setAttribute('data-lucide', newTheme === 'light' ? 'sun' : 'moon');
                 lucide.createIcons();
             }

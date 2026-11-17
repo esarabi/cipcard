@@ -20,11 +20,11 @@ $lColors = $lightPalettes[$theme] ?? $lightPalettes['blue_white'];
 $social = $profile['social_links'] ?? [];
 ?>
 <!DOCTYPE html>
-<html lang="fa" dir="rtl" data-theme="<?= \App\Core\Helper::e($themeMode) ?>">
+<html lang="<?= $currentLang ?? 'fa' ?>" dir="<?= $langDir ?? 'rtl' ?>" data-theme="<?= \App\Core\Helper::e($themeMode) ?>">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?= \App\Core\Helper::e($profile['display_name']) ?> - پروفایل رسمی</title>
+    <title><?= \App\Core\Helper::e($profile['display_name']) ?> - <?= \App\Core\Helper::e($translations['card_title'] ?? 'پروفایل سازمانی رسمی') ?></title>
     
     <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
@@ -34,11 +34,13 @@ $social = $profile['social_links'] ?? [];
             --bg: <?= $dColors['bg'] ?>;
             --header-bg: <?= $dColors['headerBg'] ?>;
             --card-bg: <?= $dColors['card'] ?>;
-            --primary: <?= $dColors['primary'] ?>;
+            --card: <?= $dColors['card'] ?>;
+            --primary: <?= $dColors['badge'] ?>;
             --badge: <?= $dColors['badge'] ?>;
             --text-main: <?= $dColors['text'] ?>;
             --text-sub: <?= $dColors['sub'] ?>;
             --item-bg: <?= $dColors['itemBg'] ?>;
+            --box-bg: <?= $dColors['itemBg'] ?>;
             --border: <?= $dColors['border'] ?>;
             --card-shadow: 0 20px 40px -15px rgba(0,0,0,0.8);
         }
@@ -47,11 +49,13 @@ $social = $profile['social_links'] ?? [];
             --bg: <?= $lColors['bg'] ?>;
             --header-bg: <?= $lColors['headerBg'] ?>;
             --card-bg: <?= $lColors['card'] ?>;
+            --card: <?= $lColors['card'] ?>;
             --primary: <?= $lColors['primary'] ?>;
             --badge: <?= $lColors['badge'] ?>;
             --text-main: <?= $lColors['text'] ?>;
             --text-sub: <?= $lColors['sub'] ?>;
             --item-bg: <?= $lColors['itemBg'] ?>;
+            --box-bg: <?= $lColors['itemBg'] ?>;
             --border: <?= $lColors['border'] ?>;
             --card-shadow: 0 10px 30px -5px rgba(0,0,0,0.06);
         }
@@ -66,15 +70,10 @@ $social = $profile['social_links'] ?? [];
 </head>
 <body class="min-h-screen flex flex-col justify-between p-4 sm:p-6">
 
-    <!-- Floating Theme Switcher -->
-    <div class="fixed top-4 left-4 z-50">
-        <button type="button" onclick="toggleCorporateTheme()" class="px-3.5 py-1.5 rounded-full border shadow-md text-xs font-bold flex items-center gap-1.5 transition-all" style="background-color: var(--card-bg); color: var(--text-main); border-color: var(--border);">
-            <i id="theme-btn-icon" data-lucide="<?= $themeMode === 'light' ? 'sun' : 'moon' ?>" class="w-3.5 h-3.5" style="color: var(--badge);"></i>
-            <span id="theme-btn-text"><?= $themeMode === 'light' ? 'تم روشن' : 'تم تیره' ?></span>
-        </button>
-    </div>
+    <!-- Floating Top Nav: Theme Toggle & 6-Language Selector -->
+    <?php require __DIR__ . '/../partials/header_nav.php'; ?>
 
-    <div class="max-w-md w-full mx-auto rounded-3xl overflow-hidden border shadow-2xl pt-2" style="background-color: var(--card-bg); border-color: var(--border); box-shadow: var(--card-shadow);">
+    <div class="max-w-md w-full mx-auto rounded-3xl overflow-hidden border shadow-2xl pt-2 mt-12 space-y-4" style="background-color: var(--card-bg); border-color: var(--border); box-shadow: var(--card-shadow);">
         
         <!-- Corporate Header Banner -->
         <div class="p-8 text-center relative border-b" style="background-color: var(--header-bg); border-color: var(--border);">
@@ -89,7 +88,7 @@ $social = $profile['social_links'] ?? [];
             </div>
 
             <h1 class="text-2xl font-black" style="color: var(--text-main);"><?= \App\Core\Helper::e($profile['display_name']) ?></h1>
-            <span class="inline-block mt-2 px-3.5 py-1 rounded-full text-xs font-bold text-white tracking-wide shadow-sm" style="background-color: var(--primary);">
+            <span class="inline-block mt-2 px-3.5 py-1 rounded-full text-xs font-bold text-white tracking-wide shadow-sm" style="background-color: var(--badge);">
                 <?= \App\Core\Helper::e($profile['job_title'] ?: 'مدیر ارشد') ?>
             </span>
             <?php if (!empty($profile['company'])): ?>
@@ -98,7 +97,7 @@ $social = $profile['social_links'] ?? [];
         </div>
 
         <!-- Body Section -->
-        <div class="p-6 space-y-6">
+        <div class="p-6 space-y-5">
             <?php if (!empty($profile['bio'])): ?>
                 <div class="p-4 rounded-xl border text-xs leading-relaxed" style="background-color: var(--item-bg); border-color: var(--border); color: var(--text-sub);">
                     <?= nl2br(\App\Core\Helper::e($profile['bio'])) ?>
@@ -107,66 +106,74 @@ $social = $profile['social_links'] ?? [];
 
             <a href="<?= \App\Core\Helper::url('vcard/@' . (!empty($profile['slug']) ? $profile['slug'] : $profile['mobile'])) ?>" class="w-full py-4 rounded-xl font-bold text-sm text-white flex items-center justify-center gap-2 shadow-lg hover:brightness-105 active:scale-95 transition-all" style="background-color: var(--badge);">
                 <i data-lucide="download" class="w-4 h-4"></i>
-                <span>افزودن به دفترچه تلفن مخاطبان</span>
+                <span><?= \App\Core\Helper::e($translations['save_contact'] ?? 'افزودن به دفترچه تلفن مخاطبان') ?></span>
             </a>
 
             <!-- Corporate Structured Info -->
-            <div class="space-y-3">
-                <h4 class="text-xs font-bold uppercase border-r-2 pr-2" style="border-color: var(--badge); color: var(--text-sub);">مشخصات ارتباطی</h4>
+            <div class="space-y-2.5">
+                <h4 class="text-xs font-bold uppercase border-r-2 pr-2" style="border-color: var(--badge); color: var(--text-sub);"><?= \App\Core\Helper::e($translations['contact_info'] ?? 'مشخصات ارتباطی') ?></h4>
                 
                 <?php if (!empty($profile['phone_mobile'])): ?>
                     <a href="tel:<?= \App\Core\Helper::e($profile['phone_mobile']) ?>" class="flex items-center justify-between p-3.5 rounded-xl transition-all text-xs border" style="background-color: var(--item-bg); border-color: var(--border);">
-                        <span style="color: var(--text-sub);">تلفن همراه:</span>
+                        <span style="color: var(--text-sub);"><?= \App\Core\Helper::e($translations['call_mobile'] ?? 'تلفن همراه') ?>:</span>
                         <span class="font-mono font-bold" style="color: var(--text-main);"><?= \App\Core\Helper::e($profile['phone_mobile']) ?></span>
                     </a>
                 <?php endif; ?>
 
                 <?php if (!empty($profile['phone_work'])): ?>
                     <a href="tel:<?= \App\Core\Helper::e($profile['phone_work']) ?>" class="flex items-center justify-between p-3.5 rounded-xl transition-all text-xs border" style="background-color: var(--item-bg); border-color: var(--border);">
-                        <span style="color: var(--text-sub);">تلفن محل کار:</span>
+                        <span style="color: var(--text-sub);"><?= \App\Core\Helper::e($translations['call_work'] ?? 'تلفن محل کار') ?>:</span>
                         <span class="font-mono font-bold" style="color: var(--text-main);"><?= \App\Core\Helper::e($profile['phone_work']) ?></span>
                     </a>
                 <?php endif; ?>
 
                 <?php if (!empty($profile['email'])): ?>
                     <a href="mailto:<?= \App\Core\Helper::e($profile['email']) ?>" class="flex items-center justify-between p-3.5 rounded-xl transition-all text-xs border" style="background-color: var(--item-bg); border-color: var(--border);">
-                        <span style="color: var(--text-sub);">ایمیل سازمانی:</span>
-                        <span class="font-mono font-bold" style="color: var(--text-main);"><?= \App\Core\Helper::e($profile['email']) ?></span>
+                        <span style="color: var(--text-sub);"><?= \App\Core\Helper::e($translations['email'] ?? 'ایمیل سازمانی') ?>:</span>
+                        <span class="font-mono font-bold truncate max-w-[170px]" style="color: var(--text-main);"><?= \App\Core\Helper::e($profile['email']) ?></span>
                     </a>
                 <?php endif; ?>
 
-                <?php if (!empty($profile['address'])): ?>
-                    <div class="p-3.5 rounded-xl text-xs border space-y-1" style="background-color: var(--item-bg); border-color: var(--border);">
-                        <span style="color: var(--text-sub);">نشانی دفتر:</span>
-                        <p class="font-medium" style="color: var(--text-main);"><?= \App\Core\Helper::e($profile['address']) ?></p>
-                    </div>
+                <?php if (!empty($profile['website'])): ?>
+                    <a href="<?= \App\Core\Helper::e($profile['website']) ?>" target="_blank" rel="noopener" class="flex items-center justify-between p-3.5 rounded-xl transition-all text-xs border" style="background-color: var(--item-bg); border-color: var(--border);">
+                        <span style="color: var(--text-sub);"><?= \App\Core\Helper::e($translations['website'] ?? 'وب‌سایت رسمی') ?>:</span>
+                        <span class="font-mono font-bold truncate max-w-[170px]" style="color: var(--text-main);"><?= \App\Core\Helper::e($profile['website']) ?></span>
+                    </a>
                 <?php endif; ?>
             </div>
 
-            <!-- QR Code -->
+            <!-- Working Hours Partial -->
+            <?php require __DIR__ . '/../partials/working_hours.php'; ?>
+
+            <!-- Location & Navigation Partial -->
+            <?php require __DIR__ . '/../partials/location_map.php'; ?>
+
+            <!-- Iranian & International Socials Partial -->
+            <?php require __DIR__ . '/../partials/social_links.php'; ?>
+
+            <!-- QR Code Section -->
             <div class="pt-2 text-center space-y-3">
                 <div class="w-36 h-36 mx-auto p-2.5 bg-white rounded-xl shadow-md border border-slate-200">
                     <img src="<?= $qrCodeDataUri ?>" alt="QR" class="w-full h-full object-contain">
                 </div>
-                <span class="text-[10px] font-mono" style="color: var(--text-sub);">شناسه دیجیتال رسمی CIPCard</span>
+                <span class="text-[10px] font-mono" style="color: var(--text-sub);"><?= \App\Core\Helper::e($profileUrl) ?></span>
             </div>
         </div>
 
     </div>
 
-    <footer class="text-center py-6 text-xs space-y-1" style="color: var(--text-sub);">
-        <p class="font-bold" style="color: var(--text-main);">CIPCard Corporate NFC Systems</p>
-        <p class="text-[11px]">طراحی و توسعه توسط <a href="https://rastingroup.ir" target="_blank" rel="noopener" class="font-bold hover:underline" style="color: var(--badge);">تیم توسعه هوشمند راستین</a></p>
-    </footer>
+    <!-- CIPCard Brand Footer -->
+    <?php require __DIR__ . '/../partials/footer.php'; ?>
 
     <script>
-        function toggleCorporateTheme() {
+        function toggleCardTheme() {
             var curr = document.documentElement.getAttribute('data-theme') || '<?= $themeMode ?>';
             var next = curr === 'light' ? 'dark' : 'light';
             document.documentElement.setAttribute('data-theme', next);
             var txt = document.getElementById('theme-btn-text');
             var icon = document.getElementById('theme-btn-icon');
-            if (txt) txt.innerText = next === 'light' ? 'تم روشن' : 'تم تیره';
+            var isFa = '<?= $currentLang ?>' === 'fa';
+            if (txt) txt.innerText = next === 'light' ? (isFa ? 'تم روشن' : 'Light') : (isFa ? 'تم تیره' : 'Dark');
             if (icon) icon.setAttribute('data-lucide', next === 'light' ? 'sun' : 'moon');
             if (window.lucide) lucide.createIcons();
         }
