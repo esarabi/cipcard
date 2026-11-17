@@ -31,10 +31,10 @@
 
                 <!-- CTA Action Buttons -->
                 <div id="hero-cta-box" class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 pt-2">
-                    <button onclick="openFastOrderModal('default_cip')" class="w-full sm:w-auto px-8 py-4 rounded-2xl bg-gradient-to-r from-amber-500 via-amber-400 to-amber-500 text-slate-950 font-extrabold text-base shadow-xl shadow-amber-500/25 hover:brightness-105 active:scale-95 transition-all flex items-center justify-center gap-3">
+                    <a href="#pricing" class="w-full sm:w-auto px-8 py-4 rounded-2xl bg-gradient-to-r from-amber-500 via-amber-400 to-amber-500 text-slate-950 font-extrabold text-base shadow-xl shadow-amber-500/25 hover:brightness-105 active:scale-95 transition-all flex items-center justify-center gap-3">
                         <i data-lucide="sparkles" class="w-5 h-5"></i>
                         <span>سفارش کارت هوشمند</span>
-                    </button>
+                    </a>
                     
                     <a href="#templates" class="w-full sm:w-auto px-7 py-4 rounded-2xl bg-white border border-slate-300 text-slate-800 font-bold text-base hover:border-amber-500 hover:text-amber-700 shadow-sm hover:shadow-md transition-all flex items-center justify-center gap-2">
                         <i data-lucide="eye" class="w-5 h-5 text-amber-600"></i>
