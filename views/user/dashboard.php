@@ -34,10 +34,14 @@
                 </div>
             </div>
 
-            <div class="flex items-center gap-4">
+            <div class="flex flex-col items-center gap-2">
                 <div class="w-28 h-28 p-2 bg-white rounded-2xl shadow-lg flex items-center justify-center">
                     <img src="<?= $qrCodeDataUri ?>" alt="QR Code" class="w-full h-full object-contain">
                 </div>
+                <a href="<?= \App\Core\Helper::url('qr/@' . (!empty($profile['slug']) ? $profile['slug'] : $profile['mobile'])) ?>" download="cipcard-qrcode.png" target="_blank" class="text-[11px] font-bold text-brand-gold hover:underline flex items-center gap-1">
+                    <i data-lucide="download" class="w-3.5 h-3.5"></i>
+                    <span>دانلود تصویر QR</span>
+                </a>
             </div>
         </div>
     <?php else: ?>

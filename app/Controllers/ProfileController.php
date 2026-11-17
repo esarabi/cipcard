@@ -75,7 +75,7 @@ class ProfileController
     }
 
     /**
-     * Direct SVG QR Code Endpoint
+     * Direct QR Code Image Endpoint (PNG)
      */
     public function qr(string $mobile): void
     {
@@ -89,6 +89,6 @@ class ProfileController
 
         $profileIdentifier = !empty($profile['slug']) ? $profile['slug'] : $profile['mobile'];
         $profileUrl = Helper::url('@' . $profileIdentifier);
-        QrCodeService::renderSvgResponse($profileUrl, 320);
+        QrCodeService::renderPngResponse($profileUrl, 360);
     }
 }
