@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Core\Database;
+use App\Core\Helper;
 use PDO;
 
 class User
@@ -39,6 +40,25 @@ class User
         $db = Database::getConnection();
         $stmt = $db->prepare("SELECT * FROM users WHERE mobile = :mobile LIMIT 1");
         $stmt->execute([':mobile' => $mobile]);
+        $user = $stmt->fetch();
+        return $user ?: null;
+    }
+
+    public static function findByUsernameOrMobile(string $identifier): ?array
+    {
+        $db = Database::getConnection();
+        $clean = trim($identifier);
+
+        // 1. Normalized Iranian mobile
+        $normalizedMobile = Helper::normalizeMobile($clean);
+        if ($normalizedMobile) {
+            $user = self::findByMobile($normalizedMobile);
+            if ($user) return $user;
+        }
+
+        // 2. Direct mobile or username match
+        $stmt = $db->prepare("SELECT * FROM users WHERE mobile = :id1 OR (role = 'admin' AND :id2 = 'admin') LIMIT 1");
+        $stmt->execute([':id1' => $clean, ':id2' => strtolower($clean)]);
         $user = $stmt->fetch();
         return $user ?: null;
     }

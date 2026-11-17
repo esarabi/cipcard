@@ -193,8 +193,7 @@ class AuthController
         $rawUsername = trim($_POST['username'] ?? '');
         $password = trim($_POST['password'] ?? '');
 
-        $mobile = Helper::normalizeMobile($rawUsername);
-        $user = $mobile ? User::findByMobile($mobile) : null;
+        $user = User::findByUsernameOrMobile($rawUsername);
 
         if (!$user || $user['role'] !== 'admin' || empty($user['password']) || !password_verify($password, $user['password'])) {
             Session::setFlash('error', 'نام کاربری یا رمز عبور اشتباه است.');
