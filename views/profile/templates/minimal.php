@@ -179,6 +179,7 @@ $social = $profile['social_links'] ?? [];
             <i data-lucide="nfc" class="w-4 h-4" style="color: var(--primary);"></i>
             <span>قدرت گرفته از کارت ویزیت هوشمند <strong class="text-white">CIPCard</strong></span>
         </a>
+        <p class="text-[11px] text-gray-400">Designed for VIP & Business Leaders by <a href="https://rastin.ir" target="_blank" rel="noopener" class="text-amber-400 hover:underline font-bold">rastin.ir</a></p>
     </footer>
 
     <script>lucide.createIcons();</script>

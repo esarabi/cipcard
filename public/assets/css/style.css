@@ -1,15 +1,16 @@
 /* ==========================================================================
-   CIPCard Platform - Custom Master Styling & Parallax Effects
+   CIPCard Platform - Custom Master Styling & Parallax Effects (Light Theme)
    ========================================================================== */
 
 :root {
     --gold: #D4AF37;
     --gold-light: #F3E5AB;
-    --gold-dark: #AA820A;
-    --dark: #0A0A0C;
-    --darker: #050507;
-    --surface: #121217;
-    --border: #2A2A36;
+    --gold-dark: #B8860B;
+    --primary: #0F172A;
+    --secondary: #334155;
+    --surface: #FFFFFF;
+    --bg-light: #FAFAFA;
+    --border: #E2E8F0;
 }
 
 /* Smooth Scrolling */
@@ -17,16 +18,16 @@ html {
     scroll-behavior: smooth;
 }
 
-/* Custom Scrollbar */
+/* Custom Scrollbar for Light Theme */
 ::-webkit-scrollbar {
     width: 8px;
     height: 8px;
 }
 ::-webkit-scrollbar-track {
-    background: #0A0A0C;
+    background: #F1F5F9;
 }
 ::-webkit-scrollbar-thumb {
-    background: #2A2A36;
+    background: #CBD5E1;
     border-radius: 4px;
 }
 ::-webkit-scrollbar-thumb:hover {
@@ -47,16 +48,16 @@ html {
     backface-visibility: hidden;
 }
 
-/* Luxury Glow Effects */
+/* Luxury Glow & Shadow Effects */
 .gold-glow {
-    box-shadow: 0 0 35px -5px rgba(212, 175, 55, 0.25);
+    box-shadow: 0 10px 40px -10px rgba(184, 134, 11, 0.3), 0 20px 25px -5px rgba(0, 0, 0, 0.1);
 }
 .gold-glow-lg {
-    box-shadow: 0 0 60px -10px rgba(212, 175, 55, 0.35);
+    box-shadow: 0 15px 50px -10px rgba(184, 134, 11, 0.4), 0 25px 30px -5px rgba(0, 0, 0, 0.15);
 }
 
 .gold-gradient-text {
-    background: linear-gradient(135deg, #F3E5AB 0%, #D4AF37 50%, #AA820A 100%);
+    background: linear-gradient(135deg, #B8860B 0%, #D4AF37 50%, #996515 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
 }
@@ -79,17 +80,17 @@ html {
 .nfc-wave {
     position: absolute;
     border-radius: 9999px;
-    border: 2px solid rgba(212, 175, 55, 0.6);
+    border: 2px solid rgba(212, 175, 55, 0.7);
     animation: nfcPulse 2.5s infinite ease-out;
 }
 .nfc-wave-delayed {
     animation-delay: 1.25s;
 }
 
-/* Frosted Glassmorphism */
+/* Frosted Glassmorphism for Light Theme */
 .glass-panel {
-    background: rgba(18, 18, 23, 0.7);
+    background: rgba(255, 255, 255, 0.85);
     backdrop-filter: blur(16px);
     -webkit-backdrop-filter: blur(16px);
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(226, 232, 240, 0.8);
 }

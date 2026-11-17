@@ -127,10 +127,11 @@ $social = $profile['social_links'] ?? [];
 
     </div>
 
-    <footer class="text-center py-6 text-xs text-gray-400 relative z-10">
+    <footer class="text-center py-6 text-xs text-gray-400 relative z-10 space-y-1">
         <a href="<?= \App\Core\Helper::url() ?>" target="_blank" class="hover:text-white transition-colors">
             CIPCard Smart NFC Experience
         </a>
+        <p class="text-[11px] text-gray-400">Designed for VIP & Business Leaders by <a href="https://rastin.ir" target="_blank" rel="noopener" class="text-cyan-400 hover:underline font-bold">rastin.ir</a></p>
     </footer>
     <script>lucide.createIcons();</script>
 </body>

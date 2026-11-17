@@ -76,11 +76,17 @@ class Setting
         $db = Database::getConnection();
         $db->beginTransaction();
         try {
-            $stmt = $db->prepare("UPDATE settings SET value = :val WHERE key_name = :key");
+            $stmt = $db->prepare("
+                INSERT INTO settings (key_name, value, title, group_name)
+                VALUES (:key, :val, :title, 'general')
+                ON DUPLICATE KEY UPDATE value = :val2
+            ");
             foreach ($settings as $key => $val) {
                 $stmt->execute([
-                    ':val' => (string)$val,
-                    ':key' => $key
+                    ':key'   => $key,
+                    ':val'   => (string)$val,
+                    ':title' => $key,
+                    ':val2'  => (string)$val
                 ]);
                 self::$cache[$key] = (string)$val;
             }

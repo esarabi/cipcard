@@ -66,11 +66,15 @@ class Helper
     }
 
     /**
-     * Generate relative or absolute application URL
+     * Generate relative or absolute application URL (Always HTTPS)
      */
     public static function url(string $path = ''): string
     {
         $baseUrl = rtrim(Config::APP_URL, '/');
+        // Ensure HTTPS protocol
+        if (str_starts_with($baseUrl, 'http://')) {
+            $baseUrl = 'https://' . substr($baseUrl, 7);
+        }
         $path = ltrim($path, '/');
         return $path === '' ? $baseUrl : $baseUrl . '/' . $path;
     }

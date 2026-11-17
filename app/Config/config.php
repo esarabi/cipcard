@@ -10,7 +10,7 @@ namespace App\Config;
 class Config
 {
     public const APP_NAME = 'CIPCard';
-    public const APP_URL = 'http://cipcard.ir'; // In production: https://cipcard.ir
+    public const APP_URL = 'https://cipcard.ir';
     public const APP_VERSION = '1.0.0';
     public const TIMEZONE = 'Asia/Tehran';
     public const DEFAULT_LOCALE = 'fa_IR';

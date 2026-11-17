@@ -38,7 +38,8 @@ class ProfileController
         Profile::incrementViews((int)$profile['id']);
 
         // Generate profile URL & QR code Data URI
-        $profileUrl = Helper::url('@' . $profile['mobile']);
+        $profileIdentifier = !empty($profile['slug']) ? $profile['slug'] : $profile['mobile'];
+        $profileUrl = Helper::url('@' . $profileIdentifier);
         $qrCodeDataUri = QrCodeService::getDataUri($profileUrl, 260);
 
         $template = $profile['template_id'] ?? 'minimal';
@@ -86,7 +87,8 @@ class ProfileController
             exit;
         }
 
-        $profileUrl = Helper::url('@' . $profile['mobile']);
+        $profileIdentifier = !empty($profile['slug']) ? $profile['slug'] : $profile['mobile'];
+        $profileUrl = Helper::url('@' . $profileIdentifier);
         QrCodeService::renderSvgResponse($profileUrl, 320);
     }
 }

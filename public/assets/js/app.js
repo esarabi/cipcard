@@ -5,13 +5,20 @@
 let otpTimerInterval = null;
 let currentMobileNumber = '';
 
-function openFastOrderModal(cardType = 'default_cip') {
+function openFastOrderModal(cardType = 'default_cip', templateId = null) {
     const modal = document.getElementById('fast-order-modal');
     if (!modal) return;
 
     const cardTypeInput = document.getElementById('modal-card-type');
     if (cardTypeInput) {
         cardTypeInput.value = cardType;
+    }
+
+    if (templateId) {
+        const templateSelect = document.getElementById('modal-template-select');
+        if (templateSelect) {
+            templateSelect.value = templateId;
+        }
     }
 
     // Update active tab visual
@@ -38,11 +45,11 @@ function selectCardType(type) {
     if (cardTypeInput) cardTypeInput.value = type;
 
     if (type === 'default_cip') {
-        if (defaultBtn) defaultBtn.className = "flex-1 py-3 px-4 rounded-xl text-center text-sm font-semibold border-2 border-brand-gold bg-brand-gold/10 text-brand-gold transition-all";
-        if (customBtn) customBtn.className = "flex-1 py-3 px-4 rounded-xl text-center text-sm font-medium border border-brand-border bg-brand-surface text-gray-400 hover:text-white transition-all";
+        if (defaultBtn) defaultBtn.className = "flex-1 py-3 px-4 rounded-xl text-center text-sm font-bold border-2 border-amber-500 bg-amber-50 text-amber-800 transition-all";
+        if (customBtn) customBtn.className = "flex-1 py-3 px-4 rounded-xl text-center text-sm font-semibold border border-slate-300 bg-slate-50 text-slate-600 hover:text-slate-900 transition-all";
     } else {
-        if (customBtn) customBtn.className = "flex-1 py-3 px-4 rounded-xl text-center text-sm font-semibold border-2 border-brand-gold bg-brand-gold/10 text-brand-gold transition-all";
-        if (defaultBtn) defaultBtn.className = "flex-1 py-3 px-4 rounded-xl text-center text-sm font-medium border border-brand-border bg-brand-surface text-gray-400 hover:text-white transition-all";
+        if (customBtn) customBtn.className = "flex-1 py-3 px-4 rounded-xl text-center text-sm font-bold border-2 border-amber-500 bg-amber-50 text-amber-800 transition-all";
+        if (defaultBtn) defaultBtn.className = "flex-1 py-3 px-4 rounded-xl text-center text-sm font-semibold border border-slate-300 bg-slate-50 text-slate-600 hover:text-slate-900 transition-all";
     }
 }
 

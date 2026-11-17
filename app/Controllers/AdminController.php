@@ -173,14 +173,22 @@ class AdminController
         Csrf::verifyOrAbort();
 
         $allowedKeys = [
+            'site_title',
+            'site_description',
+            'company_name',
+            'support_phone',
+            'support_email',
+            'support_address',
+            'branding_note',
+            'social_instagram',
+            'social_telegram',
+            'social_whatsapp',
             'price_default_cip',
             'price_custom_design',
             'zarinpal_merchant_id',
             'zarinpal_sandbox',
             'sms_url_pattern',
-            'sms_otp_template',
-            'site_title',
-            'support_phone'
+            'sms_otp_template'
         ];
 
         $updates = [];

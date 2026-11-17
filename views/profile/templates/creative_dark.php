@@ -109,8 +109,9 @@ $social = $profile['social_links'] ?? [];
 
     </div>
 
-    <footer class="text-center py-6 text-[11px] font-mono text-gray-600">
-        POWERED BY CIPCARD.IR
+    <footer class="text-center py-6 text-[11px] font-mono text-gray-500 space-y-1">
+        <p>POWERED BY CIPCARD.IR</p>
+        <p>Designed for VIP & Business Leaders by <a href="https://rastin.ir" target="_blank" rel="noopener" class="text-purple-400 hover:underline">rastin.ir</a></p>
     </footer>
     <script>lucide.createIcons();</script>
 </body>

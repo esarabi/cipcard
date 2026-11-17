@@ -10,6 +10,11 @@ DirectoryIndex index.php public/index.php
     RewriteEngine On
     RewriteBase /
 
+    # 0. Enforce HTTPS
+    RewriteCond %{HTTPS} off
+    RewriteCond %{HTTP:X-Forwarded-Proto} !https
+    RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
     # 1. Block direct access to hidden files and sensitive directories
     RewriteRule ^(\.git|\.env|composer\.(json|lock)|database|app|views|storage)/ - [F,L,NC]
     RewriteRule \.(sql|log|ini|sh|bak)$ - [F,L,NC]
@@ -17,8 +22,8 @@ DirectoryIndex index.php public/index.php
     # 2. Direct access to public assets & uploads
     RewriteRule ^(assets|uploads)/(.*)$ public/$1/$2 [L,NC]
 
-    # 3. Profile Short URL Routing: cipcard.ir/@09123456789 or @9123456789
-    RewriteRule ^@0?(9[0-9]{9})/?$ public/index.php?route=profile&mobile=0$1 [QSA,L]
+    # 3. Profile Short URL Routing: cipcard.ir/@09123456789 or @slug
+    RewriteRule ^@([^/]+)/?$ public/index.php?route=profile&mobile=$1 [QSA,L]
 
     # 4. Route all other requests to public/index.php
     RewriteCond %{REQUEST_URI} !^/public/

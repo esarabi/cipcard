@@ -121,8 +121,9 @@ $social = $profile['social_links'] ?? [];
 
     </div>
 
-    <footer class="text-center py-6 text-xs text-gray-500">
-        CIPCard 3D Interactive Card
+    <footer class="text-center py-6 text-xs text-gray-500 space-y-1">
+        <p>CIPCard 3D Interactive Card</p>
+        <p class="text-[11px] text-gray-400">Designed for VIP & Business Leaders by <a href="https://rastin.ir" target="_blank" rel="noopener" class="text-emerald-400 hover:underline font-bold">rastin.ir</a></p>
     </footer>
 
     <script>
