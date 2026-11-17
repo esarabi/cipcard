@@ -195,6 +195,41 @@
                 <?php endforeach; ?>
             </div>
 
+            <!-- Theme Mode Selector (Light vs Dark) -->
+            <div class="pt-4 border-t border-brand-border/40 space-y-3">
+                <label class="block text-xs font-bold text-gray-300">انتخاب حالت تم کارت ویزیت (روشن / تیره):</label>
+                <?php $currentMode = $profile['theme_mode'] ?? 'light'; ?>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <label class="p-4 rounded-2xl border cursor-pointer flex items-center justify-between transition-all <?= $currentMode === 'light' ? 'bg-amber-500/10 border-amber-400' : 'bg-brand-darker border-brand-border' ?>">
+                        <div class="flex items-center gap-3">
+                            <input type="radio" name="theme_mode" value="light" <?= $currentMode === 'light' ? 'checked' : '' ?>>
+                            <div>
+                                <span class="block text-xs font-bold text-white flex items-center gap-1.5">
+                                    <i data-lucide="sun" class="w-4 h-4 text-amber-500"></i>
+                                    <span>تم روشن (Light Mode)</span>
+                                </span>
+                                <span class="text-[11px] text-gray-400">پس‌زمینه سفید، تمیز و فوق‌العاده خوانا</span>
+                            </div>
+                        </div>
+                        <span class="text-[10px] px-2.5 py-1 rounded-full bg-amber-100 text-amber-800 font-bold">پیشنهادی</span>
+                    </label>
+
+                    <label class="p-4 rounded-2xl border cursor-pointer flex items-center justify-between transition-all <?= $currentMode === 'dark' ? 'bg-amber-500/10 border-amber-400' : 'bg-brand-darker border-brand-border' ?>">
+                        <div class="flex items-center gap-3">
+                            <input type="radio" name="theme_mode" value="dark" <?= $currentMode === 'dark' ? 'checked' : '' ?>>
+                            <div>
+                                <span class="block text-xs font-bold text-white flex items-center gap-1.5">
+                                    <i data-lucide="moon" class="w-4 h-4 text-sky-400"></i>
+                                    <span>تم تیره (Dark Mode)</span>
+                                </span>
+                                <span class="text-[11px] text-gray-400">مشکی متالیک لوکس و مدرن</span>
+                            </div>
+                        </div>
+                        <span class="text-[10px] px-2.5 py-1 rounded-full bg-slate-800 text-gray-300 font-mono">VIP Dark</span>
+                    </label>
+                </div>
+            </div>
+
             <!-- Color Palette Selector -->
             <div class="pt-2">
                 <label class="block text-xs font-bold text-gray-300 mb-3">انتخاب پالت رنگی قالب:</label>

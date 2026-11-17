@@ -15,11 +15,11 @@ class Profile
             INSERT INTO profiles (
                 user_id, slug, display_name, job_title, company, bio,
                 avatar_url, cover_url, email, phone_work, phone_mobile,
-                website, address, social_links, template_id, theme_color, is_active
+                website, address, social_links, template_id, theme_color, theme_mode, is_active
             ) VALUES (
                 :user_id, :slug, :display_name, :job_title, :company, :bio,
                 :avatar_url, :cover_url, :email, :phone_work, :phone_mobile,
-                :website, :address, :social_links, :template_id, :theme_color, :is_active
+                :website, :address, :social_links, :template_id, :theme_color, :theme_mode, :is_active
             )
         ");
 
@@ -44,6 +44,7 @@ class Profile
             ':social_links' => $social,
             ':template_id'  => $data['template_id'] ?? 'minimal',
             ':theme_color'  => $data['theme_color'] ?? 'gold_black',
+            ':theme_mode'   => $data['theme_mode'] ?? 'light',
             ':is_active'    => $data['is_active'] ?? 0
         ]);
 

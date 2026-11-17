@@ -71,6 +71,7 @@ class DashboardController
         $address     = trim($_POST['address'] ?? '');
         $templateId  = trim($_POST['template_id'] ?? 'minimal');
         $themeColor  = trim($_POST['theme_color'] ?? 'gold_black');
+        $themeMode   = trim($_POST['theme_mode'] ?? 'light');
 
         $socialLinks = [
             'instagram' => trim($_POST['instagram'] ?? ''),
@@ -98,6 +99,7 @@ class DashboardController
             'address'      => $address,
             'template_id'  => $templateId,
             'theme_color'  => $themeColor,
+            'theme_mode'   => in_array($themeMode, ['light', 'dark'], true) ? $themeMode : 'light',
             'social_links' => $socialLinks
         ];
 
@@ -130,13 +132,15 @@ class DashboardController
 
         $templateId = trim($_POST['template_id'] ?? 'minimal');
         $themeColor = trim($_POST['theme_color'] ?? 'gold_black');
+        $themeMode  = trim($_POST['theme_mode'] ?? 'light');
 
         Profile::updateByUserId($this->userId, [
             'template_id' => $templateId,
-            'theme_color' => $themeColor
+            'theme_color' => $themeColor,
+            'theme_mode'  => in_array($themeMode, ['light', 'dark'], true) ? $themeMode : 'light'
         ]);
 
-        Session::setFlash('success', 'قالب و پالت رنگی با موفقیت تغییر یافت.');
+        Session::setFlash('success', 'قالب، پالت رنگی و تم نمایش (روشن/تاریک) با موفقیت به‌روزرسانی شد.');
         Helper::redirect('dashboard');
     }
 

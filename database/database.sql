@@ -53,6 +53,7 @@ CREATE TABLE `profiles` (
   `social_links` JSON NULL COMMENT 'JSON storage for Instagram, WhatsApp, Telegram, LinkedIn, etc.',
   `template_id` ENUM('minimal', 'glassmorphism', 'corporate', 'creative_dark', 'modern_card') NOT NULL DEFAULT 'minimal' COMMENT '1 of 5 selected templates',
   `theme_color` VARCHAR(50) NOT NULL DEFAULT 'gold_black' COMMENT 'Palette: gold_black, blue_white, emerald_gray',
+  `theme_mode` ENUM('light', 'dark') NOT NULL DEFAULT 'light' COMMENT 'Display mode: light vs dark theme',
   `is_active` TINYINT(1) NOT NULL DEFAULT 0 COMMENT '0: Pending activation (unpaid), 1: Active profile',
   `view_count` INT UNSIGNED NOT NULL DEFAULT 0 COMMENT 'Total profile visit count',
   `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
