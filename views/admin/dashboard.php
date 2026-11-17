@@ -115,7 +115,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const labels = chartRaw.map(item => item.date_day);
     const revenues = chartRaw.map(item => item.total_revenue);
 
-    new Chart(ctx, {
+    const isLight = document.documentElement.getAttribute('data-theme') === 'light';
+
+    window.salesChartInstance = new Chart(ctx, {
         type: 'line',
         data: {
             labels: labels.length ? labels : ['امروز'],
@@ -123,10 +125,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 label: 'درآمد روزانه (تومان)',
                 data: revenues.length ? revenues : [0],
                 borderColor: '#D4AF37',
-                backgroundColor: 'rgba(212, 175, 55, 0.1)',
+                backgroundColor: 'rgba(212, 175, 55, 0.12)',
                 fill: true,
                 tension: 0.35,
-                borderWidth: 2,
+                borderWidth: 2.5,
                 pointBackgroundColor: '#D4AF37',
                 pointRadius: 4
             }]
@@ -136,17 +138,17 @@ document.addEventListener('DOMContentLoaded', () => {
             maintainAspectRatio: false,
             plugins: {
                 legend: {
-                    labels: { color: '#9CA3AF', font: { family: 'Vazirmatn' } }
+                    labels: { color: isLight ? '#334155' : '#9CA3AF', font: { family: 'Vazirmatn' } }
                 }
             },
             scales: {
                 x: {
-                    ticks: { color: '#6B7280', font: { family: 'Vazirmatn', size: 10 } },
-                    grid: { color: 'rgba(255, 255, 255, 0.04)' }
+                    ticks: { color: isLight ? '#475569' : '#6B7280', font: { family: 'Vazirmatn', size: 10 } },
+                    grid: { color: isLight ? 'rgba(0, 0, 0, 0.05)' : 'rgba(255, 255, 255, 0.04)' }
                 },
                 y: {
-                    ticks: { color: '#6B7280', font: { family: 'Vazirmatn', size: 10 } },
-                    grid: { color: 'rgba(255, 255, 255, 0.04)' }
+                    ticks: { color: isLight ? '#475569' : '#6B7280', font: { family: 'Vazirmatn', size: 10 } },
+                    grid: { color: isLight ? 'rgba(0, 0, 0, 0.05)' : 'rgba(255, 255, 255, 0.04)' }
                 }
             }
         }
