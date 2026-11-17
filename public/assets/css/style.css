@@ -94,3 +94,21 @@ html {
     -webkit-backdrop-filter: blur(16px);
     border: 1px solid rgba(226, 232, 240, 0.8);
 }
+
+/* Persian Typography: Optimal Line Height for Titles & Headings */
+h1, h2, h3, h4, h5, h6,
+.h1, .h2, .h3, .h4,
+[class*="text-xl"],
+[class*="text-2xl"],
+[class*="text-3xl"],
+[class*="text-4xl"],
+[class*="text-5xl"],
+[class*="text-6xl"] {
+    line-height: 1.55 !important;
+    letter-spacing: normal !important;
+}
+
+#hero-headline {
+    line-height: 1.45 !important;
+}
+

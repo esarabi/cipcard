@@ -19,7 +19,7 @@
                 </div>
 
                 <!-- Main Heading -->
-                <h1 id="hero-headline" class="text-4xl sm:text-6xl font-black text-slate-900 leading-tight tracking-tight">
+                <h1 id="hero-headline" class="text-4xl sm:text-6xl font-black text-slate-900 leading-[1.4] sm:leading-[1.45] tracking-normal">
                     کارت ویزیت هوشمند <br>
                     <span class="bg-gradient-to-r from-amber-600 via-amber-500 to-yellow-600 bg-clip-text text-transparent">CIPCard؛</span> لمس اعتبار شما
                 </h1>
@@ -136,7 +136,7 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center max-w-3xl mx-auto space-y-3 mb-16">
             <span class="text-xs font-bold text-amber-600 uppercase tracking-widest">سریع، مدرن و استاندارد</span>
-            <h2 class="text-3xl sm:text-4xl font-extrabold text-slate-900">فقط ۳ مرحله تا دریافت کارت ویزیت هوشمند</h2>
+            <h2 class="text-3xl sm:text-4xl font-extrabold text-slate-900 leading-[1.5] sm:leading-[1.55]">فقط ۳ مرحله تا دریافت کارت ویزیت هوشمند</h2>
             <p class="text-sm text-slate-500">بدون معطلی اطلاعات خود را ثبت کنید و کارت هوشمند اختصاصی خود را تحویل بگیرید.</p>
         </div>
 
@@ -146,7 +146,7 @@
                 <div class="w-12 h-12 rounded-2xl bg-amber-100 border border-amber-300 flex items-center justify-center font-black font-mono text-xl text-amber-700">
                     01
                 </div>
-                <h3 class="text-xl font-bold text-slate-900 group-hover:text-amber-700 transition-colors">۱. ثبت اطلاعات و انتخاب قالب</h3>
+                <h3 class="text-xl font-bold text-slate-900 group-hover:text-amber-700 transition-colors leading-[1.5]">۱. ثبت اطلاعات و انتخاب قالب</h3>
                 <p class="text-sm text-slate-600 leading-relaxed">
                     نام، تخصص و شماره موبایل خود را وارد کرده، بین ۵ قالب اختصاصی و پالت‌های رنگی جذاب انتخاب کنید و نوع کارت (پیش‌فرض یا طرح اختصاصی) را تعیین نمایید.
                 </p>
@@ -156,7 +156,7 @@
                 <div class="w-12 h-12 rounded-2xl bg-amber-100 border border-amber-300 flex items-center justify-center font-black font-mono text-xl text-amber-700">
                     02
                 </div>
-                <h3 class="text-xl font-bold text-slate-900 group-hover:text-amber-700 transition-colors">۲. تایید پیامکی (OTP) و پرداخت امن</h3>
+                <h3 class="text-xl font-bold text-slate-900 group-hover:text-amber-700 transition-colors leading-[1.5]">۲. تایید پیامکی (OTP) و پرداخت امن</h3>
                 <p class="text-sm text-slate-600 leading-relaxed">
                     کد یکبار مصرف ارسالی به شماره موبایل خود را تایید کنید؛ سپس حساب کاربری‌تان ایجاد شده و برای پرداخت به درگاه امن شاپرکی زرین‌پال متصل می‌شوید.
                 </p>
@@ -166,7 +166,7 @@
                 <div class="w-12 h-12 rounded-2xl bg-amber-100 border border-amber-300 flex items-center justify-center font-black font-mono text-xl text-amber-700">
                     03
                 </div>
-                <h3 class="text-xl font-bold text-slate-900 group-hover:text-amber-700 transition-colors">۳. چاپ اختصاصی و ارسال به سراسر کشور</h3>
+                <h3 class="text-xl font-bold text-slate-900 group-hover:text-amber-700 transition-colors leading-[1.5]">۳. چاپ اختصاصی و ارسال به سراسر کشور</h3>
                 <p class="text-sm text-slate-600 leading-relaxed">
                     کارت ویزیت شما با کیفیت چاپ مات/UV تولید شده، چیپ NFC آن با آدرس یکتای <code class="text-amber-700 font-mono">cipcard.ir/@موبایل</code> برنامه‌ریزی و با پست پیشتاز ارسال می‌شود.
                 </p>
@@ -186,7 +186,7 @@
             <span class="px-3.5 py-1.5 rounded-full bg-amber-100 text-amber-800 text-xs font-bold border border-amber-300 inline-block">
                 تنوع طراحی و هویت بصری
             </span>
-            <h2 class="text-3xl sm:text-4xl font-extrabold text-slate-900">۵ قالب کاملاً اختصاصی با نمونه‌های زنده</h2>
+            <h2 class="text-3xl sm:text-4xl font-extrabold text-slate-900 leading-[1.5] sm:leading-[1.55]">۵ قالب کاملاً اختصاصی با نمونه‌های زنده</h2>
             <p class="text-sm text-slate-600">
                 می‌توانید پیش‌نمایش واقعی هر ۵ قالب را آنلاین مشاهده کرده یا قالب دلخواه خود را برای سفارش انتخاب فرمایید:
             </p>
@@ -386,7 +386,7 @@
         
         <div class="text-center max-w-2xl mx-auto space-y-3 mb-16">
             <span class="text-xs font-bold text-amber-600 uppercase tracking-widest">تعرفه‌ها و پلن‌های سفارش</span>
-            <h2 class="text-3xl sm:text-4xl font-extrabold text-slate-900">پلن متناسب با سطح پرستیژ خود را انتخاب کنید</h2>
+            <h2 class="text-3xl sm:text-4xl font-extrabold text-slate-900 leading-[1.5] sm:leading-[1.55]">پلن متناسب با سطح پرستیژ خود را انتخاب کنید</h2>
             <p class="text-sm text-slate-500">تمامی پلن‌ها شامل دسترسی مادام‌العمر به پنل کاربری بدون هرگونه اشتراک ماهانه است.</p>
         </div>
 
@@ -401,7 +401,7 @@
                     </div>
                     
                     <div>
-                        <h3 class="text-2xl font-black text-slate-900">طرح پیش‌فرض CIP</h3>
+                        <h3 class="text-2xl font-black text-slate-900 leading-[1.5]">طرح پیش‌فرض CIP</h3>
                         <p class="text-xs text-slate-500 mt-1">کارت مشکی متالیک مات با حک طلایی لوگوی رسمی CIPCard؛ آماده استفاده فوری.</p>
                     </div>
                     
@@ -438,7 +438,7 @@
                     </div>
                     
                     <div>
-                        <h3 class="text-2xl font-black text-slate-900">طرح اختصاصی (Custom Design)</h3>
+                        <h3 class="text-2xl font-black text-slate-900 leading-[1.5]">طرح اختصاصی (Custom Design)</h3>
                         <p class="text-xs text-slate-500 mt-1">چاپ دو رو با رنگ سازمانی، هویت بصری و لوگوی شرکت شما روی متریال لوکس.</p>
                     </div>
                     
@@ -474,7 +474,7 @@
         
         <div class="text-center space-y-3">
             <span class="text-xs font-bold text-amber-600 uppercase tracking-widest">پاسخ به سوالات پرتکرار</span>
-            <h2 class="text-3xl font-extrabold text-slate-900">سوالات متداول مشتریان CIPCard</h2>
+            <h2 class="text-3xl font-extrabold text-slate-900 leading-[1.5]">سوالات متداول مشتریان CIPCard</h2>
         </div>
 
         <div class="space-y-4">
@@ -536,7 +536,7 @@
         <div id="step-order-form" class="space-y-6">
             <div>
                 <span class="text-xs font-bold text-amber-600">مرحله ۱ از ۳</span>
-                <h3 class="text-2xl font-black text-slate-900 mt-1">ثبت سفارش سریع کارت هوشمند</h3>
+                <h3 class="text-2xl font-black text-slate-900 mt-1 leading-[1.5]">ثبت سفارش سریع کارت هوشمند</h3>
                 <p class="text-xs text-slate-500 mt-1">مشخصات اولیه خود را وارد فرمایید تا پروفایل هوشمند شما ساخته شود.</p>
             </div>
 
@@ -602,7 +602,7 @@
         <div id="step-otp-form" class="hidden space-y-6">
             <div>
                 <span class="text-xs font-bold text-amber-600">مرحله ۲ از ۳</span>
-                <h3 class="text-2xl font-black text-slate-900 mt-1">تایید شماره موبایل</h3>
+                <h3 class="text-2xl font-black text-slate-900 mt-1 leading-[1.5]">تایید شماره موبایل</h3>
                 <p class="text-xs text-slate-500 mt-1">
                     کد تایید ارسال‌شده به شماره <span id="otp-mobile-display" class="font-mono font-bold text-amber-700"></span> را وارد کنید:
                 </p>

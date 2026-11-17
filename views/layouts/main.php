@@ -48,6 +48,16 @@
     
     <link rel="stylesheet" href="<?= \App\Core\Helper::asset('css/style.css') ?>">
     <meta name="csrf-token" content="<?= \App\Core\Csrf::getToken() ?>">
+    <style>
+        /* Persian Typography Standards: Generous Line Spacing for Headings */
+        h1, h2, h3, h4, h5, h6 {
+            line-height: 1.55 !important;
+            letter-spacing: normal !important;
+        }
+        #hero-headline {
+            line-height: 1.45 !important;
+        }
+    </style>
 </head>
 <body class="bg-[#FAFAFA] text-slate-800 font-sans antialiased selection:bg-amber-100 selection:text-amber-900 min-h-screen flex flex-col justify-between overflow-x-hidden">
 
