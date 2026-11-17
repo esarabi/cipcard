@@ -12,7 +12,7 @@ error_reporting(E_ALL);
 ini_set('display_errors', '0');
 ini_set('log_errors', '1');
 
-// 1. PSR-4 Autoloader with Zero-Dependency Fallback
+// 1. PSR-4 Autoloader with Case-Insensitive Fallback for Linux Filesystems
 spl_autoload_register(function (string $class): void {
     $prefix = 'App\\';
     $baseDir = __DIR__ . '/../app/';
@@ -23,16 +23,36 @@ spl_autoload_register(function (string $class): void {
     }
 
     $relativeClass = substr($class, $len);
-    $file = $baseDir . str_replace('\\', '/', $relativeClass) . '.php';
+    $path = str_replace('\\', '/', $relativeClass) . '.php';
 
-    if (file_exists($file)) {
-        require $file;
+    // A. Standard PSR-4 Exact Path
+    if (file_exists($baseDir . $path)) {
+        require_once $baseDir . $path;
+        return;
+    }
+
+    // B. Lowercase Filename Fallback (e.g. Config/config.php)
+    $parts = explode('/', $path);
+    $filename = array_pop($parts);
+    $dirPart = count($parts) ? implode('/', $parts) . '/' : '';
+    
+    $lowerFile = $baseDir . $dirPart . strtolower($filename);
+    if (file_exists($lowerFile)) {
+        require_once $lowerFile;
+        return;
+    }
+
+    // C. Lowercase Directory Fallback (e.g. config/Config.php)
+    $lowerAll = $baseDir . strtolower($path);
+    if (file_exists($lowerAll)) {
+        require_once $lowerAll;
+        return;
     }
 });
 
 // Also include composer autoload if available
 if (file_exists(__DIR__ . '/../vendor/autoload.php')) {
-    require __DIR__ . '/../vendor/autoload.php';
+    require_once __DIR__ . '/../vendor/autoload.php';
 }
 
 use App\Config\Config;
