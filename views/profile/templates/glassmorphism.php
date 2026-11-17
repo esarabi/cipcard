@@ -177,7 +177,7 @@ $social = $profile['social_links'] ?? [];
         <a href="<?= \App\Core\Helper::url() ?>" target="_blank" class="hover:underline transition-colors font-bold" style="color: var(--text-main);">
             CIPCard Smart NFC Experience
         </a>
-        <p class="text-[11px]">Designed for VIP & Business Leaders by <a href="https://rastin.ir" target="_blank" rel="noopener" class="font-bold hover:underline" style="color: var(--primary);">rastin.ir</a></p>
+        <p class="text-[11px]">Designed for VIP & Business Leaders by <a href="https://rastingroup.ir" target="_blank" rel="noopener" class="font-bold hover:underline" style="color: var(--primary);">rastingroup.ir</a></p>
     </footer>
 
     <script>

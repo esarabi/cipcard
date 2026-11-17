@@ -252,8 +252,8 @@
                 <p>© <?= date('Y') ?> تمامی حقوق برای پلتفرم هوشمند CIPCard (cipcard.ir) محفوظ است.</p>
                 <div class="flex items-center gap-2 font-medium">
                     <span class="text-slate-700">Designed for VIP & Business Leaders by</span>
-                    <a href="https://rastin.ir" target="_blank" rel="noopener" class="text-amber-600 hover:text-amber-700 font-extrabold underline decoration-amber-400 decoration-2 underline-offset-4 transition-colors">
-                        rastin.ir
+                    <a href="https://rastingroup.ir" target="_blank" rel="noopener" class="text-amber-600 hover:text-amber-700 font-extrabold underline decoration-amber-400 decoration-2 underline-offset-4 transition-colors">
+                        rastingroup.ir
                     </a>
                 </div>
             </div>
