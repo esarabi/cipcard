@@ -17,6 +17,7 @@ class Config
 
     public const UPLOAD_DIR = __DIR__ . '/../../public/uploads/';
     public const UPLOAD_AVATARS = self::UPLOAD_DIR . 'avatars/';
+    public const UPLOAD_COVERS = self::UPLOAD_DIR . 'covers/';
     public const UPLOAD_DESIGNS = self::UPLOAD_DIR . 'designs/';
 
     // Allowed Upload File Types

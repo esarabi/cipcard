@@ -72,21 +72,63 @@
         <!-- 3. Template, Theme Mode & Color Palette Customizer -->
         <?php require __DIR__ . '/partials/template_picker.php'; ?>
 
-        <!-- 4. Avatar Upload Section -->
-        <div class="p-6 rounded-3xl bg-brand-surface border border-brand-border/60 flex flex-col sm:flex-row items-center gap-6">
-            <div class="w-24 h-24 rounded-full p-1 border-2 border-brand-gold overflow-hidden bg-black/40 flex-shrink-0">
-                <?php if (!empty($profile['avatar_url'])): ?>
-                    <img src="<?= \App\Core\Helper::url($profile['avatar_url']) ?>" alt="Avatar" class="w-full h-full object-cover rounded-full">
-                <?php else: ?>
-                    <div class="w-full h-full rounded-full flex items-center justify-center text-2xl font-bold text-brand-gold bg-brand-surface">
-                        <?= mb_substr($user['full_name'], 0, 1) ?>
-                    </div>
-                <?php endif; ?>
+        <!-- 4. Avatar & Banner Upload Section -->
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-6">
+            <!-- Avatar Upload (5 cols) -->
+            <div class="md:col-span-5 p-6 rounded-3xl bg-brand-surface border border-brand-border/60 flex flex-col items-center text-center justify-between gap-4">
+                <div class="space-y-1">
+                    <span class="block text-xs font-bold text-white">تصویر پروفایل / لوگو</span>
+                    <span class="block text-[11px] text-gray-400">نمایش در دایره هویت کارت ویزیت</span>
+                </div>
+                <div class="w-24 h-24 rounded-full p-1 border-2 border-brand-gold overflow-hidden bg-black/40 flex-shrink-0 shadow-lg">
+                    <?php if (!empty($profile['avatar_url'])): ?>
+                        <img src="<?= \App\Core\Helper::url($profile['avatar_url']) ?>" alt="Avatar" class="w-full h-full object-cover rounded-full">
+                    <?php else: ?>
+                        <div class="w-full h-full rounded-full flex items-center justify-center text-2xl font-bold text-brand-gold bg-brand-surface">
+                            <?= mb_substr($user['full_name'], 0, 1) ?>
+                        </div>
+                    <?php endif; ?>
+                </div>
+                <div class="w-full space-y-1.5">
+                    <input type="file" name="avatar" accept="image/*" class="w-full text-xs text-gray-400 file:mr-2 file:py-2 file:px-3 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-brand-surfaceHover file:text-brand-gold hover:file:bg-brand-gold hover:file:text-black cursor-pointer">
+                    <span class="block text-[10px] text-gray-500">حداکثر ۱۵ مگابایت (JPG, PNG, WEBP)</span>
+                </div>
             </div>
-            <div class="space-y-2 text-center sm:text-right">
-                <label class="block text-xs font-bold text-white">تصویر پروفایل شخصی یا لوگوی سازمان</label>
-                <input type="file" name="avatar" accept="image/*" class="text-xs text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-brand-surfaceHover file:text-brand-gold hover:file:bg-brand-gold hover:file:text-black cursor-pointer">
-                <span class="block text-[11px] text-gray-500">حداکثر حجم فایل: ۱۵ مگابایت (فرمت‌های JPG, PNG, WEBP)</span>
+
+            <!-- Banner / Cover Upload (7 cols) -->
+            <div class="md:col-span-7 p-6 rounded-3xl bg-brand-surface border border-brand-border/60 flex flex-col justify-between gap-4">
+                <div class="flex items-center justify-between">
+                    <div class="space-y-0.5">
+                        <span class="block text-xs font-bold text-white flex items-center gap-1.5">
+                            <i data-lucide="image" class="w-4 h-4 text-amber-500"></i>
+                            <span>تصویر بنر / کاور هدر پروفایل</span>
+                        </span>
+                        <span class="block text-[11px] text-gray-400">تصویر پس‌زمینه افقی در بالای کارت ویزیت</span>
+                    </div>
+                    <?php if (!empty($profile['cover_url'])): ?>
+                        <label class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-xl bg-red-500/10 border border-red-500/30 text-red-400 text-[11px] font-bold cursor-pointer hover:bg-red-500/20 transition-all">
+                            <input type="checkbox" name="remove_cover" value="1" class="rounded accent-red-500">
+                            <span>حذف بنر</span>
+                        </label>
+                    <?php endif; ?>
+                </div>
+
+                <!-- Banner Preview -->
+                <div class="w-full h-28 sm:h-32 rounded-2xl overflow-hidden border border-brand-border/60 relative bg-brand-darker flex items-center justify-center">
+                    <?php if (!empty($profile['cover_url'])): ?>
+                        <img src="<?= \App\Core\Helper::url($profile['cover_url']) ?>" alt="Banner Cover" class="w-full h-full object-cover">
+                    <?php else: ?>
+                        <div class="text-center p-3 text-gray-500 space-y-1">
+                            <i data-lucide="image-plus" class="w-7 h-7 mx-auto text-gray-600"></i>
+                            <span class="block text-[11px] text-gray-400">بنری آپلود نشده است</span>
+                        </div>
+                    <?php endif; ?>
+                </div>
+
+                <div class="w-full space-y-1.5">
+                    <input type="file" name="cover" accept="image/*" class="w-full text-xs text-gray-400 file:mr-2 file:py-2 file:px-3 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-brand-surfaceHover file:text-brand-gold hover:file:bg-brand-gold hover:file:text-black cursor-pointer">
+                    <span class="block text-[10px] text-gray-500">سایز پیشنهادی: ۱۲۰۰ در ۴۰۰ پیکسل (افقی) تا سقف ۱۵ مگابایت</span>
+                </div>
             </div>
         </div>
 

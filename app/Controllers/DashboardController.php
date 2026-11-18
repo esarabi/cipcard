@@ -182,6 +182,26 @@ class DashboardController
             }
         }
 
+        // Handle Cover / Banner Image Upload
+        if (isset($_FILES['cover']) && $_FILES['cover']['error'] === UPLOAD_ERR_OK) {
+            $file = $_FILES['cover'];
+            if ($file['size'] <= Config::MAX_FILE_SIZE) {
+                $ext = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
+                if (in_array($ext, ['jpg', 'jpeg', 'png', 'webp'], true)) {
+                    if (!is_dir(Config::UPLOAD_COVERS)) {
+                        mkdir(Config::UPLOAD_COVERS, 0755, true);
+                    }
+                    $newFileName = 'cover_' . $this->userId . '_' . time() . '.' . $ext;
+                    $dest = Config::UPLOAD_COVERS . $newFileName;
+                    if (move_uploaded_file($file['tmp_name'], $dest)) {
+                        $profileData['cover_url'] = 'uploads/covers/' . $newFileName;
+                    }
+                }
+            }
+        } elseif (isset($_POST['remove_cover']) && $_POST['remove_cover'] === '1') {
+            $profileData['cover_url'] = null;
+        }
+
         Profile::updateByUserId($this->userId, $profileData);
         Session::setFlash('success', 'تغییرات مشخصات، توضیحات بیشتر، آدرس اختصاصی، شبکه‌های اجتماعی و ساعات کاری با موفقیت ذخیره شد.');
         Helper::redirect('dashboard/profile');

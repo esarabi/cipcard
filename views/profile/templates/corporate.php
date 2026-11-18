@@ -84,9 +84,16 @@ $vcardUrl = \App\Core\Helper::url('vcard/@' . (!empty($profile['slug']) ? $profi
             <div class="lg:col-span-4 xl:col-span-4 lg:sticky lg:top-24 space-y-6">
                 
                 <div class="rounded-3xl overflow-hidden border shadow-2xl" style="background-color: var(--card-bg); border-color: var(--border); box-shadow: var(--card-shadow);">
+                    <?php if (!empty($profile['cover_url'])): ?>
+                        <div class="h-32 sm:h-36 overflow-hidden relative border-b" style="border-color: var(--border);">
+                            <img src="<?= \App\Core\Helper::url($profile['cover_url']) ?>" alt="Cover Banner" class="w-full h-full object-cover">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
+                        </div>
+                    <?php endif; ?>
+
                     <!-- Corporate Header Banner -->
                     <div class="p-8 text-center relative border-b" style="background-color: var(--header-bg); border-color: var(--border);">
-                        <div class="w-24 h-24 lg:w-28 lg:h-28 mx-auto rounded-2xl p-1 shadow-lg mb-4 border-2" style="border-color: var(--badge); background-color: var(--card-bg);">
+                        <div class="w-24 h-24 lg:w-28 lg:h-28 mx-auto rounded-2xl p-1 shadow-lg mb-4 border-2 <?= !empty($profile['cover_url']) ? '-mt-16 relative z-10' : '' ?>" style="border-color: var(--badge); background-color: var(--card-bg);">
                             <?php if (!empty($profile['avatar_url'])): ?>
                                 <img src="<?= \App\Core\Helper::url($profile['avatar_url']) ?>" alt="Avatar" class="w-full h-full object-cover rounded-xl">
                             <?php else: ?>

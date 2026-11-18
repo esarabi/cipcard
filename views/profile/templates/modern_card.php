@@ -172,6 +172,12 @@ $vcardUrl = \App\Core\Helper::url('vcard/@' . (!empty($profile['slug']) ? $profi
             <!-- Left / Right Sidebar Column (3D Interactive Card + Bio + Primary Actions) -->
             <div class="lg:col-span-5 xl:col-span-5 lg:sticky lg:top-24 space-y-5">
                 
+                <?php if (!empty($profile['cover_url'])): ?>
+                    <div class="rounded-3xl overflow-hidden border shadow-md h-28 sm:h-32 relative" style="border-color: var(--card-border);">
+                        <img src="<?= \App\Core\Helper::url($profile['cover_url']) ?>" alt="Banner Cover" class="w-full h-full object-cover">
+                    </div>
+                <?php endif; ?>
+
                 <div class="text-center lg:text-start flex flex-col lg:flex-row lg:items-center justify-between gap-1 px-1">
                     <span class="text-xs font-mono tracking-widest uppercase font-bold" style="color: var(--primary);">CIP NFC 3D SMART CARD</span>
                     <span class="text-xs flex items-center justify-center lg:justify-end gap-1" style="color: var(--card-sub);">
