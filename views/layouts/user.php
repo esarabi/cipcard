@@ -226,7 +226,7 @@
 
                 <a href="<?= \App\Core\Helper::url('dashboard/reviews') ?>" class="flex items-center justify-between px-3.5 py-2.5 rounded-xl text-sm font-semibold transition-all <?= $isRev ? 'user-nav-active' : 'text-gray-300 hover:bg-brand-surfaceHover hover:text-white' ?>">
                     <div class="flex items-center gap-3">
-                        <i data-lucide="message-square-star" class="w-4 h-4 text-amber-500"></i>
+                        <i data-lucide="star" class="w-4 h-4 text-amber-500"></i>
                         <span>نظرات و امتیازها</span>
                     </div>
                     <?php if ($pendingCount > 0): ?>

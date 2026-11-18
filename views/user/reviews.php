@@ -105,7 +105,7 @@
     <?php if (empty($reviews)): ?>
         <div class="p-16 text-center rounded-3xl bg-brand-surface border border-brand-border/60 space-y-4">
             <div class="w-16 h-16 rounded-full bg-brand-darker border border-brand-border flex items-center justify-center mx-auto text-gray-500">
-                <i data-lucide="message-square-off" class="w-8 h-8"></i>
+                <i data-lucide="message-square" class="w-8 h-8"></i>
             </div>
             <div class="space-y-1">
                 <h3 class="text-base font-bold text-white">نظری در این بخش یافت نشد</h3>
@@ -224,7 +224,7 @@
 
                             <!-- Reply Toggle Button -->
                             <button type="button" onclick="toggleReplyBox(<?= $rev['id'] ?>)" class="px-3.5 py-2 rounded-xl bg-amber-500/10 border border-amber-500/30 text-amber-400 hover:bg-amber-500 hover:text-black text-xs font-bold transition-all flex items-center gap-1.5">
-                                <i data-lucide="message-square-reply" class="w-3.5 h-3.5"></i>
+                                <i data-lucide="reply" class="w-3.5 h-3.5"></i>
                                 <span><?= !empty($rev['owner_reply']) ? 'ویرایش پاسخ' : 'پاسخ به این نظر' ?></span>
                             </button>
                         </div>
