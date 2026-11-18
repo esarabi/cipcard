@@ -158,6 +158,30 @@ CREATE TABLE `settings` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- -------------------------------------------------------
+-- 6. CARDS TABLE (Batch Pre-printed NFC & QR Codes)
+-- -------------------------------------------------------
+CREATE TABLE IF NOT EXISTS `cards` (
+  `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `card_code` VARCHAR(32) NOT NULL UNIQUE COMMENT 'Unique card code e.g. CIP-7K9M2P',
+  `batch_name` VARCHAR(150) NULL COMMENT 'Batch identifier e.g. چاپ سری اول آذر ۱۴۰۵',
+  `user_id` BIGINT UNSIGNED NULL COMMENT 'Linked user id or NULL if unassigned',
+  `profile_id` BIGINT UNSIGNED NULL COMMENT 'Linked profile id or NULL if unassigned',
+  `status` ENUM('unassigned', 'assigned', 'blocked') NOT NULL DEFAULT 'unassigned' COMMENT 'Card state',
+  `assigned_at` DATETIME NULL COMMENT 'Timestamp when linked to user',
+  `notes` VARCHAR(255) NULL COMMENT 'Admin notes e.g. متالیک مشکی مات',
+  `scan_count` INT UNSIGNED NOT NULL DEFAULT 0 COMMENT 'Number of scans/visits',
+  `last_scanned_at` DATETIME NULL COMMENT 'Last scan timestamp',
+  `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `idx_cards_code` (`card_code`),
+  INDEX `idx_cards_user_id` (`user_id`),
+  INDEX `idx_cards_profile_id` (`profile_id`),
+  INDEX `idx_cards_status` (`status`),
+  INDEX `idx_cards_batch` (`batch_name`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- -------------------------------------------------------
 -- DEFAULT SEED DATA
 -- -------------------------------------------------------
 

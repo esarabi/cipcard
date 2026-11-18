@@ -210,12 +210,13 @@
                 $currentUri = $_SERVER['REQUEST_URI'] ?? '';
                 $isDashboard = ($currentUri === '/admin' || $currentUri === '/admin/' || str_ends_with($currentUri, 'admin'));
                 $isOrders = str_contains($currentUri, 'admin/orders');
+                $isCards = str_contains($currentUri, 'admin/cards');
                 $isUsers = str_contains($currentUri, 'admin/users');
                 $isTransactions = str_contains($currentUri, 'admin/transactions');
                 $isSettings = str_contains($currentUri, 'admin/settings');
                 ?>
 
-                <a href="<?= \App\Core\Helper::url('admin') ?>" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-semibold transition-all <?= $isDashboard && !$isOrders && !$isUsers && !$isTransactions && !$isSettings ? 'nav-link-active' : 'text-gray-300 hover:bg-brand-surfaceHover hover:text-white' ?>">
+                <a href="<?= \App\Core\Helper::url('admin') ?>" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-semibold transition-all <?= $isDashboard && !$isOrders && !$isCards && !$isUsers && !$isTransactions && !$isSettings ? 'nav-link-active' : 'text-gray-300 hover:bg-brand-surfaceHover hover:text-white' ?>">
                     <i data-lucide="layout-dashboard" class="w-4 h-4 text-amber-500"></i>
                     <span>داشبورد و آمار</span>
                 </a>
@@ -223,6 +224,11 @@
                 <a href="<?= \App\Core\Helper::url('admin/orders') ?>" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-semibold transition-all <?= $isOrders ? 'nav-link-active' : 'text-gray-300 hover:bg-brand-surfaceHover hover:text-white' ?>">
                     <i data-lucide="shopping-bag" class="w-4 h-4 text-amber-500"></i>
                     <span>مدیریت سفارشات</span>
+                </a>
+
+                <a href="<?= \App\Core\Helper::url('admin/cards') ?>" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-semibold transition-all <?= $isCards ? 'nav-link-active' : 'text-gray-300 hover:bg-brand-surfaceHover hover:text-white' ?>">
+                    <i data-lucide="qr-code" class="w-4 h-4 text-amber-500"></i>
+                    <span>کارت‌ها و QR Code</span>
                 </a>
 
                 <a href="<?= \App\Core\Helper::url('admin/users') ?>" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-semibold transition-all <?= $isUsers ? 'nav-link-active' : 'text-gray-300 hover:bg-brand-surfaceHover hover:text-white' ?>">

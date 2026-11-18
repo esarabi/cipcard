@@ -58,6 +58,7 @@ if (file_exists(__DIR__ . '/../vendor/autoload.php')) {
 use App\Config\Config;
 use App\Controllers\AdminController;
 use App\Controllers\AuthController;
+use App\Controllers\CardController;
 use App\Controllers\DashboardController;
 use App\Controllers\HomeController;
 use App\Controllers\OrderController;
@@ -132,6 +133,23 @@ $router->get('/admin/transactions', [AdminController::class, 'transactions'], [A
 $router->get('/admin/settings', [AdminController::class, 'settings'], [AdminMiddleware::class]);
 $router->post('/admin/settings', [AdminController::class, 'updateSettings'], [AdminMiddleware::class]);
 $router->post('/admin/settings/test-sms', [AdminController::class, 'testSms'], [AdminMiddleware::class]);
+
+// Admin Card & Bulk QR Code Management
+$router->get('/admin/cards', [AdminController::class, 'cards'], [AdminMiddleware::class]);
+$router->post('/admin/cards/bulk-generate', [AdminController::class, 'bulkGenerateCards'], [AdminMiddleware::class]);
+$router->post('/admin/cards/assign', [AdminController::class, 'assignCard'], [AdminMiddleware::class]);
+$router->post('/admin/cards/unbind', [AdminController::class, 'unbindCard'], [AdminMiddleware::class]);
+$router->post('/admin/cards/delete', [AdminController::class, 'deleteCard'], [AdminMiddleware::class]);
+$router->get('/admin/cards/export/zip', [AdminController::class, 'exportCardsZip'], [AdminMiddleware::class]);
+$router->get('/admin/cards/export/csv', [AdminController::class, 'exportCardsCsv'], [AdminMiddleware::class]);
+$router->get('/admin/cards/print', [AdminController::class, 'printCards'], [AdminMiddleware::class]);
+
+// -------------------------------------------------------------
+// Public Physical Smart Card Scan & Redirection (/c/{code})
+// -------------------------------------------------------------
+$router->get('/c/{code}', [CardController::class, 'scan']);
+$router->get('/card/{code}', [CardController::class, 'scan']);
+$router->post('/c/{code}/claim', [CardController::class, 'claim'], [AuthMiddleware::class]);
 
 // -------------------------------------------------------------
 // Public NFC Profiles (cipcard.ir/@09xxxxxxxxx), vCard & QR

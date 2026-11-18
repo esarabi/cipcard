@@ -51,6 +51,33 @@ class QrCodeService
     }
 
     /**
+     * Get raw PNG binary bytes (for ZIP archives and file saving)
+     */
+    public static function getPngBytes(string $content, int $size = 600): ?string
+    {
+        $scale = max(6, min(25, (int)round($size / 33)));
+
+        $encoder = new QrCodeEncoder($content, [
+            's'  => 'qrm',
+            'sf' => $scale,
+            'fc' => '000000',
+            'bc' => 'FFFFFF'
+        ]);
+
+        $image = $encoder->render_image();
+        if (!$image) {
+            return null;
+        }
+
+        ob_start();
+        imagepng($image);
+        $pngData = ob_get_clean();
+        imagedestroy($image);
+
+        return $pngData ?: null;
+    }
+
+    /**
      * Render direct PNG response with proper HTTP headers (for /qr/@mobile route)
      */
     public static function renderPngResponse(string $content, int $size = 360): void
