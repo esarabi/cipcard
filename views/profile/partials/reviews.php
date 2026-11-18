@@ -31,15 +31,15 @@ $actionUrl = \App\Core\Helper::url('@' . $profileIdentifier . '/review');
             </p>
         </div>
 
-        <div class="flex items-center gap-3">
+        <div class="flex items-center gap-2.5 flex-wrap sm:flex-nowrap">
             <?php if ($statsData['total_reviews'] > 0): ?>
-                <div class="flex items-center gap-2 px-3 py-1.5 rounded-2xl border" style="background-color: var(--box-bg); border-color: var(--border);">
+                <div class="flex items-center gap-1.5 px-3 py-1.5 rounded-2xl border whitespace-nowrap flex-shrink-0" style="background-color: var(--box-bg); border-color: var(--border);">
                     <div class="flex items-center text-amber-400">
                         <i data-lucide="star" class="w-4 h-4 fill-amber-400 text-amber-400"></i>
                     </div>
                     <span class="text-sm font-black font-mono" style="color: var(--text-main);"><?= number_format($statsData['average_rating'], 1) ?></span>
                     <span class="text-[11px]" style="color: var(--text-sub);">
-                        (<?= $statsData['total_reviews'] ?> <?= \App\Core\Helper::e($translations['reviews_count'] ?? 'نظر') ?>)
+                        (<?= $statsData['total_reviews'] ?>)
                     </span>
                 </div>
             <?php endif; ?>
@@ -47,10 +47,10 @@ $actionUrl = \App\Core\Helper::url('@' . $profileIdentifier . '/review');
             <button type="button" 
                     onclick="toggleReviewForm()" 
                     id="open-review-form-btn"
-                    class="px-4 py-2 rounded-2xl font-bold text-xs flex items-center gap-1.5 shadow-sm transition-all hover:brightness-105 active:scale-95"
+                    class="px-4 py-2 rounded-2xl font-bold text-xs flex items-center justify-center gap-1.5 whitespace-nowrap flex-shrink-0 shadow-sm transition-all hover:brightness-105 active:scale-95"
                     style="background: linear-gradient(135deg, var(--primary), var(--text-accent, var(--primary))); color: #ffffff;">
-                <i data-lucide="message-square-plus" class="w-4 h-4"></i>
-                <span><?= \App\Core\Helper::e($translations['submit_review'] ?? 'ثبت نظر و امتیاز') ?></span>
+                <i data-lucide="message-square-plus" class="w-4 h-4 flex-shrink-0"></i>
+                <span class="whitespace-nowrap"><?= \App\Core\Helper::e($translations['submit_review'] ?? 'ثبت نظر و امتیاز') ?></span>
             </button>
         </div>
     </div>
@@ -94,7 +94,7 @@ $actionUrl = \App\Core\Helper::url('@' . $profileIdentifier . '/review');
                             </button>
                         <?php endfor; ?>
                     </div>
-                    <span id="rating-label" class="text-xs font-bold px-2 py-0.5 rounded-lg border" style="background-color: var(--card); border-color: var(--border); color: var(--primary);">
+                    <span id="rating-label" class="text-xs font-bold px-2 py-0.5 rounded-lg border whitespace-nowrap" style="background-color: var(--card); border-color: var(--border); color: var(--primary);">
                         ۵ از ۵ (عالی)
                     </span>
                     <input type="hidden" id="selected-rating" name="rating" value="5">
@@ -102,9 +102,9 @@ $actionUrl = \App\Core\Helper::url('@' . $profileIdentifier . '/review');
             </div>
 
             <!-- Author Inputs Grid -->
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-3.5">
                 <div>
-                    <label class="block text-xs font-bold mb-1" style="color: var(--text-main);">
+                    <label class="block text-xs font-bold mb-1.5 whitespace-nowrap" style="color: var(--text-main);">
                         <?= \App\Core\Helper::e($translations['your_name'] ?? 'نام و نام خانوادگی') ?> <span class="text-red-500">*</span>
                     </label>
                     <input type="text" 
@@ -116,12 +116,12 @@ $actionUrl = \App\Core\Helper::url('@' . $profileIdentifier . '/review');
                 </div>
 
                 <div>
-                    <label class="block text-xs font-bold mb-1" style="color: var(--text-main);">
-                        شماره تماس یا ایمیل <span class="text-[10px] font-normal" style="color: var(--text-sub);">(اختیاری و محرمانه)</span>
+                    <label class="block text-xs font-bold mb-1.5 whitespace-nowrap" style="color: var(--text-main);">
+                        شماره تماس یا ایمیل <span class="text-[10px] font-normal" style="color: var(--text-sub);">(اختیاری)</span>
                     </label>
                     <input type="text" 
                            name="author_mobile" 
-                           placeholder="0912xxxxxxx یا info@example.com" 
+                           placeholder="0912xxxxxxx یا info@email.com" 
                            class="w-full px-3.5 py-2.5 rounded-xl text-xs border focus:outline-none focus:ring-1 dir-ltr text-right" 
                            style="background-color: var(--card); border-color: var(--border); color: var(--text-main); --tw-ring-color: var(--primary);">
                 </div>
@@ -129,7 +129,7 @@ $actionUrl = \App\Core\Helper::url('@' . $profileIdentifier . '/review');
 
             <!-- Comment Body -->
             <div>
-                <label class="block text-xs font-bold mb-1" style="color: var(--text-main);">
+                <label class="block text-xs font-bold mb-1.5 whitespace-nowrap" style="color: var(--text-main);">
                     <?= \App\Core\Helper::e($translations['your_comment'] ?? 'متن نظر شما') ?> <span class="text-red-500">*</span>
                 </label>
                 <textarea name="comment" 
@@ -143,17 +143,17 @@ $actionUrl = \App\Core\Helper::url('@' . $profileIdentifier . '/review');
             <!-- Form Status / Response Message -->
             <div id="review-alert-box" class="hidden p-3 rounded-xl text-xs font-semibold"></div>
 
-            <!-- Submit Button -->
-            <div class="flex items-center justify-between pt-1">
-                <span class="text-[11px]" style="color: var(--text-sub);">
+            <!-- Submit Button Area (Never wraps into multiple lines on mobile) -->
+            <div class="flex flex-col-reverse sm:flex-row sm:items-center justify-between gap-3 pt-2">
+                <span class="text-[11px] leading-relaxed" style="color: var(--text-sub);">
                     🔒 نظر شما پس از بررسی مدیر نمایش داده خواهد شد.
                 </span>
                 <button type="submit" 
                         id="review-submit-btn"
-                        class="px-6 py-2.5 rounded-xl font-bold text-xs text-white flex items-center gap-1.5 shadow-md hover:brightness-110 active:scale-95 transition-all"
+                        class="w-full sm:w-auto px-6 py-2.5 rounded-xl font-bold text-xs text-white flex items-center justify-center gap-2 whitespace-nowrap flex-shrink-0 shadow-md hover:brightness-110 active:scale-95 transition-all"
                         style="background: linear-gradient(135deg, var(--primary), var(--text-accent, var(--primary)));">
-                    <i data-lucide="send" class="w-3.5 h-3.5"></i>
-                    <span id="review-submit-label">ارسال نظر</span>
+                    <i data-lucide="send" class="w-4 h-4 flex-shrink-0"></i>
+                    <span id="review-submit-label" class="whitespace-nowrap">ارسال نظر</span>
                 </button>
             </div>
         </form>
