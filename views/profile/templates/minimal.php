@@ -83,24 +83,26 @@ $vcardUrl = \App\Core\Helper::url('vcard/@' . (!empty($profile['slug']) ? $profi
                 <div class="relative rounded-3xl p-6 sm:p-8 text-center space-y-5 border transition-all overflow-hidden" style="background-color: var(--card); border-color: var(--border); box-shadow: var(--card-shadow);">
                     
                     <?php if (!empty($profile['cover_url'])): ?>
-                        <div class="-mx-6 -mt-6 sm:-mx-8 sm:-mt-8 h-28 sm:h-32 overflow-hidden relative border-b" style="border-color: var(--border);">
-                            <img src="<?= \App\Core\Helper::url($profile['cover_url']) ?>" alt="Cover" class="w-full h-full object-cover">
-                            <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
+                        <div class="-mx-6 -mt-6 sm:-mx-8 sm:-mt-8 h-36 sm:h-44 lg:h-48 overflow-hidden relative border-b" style="border-color: var(--border);">
+                            <img src="<?= \App\Core\Helper::url($profile['cover_url']) ?>" alt="Cover Banner" class="w-full h-full object-cover">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent"></div>
                         </div>
                     <?php endif; ?>
 
-                    <!-- Avatar -->
-                    <div class="relative w-28 h-28 lg:w-32 lg:h-32 mx-auto <?= !empty($profile['cover_url']) ? '-mt-14 relative z-10' : '' ?>">
-                        <div class="w-full h-full rounded-full p-1 border-2 shadow-lg" style="border-color: var(--primary); background-color: var(--card);">
-                            <?php if (!empty($profile['avatar_url'])): ?>
-                                <img src="<?= \App\Core\Helper::url($profile['avatar_url']) ?>" alt="<?= \App\Core\Helper::e($profile['display_name']) ?>" class="w-full h-full object-cover rounded-full">
-                            <?php else: ?>
-                                <div class="w-full h-full rounded-full flex items-center justify-center text-3xl lg:text-4xl font-black uppercase" style="background-color: var(--box-bg); color: var(--primary);">
-                                    <?= mb_substr($profile['display_name'], 0, 1) ?>
-                                </div>
-                            <?php endif; ?>
+                    <!-- Avatar (Sitting on top of cover like Twitter/LinkedIn) -->
+                    <div class="relative w-28 h-28 lg:w-32 lg:h-32 mx-auto <?= !empty($profile['cover_url']) ? '-mt-20 sm:-mt-24 relative z-20' : '' ?>">
+                        <div class="w-full h-full rounded-full p-1 border-4 shadow-2xl" style="border-color: var(--card); background-color: var(--card);">
+                            <div class="w-full h-full rounded-full overflow-hidden border-2" style="border-color: var(--primary);">
+                                <?php if (!empty($profile['avatar_url'])): ?>
+                                    <img src="<?= \App\Core\Helper::url($profile['avatar_url']) ?>" alt="<?= \App\Core\Helper::e($profile['display_name']) ?>" class="w-full h-full object-cover">
+                                <?php else: ?>
+                                    <div class="w-full h-full rounded-full flex items-center justify-center text-3xl lg:text-4xl font-black uppercase" style="background-color: var(--box-bg); color: var(--primary);">
+                                        <?= mb_substr($profile['display_name'], 0, 1) ?>
+                                    </div>
+                                <?php endif; ?>
+                            </div>
                         </div>
-                        <div class="absolute bottom-1 right-1 w-6 h-6 lg:w-7 lg:h-7 rounded-full bg-emerald-500 border-2 border-[var(--card)] flex items-center justify-center text-white" title="تایید شده">
+                        <div class="absolute bottom-1 right-1 w-6 h-6 lg:w-7 lg:h-7 rounded-full bg-emerald-500 border-2 shadow flex items-center justify-center text-white z-30" style="border-color: var(--card);" title="تایید شده">
                             <i data-lucide="check" class="w-3.5 h-3.5 stroke-[3]"></i>
                         </div>
                     </div>
