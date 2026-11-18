@@ -196,11 +196,20 @@
                 <div class="w-10 h-10 rounded-full bg-amber-500/20 text-amber-600 border border-amber-400/40 flex items-center justify-center font-black text-sm">
                     <?= mb_substr(\App\Core\Session::get('user_name', 'مشتری'), 0, 1) ?>
                 </div>
-                <div class="overflow-hidden">
+                <div class="overflow-hidden flex-1 min-w-0">
                     <p class="text-xs font-bold text-white truncate"><?= \App\Core\Helper::e(\App\Core\Session::get('user_name')) ?></p>
                     <p class="text-[11px] text-gray-400 font-mono dir-ltr text-right"><?= \App\Core\Helper::e(\App\Core\Session::get('user_mobile')) ?></p>
                 </div>
             </div>
+
+            <!-- Logout Button (زیر User Info Badge) -->
+            <a href="<?= \App\Core\Helper::url('auth/logout') ?>" class="flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs text-red-500 hover:text-red-400 bg-red-500/10 hover:bg-red-500/15 border border-red-500/20 transition-all font-semibold -mt-2">
+                <span class="flex items-center gap-2">
+                    <i data-lucide="log-out" class="w-4 h-4"></i>
+                    <span>خروج از حساب</span>
+                </span>
+                <i data-lucide="arrow-left" class="w-3.5 h-3.5 opacity-60"></i>
+            </a>
 
             <!-- Menu Navigation Links -->
             <nav class="space-y-1.5 pt-2">
@@ -255,13 +264,6 @@
                     <span>مشاهده سایت اصلی</span>
                 </a>
             </nav>
-        </div>
-
-        <div class="pt-6 border-t border-brand-border/40">
-            <a href="<?= \App\Core\Helper::url('auth/logout') ?>" class="flex items-center gap-2 p-2.5 rounded-xl text-xs text-red-500 font-semibold hover:bg-red-500/10 transition-colors">
-                <i data-lucide="log-out" class="w-4 h-4"></i>
-                <span>خروج از حساب</span>
-            </a>
         </div>
     </aside>
 
