@@ -120,6 +120,19 @@ class Profile
         return (int)$db->lastInsertId();
     }
 
+    public static function findById(int $id): ?array
+    {
+        self::ensureExtendedColumns();
+        $db = Database::getConnection();
+        $stmt = $db->prepare("SELECT * FROM profiles WHERE id = :id LIMIT 1");
+        $stmt->execute([':id' => $id]);
+        $profile = $stmt->fetch();
+        if ($profile && !empty($profile['social_links'])) {
+            $profile['social_links'] = json_decode($profile['social_links'], true) ?: [];
+        }
+        return $profile ?: null;
+    }
+
     public static function findByUserId(int $userId): ?array
     {
         self::ensureExtendedColumns();
