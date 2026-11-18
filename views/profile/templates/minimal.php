@@ -271,6 +271,9 @@ $vcardUrl = \App\Core\Helper::url('vcard/@' . (!empty($profile['slug']) ? $profi
                     </div>
                 <?php endif; ?>
 
+                <!-- Customer Reviews & Star Ratings Partial -->
+                <?php require __DIR__ . '/../partials/reviews.php'; ?>
+
                 <!-- Mobile QR Code Section (Hidden on lg+ since it's in the sticky left column) -->
                 <div class="lg:hidden rounded-3xl p-6 border text-center space-y-4" style="background-color: var(--card); border-color: var(--border); box-shadow: var(--card-shadow);">
                     <div class="space-y-1">

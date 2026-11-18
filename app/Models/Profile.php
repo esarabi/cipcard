@@ -42,6 +42,11 @@ class Profile
             if (!$stmt2 || !$stmt2->fetch()) {
                 $db->exec("ALTER TABLE `profiles` ADD COLUMN `more_info_title` VARCHAR(255) NULL AFTER `more_info`");
             }
+            $stmt3 = $db->query("SHOW COLUMNS FROM `profiles` LIKE 'enable_reviews'");
+            if (!$stmt3 || !$stmt3->fetch()) {
+                $db->exec("ALTER TABLE `profiles` ADD COLUMN `enable_reviews` TINYINT(1) NOT NULL DEFAULT 1 AFTER `more_info_title`");
+            }
+            Review::ensureSchema();
         } catch (PDOException $e) {
             // Silently ignore if table does not exist or permission is restricted
         }
@@ -53,13 +58,13 @@ class Profile
         $db = Database::getConnection();
         $stmt = $db->prepare("
             INSERT INTO profiles (
-                user_id, slug, display_name, job_title, company, bio, more_info, more_info_title,
+                user_id, slug, display_name, job_title, company, bio, more_info, more_info_title, enable_reviews,
                 avatar_url, cover_url, email, phone_work, phone_mobile,
                 website, address, map_link, map_latitude, map_longitude,
                 working_days, working_hours, working_note, default_lang,
                 social_links, template_id, theme_color, theme_mode, is_active
             ) VALUES (
-                :user_id, :slug, :display_name, :job_title, :company, :bio, :more_info, :more_info_title,
+                :user_id, :slug, :display_name, :job_title, :company, :bio, :more_info, :more_info_title, :enable_reviews,
                 :avatar_url, :cover_url, :email, :phone_work, :phone_mobile,
                 :website, :address, :map_link, :map_latitude, :map_longitude,
                 :working_days, :working_hours, :working_note, :default_lang,
@@ -80,6 +85,7 @@ class Profile
             ':bio'           => $data['bio'] ?? null,
             ':more_info'     => $data['more_info'] ?? null,
             ':more_info_title' => $data['more_info_title'] ?? null,
+            ':enable_reviews'  => isset($data['enable_reviews']) ? (int)$data['enable_reviews'] : 1,
             ':avatar_url'    => $data['avatar_url'] ?? null,
             ':cover_url'     => $data['cover_url'] ?? null,
             ':email'         => $data['email'] ?? null,

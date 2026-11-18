@@ -227,6 +227,9 @@ $vcardUrl = \App\Core\Helper::url('vcard/@' . (!empty($profile['slug']) ? $profi
                     </div>
                 <?php endif; ?>
 
+                <!-- Customer Reviews & Star Ratings Partial -->
+                <?php require __DIR__ . '/../partials/reviews.php'; ?>
+
                 <!-- Mobile Glass QR Code -->
                 <div class="lg:hidden glass-card rounded-[32px] p-6 text-center space-y-3 shadow-xl">
                     <h3 class="text-xs font-bold uppercase tracking-wider" style="color: var(--text-main);"><?= \App\Core\Helper::e($translations['scan_qr'] ?? 'اسکن کیوآرکد اختصاصی') ?></h3>

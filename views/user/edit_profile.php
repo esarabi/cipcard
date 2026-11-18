@@ -324,6 +324,36 @@
             </div>
         </div>
 
+        <!-- 8. Reviews & Star Ratings Setting -->
+        <div id="reviews-setting" class="p-6 sm:p-8 rounded-3xl bg-brand-surface border border-brand-border/60 space-y-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center gap-2">
+                    <span class="w-8 h-8 rounded-xl bg-amber-500/10 border border-amber-500/30 text-amber-400 flex items-center justify-center">
+                        <i data-lucide="star" class="w-4 h-4 fill-amber-400 text-amber-400"></i>
+                    </span>
+                    <h3 class="text-sm font-bold text-white">بخش نظرات و امتیازدهی کارت ویزیت (Star Reviews)</h3>
+                </div>
+                <a href="<?= \App\Core\Helper::url('dashboard/reviews') ?>" class="px-3.5 py-1.5 rounded-xl bg-brand-darker border border-brand-gold/40 text-brand-gold hover:bg-brand-gold hover:text-black transition-all text-xs font-bold flex items-center gap-1.5">
+                    <i data-lucide="messages-square" class="w-3.5 h-3.5"></i>
+                    <span>مدیریت و تایید نظرات</span>
+                </a>
+            </div>
+
+            <div class="p-4 rounded-2xl bg-brand-darker border border-brand-border/60">
+                <label class="flex items-start sm:items-center justify-between gap-4 cursor-pointer">
+                    <div class="space-y-1">
+                        <span class="block text-xs font-bold text-white">فعال‌سازی امکان ثبت نظر و امتیازدهی ستاره‌ای توسط مخاطبان</span>
+                        <p class="text-[11px] text-gray-400 leading-relaxed">
+                            با فعال بودن این گزینه، فرم ثبت نظر و امتیاز (۱ تا ۵ ستاره) در کارت شما نمایش داده می‌شود. به درخواست شما، تمام نظرات ابتدا در حالت «در انتظار بررسی» قرار می‌گیرند و تنها پس از تایید توسط شما در پروفایل منتشر خواهند شد. همچنین می‌توانید به هر نظر پاسخ دهید.
+                        </p>
+                    </div>
+                    <div class="pt-1 sm:pt-0">
+                        <input type="checkbox" name="enable_reviews" value="1" <?= (!isset($profile['enable_reviews']) || (int)$profile['enable_reviews'] === 1) ? 'checked' : '' ?> class="w-5 h-5 rounded accent-amber-500 cursor-pointer">
+                    </div>
+                </label>
+            </div>
+        </div>
+
         <div class="pt-4 flex items-center justify-between">
             <button type="submit" class="px-10 py-4 rounded-2xl bg-gradient-to-r from-brand-goldDark via-brand-gold to-brand-goldLight text-black font-extrabold text-sm shadow-xl shadow-brand-gold/20 hover:brightness-110 active:scale-95 transition-all flex items-center gap-2">
                 <i data-lucide="check" class="w-5 h-5"></i>

@@ -207,6 +207,9 @@ $vcardUrl = \App\Core\Helper::url('vcard/@' . (!empty($profile['slug']) ? $profi
                     </div>
                 <?php endif; ?>
 
+                <!-- Customer Reviews & Star Ratings Partial -->
+                <?php require __DIR__ . '/../partials/reviews.php'; ?>
+
                 <!-- Mobile QR Code Section -->
                 <div class="lg:hidden rounded-3xl p-6 text-center space-y-3 border" style="background-color: var(--card-bg); border-color: var(--border); box-shadow: var(--card-shadow);">
                     <div class="w-36 h-36 mx-auto p-2.5 bg-white rounded-xl shadow-md border border-slate-200">

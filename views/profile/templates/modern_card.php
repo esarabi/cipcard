@@ -331,6 +331,9 @@ $vcardUrl = \App\Core\Helper::url('vcard/@' . (!empty($profile['slug']) ? $profi
                     </div>
                 <?php endif; ?>
 
+                <!-- Customer Reviews & Star Ratings Partial -->
+                <?php require __DIR__ . '/../partials/reviews.php'; ?>
+
             </div>
 
         </div>

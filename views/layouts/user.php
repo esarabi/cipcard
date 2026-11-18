@@ -197,9 +197,21 @@
             <nav class="space-y-1.5 pt-2">
                 <?php
                 $uri = $_SERVER['REQUEST_URI'] ?? '';
-                $isDash = (!str_contains($uri, 'profile') && !str_contains($uri, 'tracking'));
+                $isRev = str_contains($uri, 'reviews');
+                $isDash = (!str_contains($uri, 'profile') && !str_contains($uri, 'tracking') && !str_contains($uri, 'reviews'));
                 $isProf = str_contains($uri, 'profile');
                 $isTrack = str_contains($uri, 'tracking');
+
+                $pendingCount = 0;
+                try {
+                    $navUserId = (int)\App\Core\Session::get('user_id');
+                    if ($navUserId > 0) {
+                        $navProf = \App\Models\Profile::findByUserId($navUserId);
+                        if ($navProf) {
+                            $pendingCount = \App\Models\Review::countPendingByProfileId((int)$navProf['id']);
+                        }
+                    }
+                } catch (\Throwable $e) {}
                 ?>
 
                 <a href="<?= \App\Core\Helper::url('dashboard') ?>" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-semibold transition-all <?= $isDash ? 'user-nav-active' : 'text-gray-300 hover:bg-brand-surfaceHover hover:text-white' ?>">
@@ -210,6 +222,18 @@
                 <a href="<?= \App\Core\Helper::url('dashboard/profile') ?>" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-semibold transition-all <?= $isProf ? 'user-nav-active' : 'text-gray-300 hover:bg-brand-surfaceHover hover:text-white' ?>">
                     <i data-lucide="user-cog" class="w-4 h-4 text-amber-500"></i>
                     <span>ویرایش پروفایل هوشمند</span>
+                </a>
+
+                <a href="<?= \App\Core\Helper::url('dashboard/reviews') ?>" class="flex items-center justify-between px-3.5 py-2.5 rounded-xl text-sm font-semibold transition-all <?= $isRev ? 'user-nav-active' : 'text-gray-300 hover:bg-brand-surfaceHover hover:text-white' ?>">
+                    <div class="flex items-center gap-3">
+                        <i data-lucide="message-square-star" class="w-4 h-4 text-amber-500"></i>
+                        <span>نظرات و امتیازها</span>
+                    </div>
+                    <?php if ($pendingCount > 0): ?>
+                        <span class="px-2 py-0.5 rounded-full text-[10px] font-mono font-bold bg-amber-500 text-black shadow-sm animate-pulse">
+                            <?= $pendingCount ?>
+                        </span>
+                    <?php endif; ?>
                 </a>
 
                 <a href="<?= \App\Core\Helper::url('dashboard/tracking') ?>" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-semibold transition-all <?= $isTrack ? 'user-nav-active' : 'text-gray-300 hover:bg-brand-surfaceHover hover:text-white' ?>">

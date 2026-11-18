@@ -10,6 +10,7 @@ use App\Core\Session;
 use App\Core\View;
 use App\Models\Order;
 use App\Models\Profile;
+use App\Models\Review;
 use App\Models\Setting;
 use App\Models\Transaction;
 use App\Models\User;
@@ -152,6 +153,7 @@ class DashboardController
             'template_id'   => $templateId,
             'theme_color'   => $themeColor,
             'theme_mode'    => in_array($themeMode, ['light', 'dark'], true) ? $themeMode : 'light',
+            'enable_reviews'=> isset($_POST['enable_reviews']) ? 1 : 0,
             'social_links'  => $socialLinks
         ];
 
@@ -295,5 +297,145 @@ class DashboardController
             'priceDefault' => $priceDefault,
             'priceCustom'  => $priceCustom
         ], 'user');
+    }
+
+    /**
+     * Reviews & Star Ratings Management
+     */
+    public function reviews(): void
+    {
+        $user    = User::findById($this->userId);
+        $profile = Profile::findByUserId($this->userId);
+
+        if (!$profile) {
+            Session::setFlash('warning', 'لطفاً ابتدا اطلاعات پروفایل خود را تکمیل نمایید.');
+            Helper::redirect('dashboard/profile');
+            return;
+        }
+
+        $currentStatus = trim($_GET['status'] ?? 'all');
+        if (!in_array($currentStatus, ['all', 'pending', 'approved', 'rejected'], true)) {
+            $currentStatus = 'all';
+        }
+
+        $counts  = Review::getCountsByProfileId((int)$profile['id']);
+        $stats   = Review::getStatsByProfileId((int)$profile['id']);
+        $reviews = Review::getAllByProfileId((int)$profile['id'], $currentStatus !== 'all' ? $currentStatus : null);
+
+        View::render('user.reviews', [
+            'title'         => 'مدیریت نظرات و امتیازهای کارت - CIPCard',
+            'user'          => $user,
+            'profile'       => $profile,
+            'reviews'       => $reviews,
+            'counts'        => $counts,
+            'stats'         => $stats,
+            'currentStatus' => $currentStatus
+        ], 'user');
+    }
+
+    /**
+     * Update review status (approve or reject)
+     */
+    public function updateReviewStatus(): void
+    {
+        Csrf::verifyOrAbort();
+
+        $profile = Profile::findByUserId($this->userId);
+        if (!$profile) {
+            Helper::redirect('dashboard');
+            return;
+        }
+
+        $reviewId = (int)($_POST['review_id'] ?? 0);
+        $newStatus = trim($_POST['status'] ?? '');
+
+        if ($reviewId <= 0 || !in_array($newStatus, ['approved', 'rejected', 'pending'], true)) {
+            Session::setFlash('error', 'درخواست نامعتبر است.');
+            Helper::redirect('dashboard/reviews');
+            return;
+        }
+
+        $success = Review::updateStatus($reviewId, (int)$profile['id'], $newStatus);
+
+        if ($success) {
+            $statusTitles = [
+                'approved' => 'تایید و منتشر شد',
+                'rejected' => 'رد شد و نمایش داده نخواهد شد',
+                'pending'  => 'به حالت در انتظار بررسی بازگشت'
+            ];
+            Session::setFlash('success', "وضعیت نظر با موفقیت تغییر کرد ({$statusTitles[$newStatus]}).");
+        } else {
+            Session::setFlash('error', 'خطا در تغییر وضعیت نظر.');
+        }
+
+        Helper::redirect('dashboard/reviews');
+    }
+
+    /**
+     * Reply to a review
+     */
+    public function replyReview(): void
+    {
+        Csrf::verifyOrAbort();
+
+        $profile = Profile::findByUserId($this->userId);
+        if (!$profile) {
+            Helper::redirect('dashboard');
+            return;
+        }
+
+        $reviewId = (int)($_POST['review_id'] ?? 0);
+        $replyText = trim($_POST['reply'] ?? '');
+
+        if ($reviewId <= 0) {
+            Session::setFlash('error', 'شناسه نظر نامعتبر است.');
+            Helper::redirect('dashboard/reviews');
+            return;
+        }
+
+        $success = Review::saveReply($reviewId, (int)$profile['id'], $replyText);
+
+        if ($success) {
+            if ($replyText !== '') {
+                Session::setFlash('success', 'پاسخ شما با موفقیت ثبت شد و در زیر نظر مخاطب نمایش داده خواهد شد.');
+            } else {
+                Session::setFlash('info', 'پاسخ قبلی حذف شد.');
+            }
+        } else {
+            Session::setFlash('error', 'خطا در ذخیره پاسخ.');
+        }
+
+        Helper::redirect('dashboard/reviews');
+    }
+
+    /**
+     * Delete a review
+     */
+    public function deleteReview(): void
+    {
+        Csrf::verifyOrAbort();
+
+        $profile = Profile::findByUserId($this->userId);
+        if (!$profile) {
+            Helper::redirect('dashboard');
+            return;
+        }
+
+        $reviewId = (int)($_POST['review_id'] ?? 0);
+        if ($reviewId <= 0) {
+            Session::setFlash('error', 'شناسه نظر نامعتبر است.');
+            Helper::redirect('dashboard/reviews');
+            return;
+        }
+
+        $success = Review::delete($reviewId, (int)$profile['id']);
+
+        if ($success) {
+            Session::setFlash('success', 'نظر با موفقیت حذف گردید.');
+        } else {
+            Session::setFlash('error', 'خطا در حذف نظر.');
+        }
+
+        Helper::redirect('dashboard/reviews');
     }
 }

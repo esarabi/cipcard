@@ -206,6 +206,70 @@ class TranslationService
             'tr' => 'Profil bağlantısı panoya kopyalandı!',
             'ru' => 'Ссылка скопирована в буфер обмена!',
             'zh' => '名片链接已复制到剪贴板！'
+        ],
+        'reviews_title' => [
+            'fa' => 'نظرات و امتیازها',
+            'en' => 'Reviews & Ratings',
+            'ar' => 'التقييمات والآراء',
+            'tr' => 'Yorumlar ve Puanlar',
+            'ru' => 'Отзывы и оценки',
+            'zh' => '用户评价与评分'
+        ],
+        'submit_review' => [
+            'fa' => 'ثبت نظر و امتیاز',
+            'en' => 'Submit Review',
+            'ar' => 'أضف تقييمك',
+            'tr' => 'Değerlendirme Yap',
+            'ru' => 'Оставить отзыв',
+            'zh' => '提交评价'
+        ],
+        'your_rating' => [
+            'fa' => 'امتیاز شما به این کارت',
+            'en' => 'Your Rating',
+            'ar' => 'تقييمك',
+            'tr' => 'Puanınız',
+            'ru' => 'Ваша оценка',
+            'zh' => '您的评分'
+        ],
+        'your_name' => [
+            'fa' => 'نام و نام خانوادگی شما',
+            'en' => 'Your Name',
+            'ar' => 'الاسم الكامل',
+            'tr' => 'Adınız Soyadınız',
+            'ru' => 'Ваше имя',
+            'zh' => '您的姓名'
+        ],
+        'your_comment' => [
+            'fa' => 'متن نظر یا تجربه شما',
+            'en' => 'Your Review or Feedback',
+            'ar' => 'تعليقك أو تجربتك',
+            'tr' => 'Yorumunuz veya deneyiminiz',
+            'ru' => 'Текст отзыва',
+            'zh' => '您的评价或反馈'
+        ],
+        'review_pending_note' => [
+            'fa' => 'نظرات پس از تایید توسط صاحب پروفایل نمایش داده می‌شوند.',
+            'en' => 'Reviews are published after owner approval.',
+            'ar' => 'يتم نشر التعليقات بعد موافقة صاحب الحساب.',
+            'tr' => 'Yorumlar profil sahibinin onayından sonra yayınlanır.',
+            'ru' => 'Отзывы публикуются после подтверждения владельцем.',
+            'zh' => '评价需经名片所有者审核后发布。'
+        ],
+        'owner_reply' => [
+            'fa' => 'پاسخ مدیریت',
+            'en' => 'Owner Reply',
+            'ar' => 'رد صاحب الملف',
+            'tr' => 'Kart Sahibinin Cevabı',
+            'ru' => 'Ответ владельца',
+            'zh' => '名片主人回复'
+        ],
+        'no_reviews_yet' => [
+            'fa' => 'هنوز نظری ثبت نشده است. اولین نفری باشید که نظر خود را ثبت می‌کنید!',
+            'en' => 'No reviews yet. Be the first to share your experience!',
+            'ar' => 'لا توجد تقييمات بعد. كن أول من يشارك تجربته!',
+            'tr' => 'Henüz yorum yok. İlk yorum yapan siz olun!',
+            'ru' => 'Пока нет отзывов. Будьте первым!',
+            'zh' => '暂无评价，快来抢先留下第一条评价吧！'
         ]
     ];
 

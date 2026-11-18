@@ -239,6 +239,9 @@ $vcardUrl = \App\Core\Helper::url('vcard/@' . (!empty($profile['slug']) ? $profi
                     </div>
                 <?php endif; ?>
 
+                <!-- Customer Reviews & Star Ratings Partial -->
+                <?php require __DIR__ . '/../partials/reviews.php'; ?>
+
                 <!-- Mobile QR Module -->
                 <div class="lg:hidden rounded-3xl p-6 text-center space-y-3 border" style="background-color: var(--card-bg); border-color: var(--border);">
                     <h3 class="text-xs font-bold uppercase tracking-wider" style="color: var(--text-main);"><?= \App\Core\Helper::e($translations['scan_qr'] ?? 'اسکن بارکد QR') ?></h3>

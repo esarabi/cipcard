@@ -111,6 +111,12 @@ $router->get('/dashboard/tracking', [DashboardController::class, 'orderTracking'
 $router->get('/dashboard/orders', [DashboardController::class, 'orderTracking'], [AuthMiddleware::class]);
 $router->post('/dashboard/order/new', [DashboardController::class, 'newOrder'], [AuthMiddleware::class]);
 
+// Customer Reviews Management in User Dashboard
+$router->get('/dashboard/reviews', [DashboardController::class, 'reviews'], [AuthMiddleware::class]);
+$router->post('/dashboard/reviews/status', [DashboardController::class, 'updateReviewStatus'], [AuthMiddleware::class]);
+$router->post('/dashboard/reviews/reply', [DashboardController::class, 'replyReview'], [AuthMiddleware::class]);
+$router->post('/dashboard/reviews/delete', [DashboardController::class, 'deleteReview'], [AuthMiddleware::class]);
+
 // -------------------------------------------------------------
 // Admin Panel (Protected by AdminMiddleware)
 // -------------------------------------------------------------
@@ -129,6 +135,9 @@ $router->post('/admin/settings/test-sms', [AdminController::class, 'testSms'], [
 // Public NFC Profiles (cipcard.ir/@09xxxxxxxxx), vCard & QR
 // -------------------------------------------------------------
 $router->get('/@{mobile}', [ProfileController::class, 'show']);
+$router->post('/@{mobile}/review', [ProfileController::class, 'submitReview']);
+$router->post('/api/profile/{mobile}/review', [ProfileController::class, 'submitReview']);
+$router->post('/api/profile/review', [ProfileController::class, 'submitReviewGeneric']);
 $router->get('/vcard/@{mobile}', [ProfileController::class, 'vcard']);
 $router->get('/qr/@{mobile}', [ProfileController::class, 'qr']);
 
