@@ -1,3 +1,33 @@
+<style>
+    /* Light Mode Color Refinements for Reviews Management */
+    html[data-theme="light"] .review-comment-box {
+        background-color: #F8FAFC !important;
+        border-color: #E2E8F0 !important;
+        color: #1E293B !important;
+    }
+    html[data-theme="dark"] .review-comment-box {
+        background-color: rgba(5, 5, 7, 0.75) !important;
+        border-color: rgba(42, 42, 54, 0.6) !important;
+        color: #E2E8F0 !important;
+    }
+    html[data-theme="light"] .review-reply-btn {
+        background-color: #FEF3C7 !important;
+        border-color: #FCD34D !important;
+        color: #92400E !important;
+    }
+    html[data-theme="light"] .review-reply-btn:hover {
+        background-color: #FDE68A !important;
+        color: #78350F !important;
+    }
+    html[data-theme="light"] .owner-reply-card {
+        background-color: #FFFBEB !important;
+        border-color: #FDE68A !important;
+    }
+    html[data-theme="light"] .owner-reply-card p {
+        color: #334155 !important;
+    }
+</style>
+
 <div class="space-y-8">
 
     <!-- Header & Review Status Badge -->
@@ -86,7 +116,7 @@
             'all'      => ['label' => 'همه نظرات', 'count' => $counts['all'], 'icon' => 'list'],
             'pending'  => ['label' => 'در انتظار تایید', 'count' => $counts['pending'], 'icon' => 'clock', 'badge_class' => 'bg-amber-500 text-black'],
             'approved' => ['label' => 'تایید و منتشر شده', 'count' => $counts['approved'], 'icon' => 'check-circle-2', 'badge_class' => 'bg-emerald-500 text-black'],
-            'rejected' => ['label' => 'رد شده', 'count' => $counts['rejected'], 'icon' => 'x-circle', 'badge_class' => 'bg-gray-700 text-gray-300'],
+            'rejected' => ['label' => 'رد شده', 'count' => $counts['rejected'], 'icon' => 'x-circle', 'badge_class' => 'bg-red-500/15 text-red-600 dark:bg-gray-700 dark:text-gray-300'],
         ];
         ?>
         <?php foreach ($tabDefs as $key => $tab): ?>
@@ -123,9 +153,9 @@
             <?php foreach ($reviews as $rev): ?>
                 <?php
                 $statusBadges = [
-                    'pending'  => ['label' => 'در انتظار تایید شما', 'class' => 'bg-amber-500/15 text-amber-400 border-amber-500/40', 'icon' => 'clock'],
-                    'approved' => ['label' => 'تایید و منتشر شده', 'class' => 'bg-emerald-500/15 text-emerald-400 border-emerald-500/40', 'icon' => 'check-circle'],
-                    'rejected' => ['label' => 'رد شده (عدم نمایش)', 'class' => 'bg-red-500/15 text-red-400 border-red-500/40', 'icon' => 'x-circle'],
+                    'pending'  => ['label' => 'در انتظار تایید شما', 'class' => 'bg-amber-500/15 text-amber-700 dark:text-amber-400 border-amber-500/30', 'icon' => 'clock'],
+                    'approved' => ['label' => 'تایید و منتشر شده', 'class' => 'bg-emerald-500/15 text-emerald-700 dark:text-emerald-400 border-emerald-500/30', 'icon' => 'check-circle'],
+                    'rejected' => ['label' => 'رد شده (عدم نمایش)', 'class' => 'bg-red-500/15 text-red-700 dark:text-red-400 border-red-500/30', 'icon' => 'x-circle'],
                 ];
                 $sb = $statusBadges[$rev['status']] ?? ['label' => $rev['status'], 'class' => 'bg-gray-800 text-gray-300 border-gray-700', 'icon' => 'info'];
                 $rating = max(1, min(5, (int)$rev['rating']));
@@ -172,23 +202,23 @@
                     </div>
 
                     <!-- Comment Content Body -->
-                    <div class="p-4 rounded-2xl bg-brand-darker/70 border border-brand-border/40 text-xs sm:text-sm text-gray-200 leading-relaxed whitespace-pre-line">
+                    <div class="review-comment-box p-4 rounded-2xl bg-slate-50 dark:bg-brand-darker border border-slate-200 dark:border-brand-border/60 text-xs sm:text-sm text-slate-800 dark:text-gray-200 leading-relaxed whitespace-pre-line shadow-sm">
                         <?= nl2br(\App\Core\Helper::e($rev['comment'])) ?>
                     </div>
 
                     <!-- Owner Reply Display (If already replied) -->
                     <?php if (!empty($rev['owner_reply'])): ?>
-                        <div class="mr-4 p-4 rounded-2xl bg-amber-500/5 border border-amber-500/20 space-y-2">
+                        <div class="owner-reply-card mr-4 p-4 rounded-2xl bg-amber-50/90 dark:bg-amber-500/5 border border-amber-200 dark:border-amber-500/20 space-y-2">
                             <div class="flex items-center justify-between text-xs">
-                                <span class="font-bold text-amber-400 flex items-center gap-1.5">
+                                <span class="font-bold text-amber-700 dark:text-amber-400 flex items-center gap-1.5">
                                     <i data-lucide="corner-down-left" class="w-4 h-4"></i>
                                     <span>پاسخ شما (مدیریت):</span>
                                 </span>
                                 <?php if (!empty($rev['replied_at'])): ?>
-                                    <span class="text-[10px] text-gray-400 font-mono"><?= \App\Core\Helper::e($rev['replied_at']) ?></span>
+                                    <span class="text-[10px] text-gray-500 dark:text-gray-400 font-mono"><?= \App\Core\Helper::e($rev['replied_at']) ?></span>
                                 <?php endif; ?>
                             </div>
-                            <p class="text-xs sm:text-sm text-gray-300 leading-relaxed whitespace-pre-line pr-2 border-r-2 border-amber-500">
+                            <p class="text-xs sm:text-sm text-slate-800 dark:text-gray-300 leading-relaxed whitespace-pre-line pr-2 border-r-2 border-amber-500">
                                 <?= nl2br(\App\Core\Helper::e($rev['owner_reply'])) ?>
                             </p>
                         </div>
@@ -223,7 +253,7 @@
                             <?php endif; ?>
 
                             <!-- Reply Toggle Button -->
-                            <button type="button" onclick="toggleReplyBox(<?= $rev['id'] ?>)" class="px-3.5 py-2 rounded-xl bg-amber-500/10 border border-amber-500/30 text-amber-400 hover:bg-amber-500 hover:text-black text-xs font-bold transition-all flex items-center gap-1.5">
+                            <button type="button" onclick="toggleReplyBox(<?= $rev['id'] ?>)" class="review-reply-btn px-3.5 py-2 rounded-xl bg-amber-500/15 border border-amber-500/30 text-amber-700 dark:text-amber-400 hover:bg-amber-500 hover:text-black text-xs font-bold transition-all flex items-center gap-1.5 shadow-sm">
                                 <i data-lucide="reply" class="w-3.5 h-3.5"></i>
                                 <span><?= !empty($rev['owner_reply']) ? 'ویرایش پاسخ' : 'پاسخ به این نظر' ?></span>
                             </button>
@@ -244,8 +274,8 @@
                         <form action="<?= \App\Core\Helper::url('dashboard/reviews/reply') ?>" method="POST" class="space-y-3">
                             <?= \App\Core\Csrf::field() ?>
                             <input type="hidden" name="review_id" value="<?= $rev['id'] ?>">
-                            <label class="block text-xs font-bold text-amber-400">متن پاسخ شما به عنوان صاحب کارت:</label>
-                            <textarea name="reply" rows="3" placeholder="پاسخ، تشکر یا توضیحات خود را اینجا وارد کنید..." class="w-full px-4 py-3 rounded-2xl bg-brand-darker border border-brand-border text-white text-xs focus:border-brand-gold focus:outline-none leading-relaxed"><?= \App\Core\Helper::e($rev['owner_reply'] ?? '') ?></textarea>
+                            <label class="block text-xs font-bold text-amber-700 dark:text-amber-400">متن پاسخ شما به عنوان صاحب کارت:</label>
+                            <textarea name="reply" rows="3" placeholder="پاسخ، تشکر یا توضیحات خود را اینجا وارد کنید..." class="w-full px-4 py-3 rounded-2xl bg-white dark:bg-brand-darker border border-slate-300 dark:border-brand-border text-slate-800 dark:text-white text-xs focus:border-brand-gold focus:outline-none leading-relaxed"><?= \App\Core\Helper::e($rev['owner_reply'] ?? '') ?></textarea>
                             <div class="flex items-center gap-2">
                                 <button type="submit" class="px-5 py-2.5 rounded-xl bg-gradient-to-r from-brand-goldDark via-brand-gold to-brand-goldLight text-black font-extrabold text-xs shadow-md shadow-brand-gold/20 hover:brightness-110 transition-all flex items-center gap-1.5">
                                     <i data-lucide="send" class="w-3.5 h-3.5"></i>

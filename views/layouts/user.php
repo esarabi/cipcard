@@ -57,7 +57,16 @@
             box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.04) !important;
         }
 
-        html[data-theme="light"] .bg-brand-darker {
+        html[data-theme="light"] .bg-brand-darker,
+        html[data-theme="light"] .bg-brand-darker\/90,
+        html[data-theme="light"] .bg-brand-darker\/80,
+        html[data-theme="light"] .bg-brand-darker\/70,
+        html[data-theme="light"] .bg-brand-darker\/60,
+        html[data-theme="light"] .bg-brand-darker\/50,
+        html[data-theme="light"] .bg-brand-darker\/40,
+        html[data-theme="light"] .bg-brand-darker\/30,
+        html[data-theme="light"] .bg-brand-darker\/20,
+        html[data-theme="light"] .bg-brand-darker\/10 {
             background-color: #F1F5F9 !important;
             border-color: #E2E8F0 !important;
         }
