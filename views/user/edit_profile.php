@@ -69,7 +69,10 @@
             </div>
         </div>
 
-        <!-- 3. Avatar Upload Section -->
+        <!-- 3. Template, Theme Mode & Color Palette Customizer -->
+        <?php require __DIR__ . '/partials/template_picker.php'; ?>
+
+        <!-- 4. Avatar Upload Section -->
         <div class="p-6 rounded-3xl bg-brand-surface border border-brand-border/60 flex flex-col sm:flex-row items-center gap-6">
             <div class="w-24 h-24 rounded-full p-1 border-2 border-brand-gold overflow-hidden bg-black/40 flex-shrink-0">
                 <?php if (!empty($profile['avatar_url'])): ?>

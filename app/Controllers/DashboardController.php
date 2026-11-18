@@ -84,9 +84,16 @@ class DashboardController
         $email       = trim($_POST['email'] ?? '');
         $website     = trim($_POST['website'] ?? '');
         $address     = trim($_POST['address'] ?? '');
-        $templateId  = trim($_POST['template_id'] ?? 'minimal');
-        $themeColor  = trim($_POST['theme_color'] ?? 'gold_black');
-        $themeMode   = trim($_POST['theme_mode'] ?? 'light');
+        
+        $currentProfile = Profile::findByUserId($this->userId);
+        $templateId  = !empty($_POST['template_id']) ? trim($_POST['template_id']) : ($currentProfile['template_id'] ?? 'minimal');
+        $validTemplates = ['minimal', 'glassmorphism', 'corporate', 'creative_dark', 'modern_card'];
+        if (!in_array($templateId, $validTemplates, true)) {
+            $templateId = $currentProfile['template_id'] ?? 'minimal';
+        }
+
+        $themeColor  = !empty($_POST['theme_color']) ? trim($_POST['theme_color']) : ($currentProfile['theme_color'] ?? 'gold_black');
+        $themeMode   = !empty($_POST['theme_mode']) ? trim($_POST['theme_mode']) : ($currentProfile['theme_mode'] ?? 'light');
 
         // New profile attributes: slug, default_lang, map & working hours
         $rawSlug      = trim($_POST['slug'] ?? '');

@@ -168,104 +168,17 @@
         </div>
     <?php endif; ?>
 
-    <!-- Template Switcher & Color Customizer -->
-    <div class="p-6 sm:p-8 rounded-3xl bg-brand-surface border border-brand-border/60 space-y-6">
-        <div>
-            <h3 class="font-bold text-white text-base">تغییر قالب و پالت رنگی کارت ویزیت هوشمند</h3>
-            <p class="text-xs text-gray-400 mt-1">با انتخاب هر قالب و تم، تغییرات بلافاصله روی لینک اختصاصی شما اعمال می‌شود.</p>
-        </div>
-
-        <form action="<?= \App\Core\Helper::url('dashboard/switch-template') ?>" method="POST" class="space-y-6">
-            <?= \App\Core\Csrf::field() ?>
-            
-            <div class="grid grid-cols-1 sm:grid-cols-5 gap-4">
-                <?php
-                $currentTemplate = $profile['template_id'] ?? 'minimal';
-                $tplOptions = [
-                    'minimal'       => ['title' => 'مینیمال و لوکس', 'desc' => 'مشکی طلایی، مدرن'],
-                    'glassmorphism' => ['title' => 'گلسمورفیسم', 'desc' => 'شیشه‌ای و بلور'],
-                    'corporate'     => ['title' => 'شرکتی و رسمی', 'desc' => 'پزشکان و وکلا'],
-                    'creative_dark' => ['title' => 'خلاقانه نئون', 'desc' => 'استارتاپی و دارک'],
-                    'modern_card'   => ['title' => 'کارت ویزیت کلاسیک', 'desc' => 'چرخش سه‌بعدی']
-                ];
-                ?>
-                <?php foreach ($tplOptions as $key => $opt): ?>
-                    <label class="relative p-4 rounded-2xl border cursor-pointer transition-all <?= $currentTemplate === $key ? 'bg-brand-gold/10 border-brand-gold' : 'bg-brand-darker border-brand-border/60 hover:border-gray-500' ?>">
-                        <input type="radio" name="template_id" value="<?= $key ?>" <?= $currentTemplate === $key ? 'checked' : '' ?> class="sr-only">
-                        <div class="space-y-1">
-                            <span class="block text-xs font-bold text-white"><?= $opt['title'] ?></span>
-                            <span class="block text-[11px] text-gray-400"><?= $opt['desc'] ?></span>
-                        </div>
-                        <?php if ($currentTemplate === $key): ?>
-                            <div class="absolute top-2 left-2 text-brand-gold"><i data-lucide="check-circle" class="w-4 h-4"></i></div>
-                        <?php endif; ?>
-                    </label>
-                <?php endforeach; ?>
-            </div>
-
-            <!-- Theme Mode Selector (Light vs Dark) -->
-            <div class="pt-4 border-t border-brand-border/40 space-y-3">
-                <label class="block text-xs font-bold text-gray-300">انتخاب حالت تم کارت ویزیت (روشن / تیره):</label>
-                <?php $currentMode = $profile['theme_mode'] ?? 'light'; ?>
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <label class="p-4 rounded-2xl border cursor-pointer flex items-center justify-between transition-all <?= $currentMode === 'light' ? 'bg-amber-500/10 border-amber-400' : 'bg-brand-darker border-brand-border' ?>">
-                        <div class="flex items-center gap-3">
-                            <input type="radio" name="theme_mode" value="light" <?= $currentMode === 'light' ? 'checked' : '' ?>>
-                            <div>
-                                <span class="block text-xs font-bold text-white flex items-center gap-1.5">
-                                    <i data-lucide="sun" class="w-4 h-4 text-amber-500"></i>
-                                    <span>تم روشن (Light Mode)</span>
-                                </span>
-                                <span class="text-[11px] text-gray-400">پس‌زمینه سفید، تمیز و فوق‌العاده خوانا</span>
-                            </div>
-                        </div>
-                        <span class="text-[10px] px-2.5 py-1 rounded-full bg-amber-100 text-amber-800 font-bold">پیشنهادی</span>
-                    </label>
-
-                    <label class="p-4 rounded-2xl border cursor-pointer flex items-center justify-between transition-all <?= $currentMode === 'dark' ? 'bg-amber-500/10 border-amber-400' : 'bg-brand-darker border-brand-border' ?>">
-                        <div class="flex items-center gap-3">
-                            <input type="radio" name="theme_mode" value="dark" <?= $currentMode === 'dark' ? 'checked' : '' ?>>
-                            <div>
-                                <span class="block text-xs font-bold text-white flex items-center gap-1.5">
-                                    <i data-lucide="moon" class="w-4 h-4 text-sky-400"></i>
-                                    <span>تم تیره (Dark Mode)</span>
-                                </span>
-                                <span class="text-[11px] text-gray-400">مشکی متالیک لوکس و مدرن</span>
-                            </div>
-                        </div>
-                        <span class="text-[10px] px-2.5 py-1 rounded-full bg-slate-800 text-gray-300 font-mono">VIP Dark</span>
-                    </label>
-                </div>
-            </div>
-
-            <!-- Color Palette Selector -->
-            <div class="pt-2">
-                <label class="block text-xs font-bold text-gray-300 mb-3">انتخاب پالت رنگی قالب:</label>
-                <?php $currentTheme = $profile['theme_color'] ?? 'gold_black'; ?>
-                <div class="flex gap-4">
-                    <label class="flex items-center gap-2 cursor-pointer">
-                        <input type="radio" name="theme_color" value="gold_black" <?= $currentTheme === 'gold_black' ? 'checked' : '' ?>>
-                        <span class="w-4 h-4 rounded-full bg-[#D4AF37] border border-black inline-block"></span>
-                        <span class="text-xs text-gray-300">طلایی - مشکی</span>
-                    </label>
-                    <label class="flex items-center gap-2 cursor-pointer">
-                        <input type="radio" name="theme_color" value="blue_white" <?= $currentTheme === 'blue_white' ? 'checked' : '' ?>>
-                        <span class="w-4 h-4 rounded-full bg-[#38BDF8] border border-black inline-block"></span>
-                        <span class="text-xs text-gray-300">آبی - سرمه‌ای</span>
-                    </label>
-                    <label class="flex items-center gap-2 cursor-pointer">
-                        <input type="radio" name="theme_color" value="emerald_gray" <?= $currentTheme === 'emerald_gray' ? 'checked' : '' ?>>
-                        <span class="w-4 h-4 rounded-full bg-[#10B981] border border-black inline-block"></span>
-                        <span class="text-xs text-gray-300">سبز زمردی - طوسی</span>
-                    </label>
-                </div>
-            </div>
-
-            <button type="submit" class="px-6 py-3 rounded-xl bg-brand-gold text-black font-bold text-xs hover:brightness-110 shadow-lg shadow-brand-gold/10 transition-all">
-                ذخیره و اعمال روی کارت
+    <!-- Template Switcher & Color Customizer Form -->
+    <form action="<?= \App\Core\Helper::url('dashboard/switch-template') ?>" method="POST" class="space-y-4">
+        <?= \App\Core\Csrf::field() ?>
+        <?php require __DIR__ . '/partials/template_picker.php'; ?>
+        <div class="flex justify-end">
+            <button type="submit" class="px-8 py-3.5 rounded-2xl bg-gradient-to-r from-brand-goldDark via-brand-gold to-brand-goldLight text-black font-extrabold text-sm shadow-xl shadow-brand-gold/20 hover:brightness-110 active:scale-95 transition-all flex items-center gap-2">
+                <i data-lucide="check" class="w-5 h-5"></i>
+                <span>ذخیره و اعمال قالب و پالت رنگی</span>
             </button>
-        </form>
-    </div>
+        </div>
+    </form>
 
     <!-- User Orders List (Multiple Orders Support) -->
     <div class="p-6 sm:p-8 rounded-3xl bg-brand-surface border border-brand-border/60 space-y-6">
