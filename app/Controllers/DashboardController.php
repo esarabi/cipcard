@@ -230,6 +230,73 @@ class DashboardController
         Helper::redirect('dashboard/profile');
     }
 
+    /**
+     * Change or Set Account Password
+     */
+    public function changePassword(): void
+    {
+        Csrf::verifyOrAbort();
+
+        $user = User::findById($this->userId);
+        if (!$user) {
+            Session::setFlash('error', 'کاربر یافت نشد.');
+            Helper::redirect('dashboard/profile');
+            return;
+        }
+
+        $hasExistingPassword = !empty($user['password']);
+        $currentPassword = trim($_POST['current_password'] ?? '');
+        $newPassword = trim($_POST['new_password'] ?? '');
+        $confirmPassword = trim($_POST['confirm_password'] ?? '');
+
+        // 1. If user already has a password, verify current password
+        if ($hasExistingPassword) {
+            if (empty($currentPassword)) {
+                Session::setFlash('error', 'وارد کردن رمز عبور فعلی الزامی است.');
+                Helper::redirect('dashboard/profile#security');
+                return;
+            }
+            if (!password_verify($currentPassword, $user['password'])) {
+                Session::setFlash('error', 'رمز عبور فعلی نادرست است.');
+                Helper::redirect('dashboard/profile#security');
+                return;
+            }
+        }
+
+        // 2. Validate new password standards
+        if (mb_strlen($newPassword) < 8) {
+            Session::setFlash('error', 'رمز عبور جدید باید حداقل ۸ کاراکتر باشد.');
+            Helper::redirect('dashboard/profile#security');
+            return;
+        }
+
+        if (mb_strlen($newPassword) > 72) {
+            Session::setFlash('error', 'رمز عبور نباید بیشتر از ۷۲ کاراکتر باشد.');
+            Helper::redirect('dashboard/profile#security');
+            return;
+        }
+
+        // Standard: at least one English letter and at least one digit
+        if (!preg_match('/[A-Za-z]/', $newPassword) || !preg_match('/\d/', $newPassword)) {
+            Session::setFlash('error', 'رمز عبور باید ترکیبی از حروف انگلیسی و اعداد باشد (شامل حداقل یک حرف و یک عدد).');
+            Helper::redirect('dashboard/profile#security');
+            return;
+        }
+
+        // 3. Confirm match
+        if ($newPassword !== $confirmPassword) {
+            Session::setFlash('error', 'تکرار رمز عبور جدید با رمز عبور وارد شده همخوانی ندارد.');
+            Helper::redirect('dashboard/profile#security');
+            return;
+        }
+
+        // 4. Update password
+        User::update($this->userId, ['password' => $newPassword]);
+
+        Session::setFlash('success', 'رمز عبور شما با موفقیت ثبت و به‌روزرسانی شد. از این پس می‌توانید علاوه بر پیامک، با این رمز عبور نیز وارد پنل شوید.');
+        Helper::redirect('dashboard/profile#security');
+    }
+
     public function switchTemplate(): void
     {
         Csrf::verifyOrAbort();

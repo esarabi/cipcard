@@ -82,9 +82,10 @@ $router->get('/', [HomeController::class, 'index']);
 $router->post('/api/order/fast', [HomeController::class, 'fastOrder']);
 
 // -------------------------------------------------------------
-// Authentication (Passwordless OTP & Admin Login)
+// Authentication (Password & Passwordless OTP & Admin Login)
 // -------------------------------------------------------------
 $router->get('/auth/login', [AuthController::class, 'showLogin']);
+$router->post('/auth/password/login', [AuthController::class, 'loginWithPassword']);
 $router->post('/auth/otp/send', [AuthController::class, 'sendOtp']);
 $router->post('/auth/otp/verify', [AuthController::class, 'verifyOtp']);
 $router->get('/auth/logout', [AuthController::class, 'logout']);
@@ -106,6 +107,7 @@ $router->post('/order/upload-design', [OrderController::class, 'uploadDesign'], 
 $router->get('/dashboard', [DashboardController::class, 'index'], [AuthMiddleware::class]);
 $router->get('/dashboard/profile', [DashboardController::class, 'editProfile'], [AuthMiddleware::class]);
 $router->post('/dashboard/profile', [DashboardController::class, 'updateProfile'], [AuthMiddleware::class]);
+$router->post('/dashboard/password/change', [DashboardController::class, 'changePassword'], [AuthMiddleware::class]);
 $router->post('/dashboard/switch-template', [DashboardController::class, 'switchTemplate'], [AuthMiddleware::class]);
 $router->get('/dashboard/tracking', [DashboardController::class, 'orderTracking'], [AuthMiddleware::class]);
 $router->get('/dashboard/orders', [DashboardController::class, 'orderTracking'], [AuthMiddleware::class]);

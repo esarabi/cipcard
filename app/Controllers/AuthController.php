@@ -27,6 +27,77 @@ class AuthController
         View::render('auth.login', ['title' => 'ورود به حساب کاربری - CIPCard'], 'main');
     }
 
+    /**
+     * Login via Password for existing users
+     */
+    public function loginWithPassword(): void
+    {
+        Csrf::verifyOrAbort();
+
+        $rawMobile = trim($_POST['mobile'] ?? '');
+        $password = trim($_POST['password'] ?? '');
+
+        $mobile = Helper::normalizeMobile($rawMobile);
+        if (!$mobile || empty($password)) {
+            Helper::jsonResponse([
+                'success' => false,
+                'message' => 'لطفاً شماره موبایل و رمز عبور را به درستی وارد نمایید.'
+            ], 422);
+            return;
+        }
+
+        $user = User::findByMobile($mobile);
+        if (!$user) {
+            Helper::jsonResponse([
+                'success' => false,
+                'message' => 'کاربری با این شماره موبایل یافت نشد. می‌توانید با «ورود با پیامک (OTP)» حساب جدید خود را فعال کنید.'
+            ], 404);
+            return;
+        }
+
+        if (empty($user['password'])) {
+            Helper::jsonResponse([
+                'success' => false,
+                'message' => 'برای این حساب کاربری هنوز رمز عبور ثبت نشده است. لطفاً ابتدا از تب «ورود با پیامک (OTP)» وارد شده و سپس در پنل خود رمز عبور تعیین فرمایید.'
+            ], 400);
+            return;
+        }
+
+        if (!password_verify($password, $user['password'])) {
+            Helper::jsonResponse([
+                'success' => false,
+                'message' => 'شماره موبایل یا رمز عبور وارد شده اشتباه است.'
+            ], 401);
+            return;
+        }
+
+        if ($user['status'] === 'suspended') {
+            Helper::jsonResponse([
+                'success' => false,
+                'message' => 'حساب کاربری شما مسدود شده است. لطفاً با پشتیبانی تماس بگیرید.'
+            ], 403);
+            return;
+        }
+
+        // Activate user if was pending
+        if ($user['status'] === 'pending_verification') {
+            User::update((int)$user['id'], ['status' => 'active']);
+        }
+
+        // Establish User Session
+        Session::regenerate();
+        Session::set('user_id', (int)$user['id']);
+        Session::set('user_role', $user['role']);
+        Session::set('user_name', $user['full_name']);
+        Session::set('user_mobile', $user['mobile']);
+
+        Helper::jsonResponse([
+            'success'  => true,
+            'redirect' => Helper::url('dashboard'),
+            'message'  => 'ورود با موفقیت انجام شد.'
+        ]);
+    }
+
     public function sendOtp(): void
     {
         Csrf::verifyOrAbort();

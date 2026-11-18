@@ -1,6 +1,6 @@
 <style>
-    /* Light Mode Color Refinements for Reviews Management */
-    html[data-theme="light"] .review-comment-box {
+    /* Reviews Management Comment Box Styles */
+    .review-comment-box {
         background-color: #F8FAFC !important;
         border-color: #E2E8F0 !important;
         color: #1E293B !important;
@@ -202,7 +202,7 @@
                     </div>
 
                     <!-- Comment Content Body -->
-                    <div class="review-comment-box p-4 rounded-2xl bg-slate-50 dark:bg-brand-darker border border-slate-200 dark:border-brand-border/60 text-xs sm:text-sm text-slate-800 dark:text-gray-200 leading-relaxed whitespace-pre-line shadow-sm">
+                    <div class="review-comment-box p-4 rounded-2xl bg-slate-50 dark:bg-brand-darker border border-slate-200 dark:border-brand-border/60 text-xs sm:text-sm text-slate-800 dark:text-gray-200 leading-relaxed whitespace-pre-line shadow-sm" style="background-color: #F8FAFC; color: #1E293B; border-color: #E2E8F0;">
                         <?= nl2br(\App\Core\Helper::e($rev['comment'])) ?>
                     </div>
 

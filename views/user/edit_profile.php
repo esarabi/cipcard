@@ -531,6 +531,115 @@
             </button>
         </div>
     </form>
+
+    <!-- ==================== ACCOUNT SECURITY & PASSWORD ==================== -->
+    <div id="security" class="mt-10 p-6 sm:p-8 rounded-3xl bg-brand-surface border border-brand-border/60 shadow-xl space-y-6">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-brand-border/40 pb-5">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-2xl bg-amber-500/10 text-amber-500 border border-amber-500/30 flex items-center justify-center">
+                    <i data-lucide="shield-check" class="w-5 h-5"></i>
+                </div>
+                <div>
+                    <h3 class="text-sm font-bold text-white">امنیت و رمز عبور حساب کاربری</h3>
+                    <p class="text-xs text-gray-400">امکان ورود به پنل کاربری با رمز عبور پایدار علاوه بر پیامک یکبار مصرف (OTP)</p>
+                </div>
+            </div>
+            <div>
+                <?php if (!empty($user['password'])): ?>
+                    <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 text-xs font-bold">
+                        <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+                        <span>رمز عبور فعال است</span>
+                    </span>
+                <?php else: ?>
+                    <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-500/10 text-amber-400 border border-amber-500/30 text-xs font-bold">
+                        <span class="w-2 h-2 rounded-full bg-amber-400"></span>
+                        <span>هنوز رمزی تعیین نشده است</span>
+                    </span>
+                <?php endif; ?>
+            </div>
+        </div>
+
+        <?php if (empty($user['password'])): ?>
+            <div class="p-4 rounded-2xl bg-amber-500/10 border border-amber-500/30 text-xs text-amber-200/90 leading-relaxed space-y-1">
+                <p class="font-bold flex items-center gap-1.5 text-amber-300">
+                    <i data-lucide="info" class="w-4 h-4"></i>
+                    <span>تعیین رمز عبور برای ورود سریع‌تر به پنل</span>
+                </p>
+                <p>
+                    حساب شما با تایید شماره موبایل و پیامک فعال است. با تعیین رمز عبور، در شرایطی که پیامک با تاخیر ارسال می‌شود یا به خط همراه دسترسی ندارید، می‌توانید مستقیماً با رمز عبور وارد پنل شوید.
+                </p>
+            </div>
+        <?php endif; ?>
+
+        <form action="<?= \App\Core\Helper::url('dashboard/password/change') ?>" method="POST" id="change-password-form" class="space-y-5">
+            <?= \App\Core\Csrf::field() ?>
+
+            <?php if (!empty($user['password'])): ?>
+                <div class="space-y-1.5">
+                    <label for="current-password-input" class="block text-xs font-bold text-gray-300">رمز عبور فعلی *</label>
+                    <div class="relative max-w-md">
+                        <input type="password" id="current-password-input" name="current_password" required placeholder="رمز عبور فعلی خود را وارد کنید" dir="ltr" class="w-full pl-12 pr-4 py-3 rounded-xl bg-brand-darker border border-brand-border text-white text-sm placeholder:text-gray-500 focus:border-brand-gold focus:outline-none transition-all">
+                        <button type="button" onclick="togglePasswordVisibility('current-password-input', this)" class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-white p-1 rounded-lg focus:outline-none" title="نمایش / مخفی‌سازی رمز">
+                            <i data-lucide="eye" class="w-4 h-4"></i>
+                        </button>
+                    </div>
+                </div>
+            <?php endif; ?>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div class="space-y-1.5">
+                    <label for="new-password-input" class="block text-xs font-bold text-gray-300">
+                        <?= !empty($user['password']) ? 'رمز عبور جدید *' : 'تعیین رمز عبور جدید *' ?>
+                    </label>
+                    <div class="relative">
+                        <input type="password" id="new-password-input" name="new_password" required minlength="8" maxlength="72" placeholder="حداقل ۸ کاراکتر (حروف انگلیسی و عدد)" dir="ltr" oninput="checkPasswordStrengthLive()" class="w-full pl-12 pr-4 py-3 rounded-xl bg-brand-darker border border-brand-border text-white text-sm placeholder:text-gray-500 focus:border-brand-gold focus:outline-none transition-all">
+                        <button type="button" onclick="togglePasswordVisibility('new-password-input', this)" class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-white p-1 rounded-lg focus:outline-none" title="نمایش / مخفی‌سازی رمز">
+                            <i data-lucide="eye" class="w-4 h-4"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="space-y-1.5">
+                    <label for="confirm-password-input" class="block text-xs font-bold text-gray-300">تکرار رمز عبور جدید *</label>
+                    <div class="relative">
+                        <input type="password" id="confirm-password-input" name="confirm_password" required minlength="8" maxlength="72" placeholder="تکرار دقیق رمز عبور جدید" dir="ltr" oninput="checkPasswordStrengthLive()" class="w-full pl-12 pr-4 py-3 rounded-xl bg-brand-darker border border-brand-border text-white text-sm placeholder:text-gray-500 focus:border-brand-gold focus:outline-none transition-all">
+                        <button type="button" onclick="togglePasswordVisibility('confirm-password-input', this)" class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-white p-1 rounded-lg focus:outline-none" title="نمایش / مخفی‌سازی رمز">
+                            <i data-lucide="eye" class="w-4 h-4"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Password Standards Checklist -->
+            <div class="p-4 rounded-2xl bg-black/30 border border-brand-border/40 space-y-2.5">
+                <div class="text-xs font-bold text-gray-300 flex items-center gap-1.5">
+                    <i data-lucide="check-shield" class="w-4 h-4 text-brand-gold"></i>
+                    <span>استانداردهای امنیتی رمز عبور:</span>
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 text-[11px]">
+                    <div id="rule-length" class="flex items-center gap-1.5 text-gray-400">
+                        <span class="w-2 h-2 rounded-full bg-gray-600 inline-block transition-colors rule-dot"></span>
+                        <span>حداقل ۸ کاراکتر</span>
+                    </div>
+                    <div id="rule-combo" class="flex items-center gap-1.5 text-gray-400">
+                        <span class="w-2 h-2 rounded-full bg-gray-600 inline-block transition-colors rule-dot"></span>
+                        <span>شامل حروف انگلیسی و اعداد</span>
+                    </div>
+                    <div id="rule-match" class="flex items-center gap-1.5 text-gray-400">
+                        <span class="w-2 h-2 rounded-full bg-gray-600 inline-block transition-colors rule-dot"></span>
+                        <span>تطابق با تکرار رمز</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pt-2">
+                <button type="submit" id="btn-submit-password" class="px-8 py-3.5 rounded-xl bg-gradient-to-r from-brand-goldDark via-brand-gold to-brand-goldLight text-black font-extrabold text-xs shadow-lg shadow-brand-gold/15 hover:brightness-110 active:scale-95 transition-all flex items-center gap-2">
+                    <i data-lucide="lock" class="w-4 h-4"></i>
+                    <span><?= !empty($user['password']) ? 'به‌روزرسانی رمز عبور' : 'ذخیره و فعال‌سازی رمز عبور' ?></span>
+                </button>
+            </div>
+        </form>
+    </div>
 </div>
 
 <script>
@@ -754,5 +863,57 @@ if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', initLocationPicker);
 } else {
     initLocationPicker();
+}
+
+function togglePasswordVisibility(inputId, btn) {
+    var input = document.getElementById(inputId);
+    if (!input) return;
+    var isPass = input.type === 'password';
+    input.type = isPass ? 'text' : 'password';
+    btn.innerHTML = isPass ? '<i data-lucide="eye-off" class="w-4 h-4 text-amber-500"></i>' : '<i data-lucide="eye" class="w-4 h-4"></i>';
+    if (window.lucide) lucide.createIcons();
+}
+
+function checkPasswordStrengthLive() {
+    var newPwd = (document.getElementById('new-password-input') || {}).value || '';
+    var confirmPwd = (document.getElementById('confirm-password-input') || {}).value || '';
+
+    var ruleLen = document.getElementById('rule-length');
+    var ruleCombo = document.getElementById('rule-combo');
+    var ruleMatch = document.getElementById('rule-match');
+
+    // Rule 1: Length >= 8
+    var hasLen = newPwd.length >= 8 && newPwd.length <= 72;
+    updateRuleVisual(ruleLen, hasLen);
+
+    // Rule 2: Combo letters + digits
+    var hasLetters = /[a-zA-Z]/.test(newPwd);
+    var hasDigits = /\d/.test(newPwd);
+    var hasCombo = hasLetters && hasDigits;
+    updateRuleVisual(ruleCombo, hasCombo);
+
+    // Rule 3: Match
+    var hasMatch = newPwd.length > 0 && newPwd === confirmPwd;
+    updateRuleVisual(ruleMatch, hasMatch);
+}
+
+function updateRuleVisual(el, isValid) {
+    if (!el) return;
+    var dot = el.querySelector('.rule-dot');
+    if (isValid) {
+        el.classList.remove('text-gray-400');
+        el.classList.add('text-emerald-400', 'font-bold');
+        if (dot) {
+            dot.classList.remove('bg-gray-600');
+            dot.classList.add('bg-emerald-400');
+        }
+    } else {
+        el.classList.remove('text-emerald-400', 'font-bold');
+        el.classList.add('text-gray-400');
+        if (dot) {
+            dot.classList.remove('bg-emerald-400');
+            dot.classList.add('bg-gray-600');
+        }
+    }
 }
 </script>
