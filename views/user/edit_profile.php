@@ -2,7 +2,7 @@
     <div class="pb-6 border-b border-brand-border/40 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
             <h1 class="text-2xl font-black text-white">ویرایش مشخصات کارت ویزیت هوشمند</h1>
-            <p class="text-xs text-gray-400 mt-1">تغییر آدرس اختصاصی، شبکه‌های اجتماعی ایرانی و بین‌المللی، نقشه و ساعات پاسخگویی</p>
+            <p class="text-xs text-gray-400 mt-1">تغییر آدرس اختصاصی، توضیحات بیشتر، شبکه‌های اجتماعی ایرانی و بین‌المللی، نقشه و ساعات پاسخگویی</p>
         </div>
         <?php if (!empty($profile['slug']) || !empty($user['mobile'])): ?>
             <a href="<?= \App\Core\Helper::url('@' . (!empty($profile['slug']) ? $profile['slug'] : $user['mobile'])) ?>" target="_blank" class="px-4 py-2 rounded-xl bg-brand-surfaceHover border border-brand-gold/40 text-brand-gold hover:bg-brand-gold hover:text-black transition-all text-xs font-bold flex items-center gap-2 self-start sm:self-auto">
@@ -114,8 +114,25 @@
             </div>
 
             <div class="pt-2">
-                <label class="block text-xs font-bold text-gray-300 mb-1.5">بیوگرافی یا معرفی کوتاه خدمات و فعالیت‌ها</label>
+                <label class="block text-xs font-bold text-gray-300 mb-1.5">بیوگرافی یا معرفی کوتاه (نمایش در کارت هویت بالا)</label>
                 <textarea name="bio" rows="3" placeholder="توضیح مختصری درباره خدمات، فعالیت‌ها، سوابق حرفه‌ای یا ماموریت سازمان خود بنویسید..." class="w-full px-4 py-3 rounded-xl bg-brand-darker border border-brand-border text-white text-xs focus:border-brand-gold focus:outline-none leading-relaxed"><?= \App\Core\Helper::e($profile['bio'] ?? '') ?></textarea>
+            </div>
+
+            <div class="pt-2">
+                <div class="flex items-center justify-between mb-1.5">
+                    <label class="block text-xs font-bold text-brand-gold flex items-center gap-1.5">
+                        <i data-lucide="file-text" class="w-4 h-4"></i>
+                        <span>توضیحات بیشتر و معرفی تفصیلی (با قابلیت باز و بسته شدن در صفحه پروفایل)</span>
+                    </label>
+                    <span class="text-[11px] text-gray-400">نمایش خلاصه با افکت محو شونده (Fade) و دکمه باز کردن کل متن</span>
+                </div>
+
+                <div class="mb-3">
+                    <label class="block text-xs font-bold text-gray-300 mb-1.5">تیتر بخش توضیحات بیشتر <span class="text-gray-500">(پیش‌فرض: توضیحات بیشتر)</span></label>
+                    <input type="text" name="more_info_title" value="<?= \App\Core\Helper::e($profile['more_info_title'] ?? '') ?>" placeholder="مثال: درباره ما، معرفی خدمات، تاریخچه، رزومه کاری..." class="w-full px-4 py-3 rounded-xl bg-brand-darker border border-brand-border text-white text-xs focus:border-brand-gold focus:outline-none">
+                </div>
+
+                <textarea name="more_info" rows="6" placeholder="توضیحات کامل درباره خدمات، رزومه، لیست محصولات، افتخارات، شعب یا شرایط همکاری را اینجا وارد کنید. در صفحه پروفایل چند خط اول نمایش داده شده و بازدیدکننده با زدن دکمه فلش رو به پایین می‌تواند کل متن را باز کند..." class="w-full px-4 py-3 rounded-xl bg-brand-darker border border-brand-border text-white text-xs focus:border-brand-gold focus:outline-none leading-relaxed"><?= \App\Core\Helper::e($profile['more_info'] ?? '') ?></textarea>
             </div>
         </div>
 
@@ -173,14 +190,14 @@
 
         <!-- 7. Map & Smart GPS Navigation (نمایش روی نقشه و مسیریابی) -->
         <div class="p-6 sm:p-8 rounded-3xl bg-brand-surface border border-brand-border/60 space-y-4">
-            <div class="flex items-center justify-between">
+            <div class="flex items-center justify-between flex-wrap gap-3">
                 <div class="flex items-center gap-3">
                     <div class="w-10 h-10 rounded-2xl bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 flex items-center justify-center">
                         <i data-lucide="map-pin" class="w-5 h-5"></i>
                     </div>
                     <div>
-                        <h3 class="text-sm font-bold text-white">موقعیت مکانی و مسیریابی هوشمند (نشان، بلد و گوگل‌مپ)</h3>
-                        <p class="text-xs text-gray-400">مشتریان با لمس کارت می‌توانند با یک کلیک آدرس شما را در نشان، بلد یا گوگل مپ مسیریابی کنند.</p>
+                        <h3 class="text-sm font-bold text-white">موقعیت مکانی، نمایش نقشه زنده و مسیریابی هوشمند (نشان، بلد و گوگل‌مپ)</h3>
+                        <p class="text-xs text-gray-400">نقشه زنده در صفحه پروفایل نمایش داده می‌شود و مشتریان با یک کلیک در نشان، بلد یا گوگل مپ مسیریابی می‌کنند.</p>
                     </div>
                 </div>
                 <button type="button" onclick="detectGpsLocation()" class="px-3.5 py-2 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500 hover:text-black transition-all text-xs font-bold flex items-center gap-1.5">

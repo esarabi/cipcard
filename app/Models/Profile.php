@@ -5,9 +5,12 @@ namespace App\Models;
 
 use App\Core\Database;
 use PDO;
+use PDOException;
 
 class Profile
 {
+    private static bool $schemaChecked = false;
+
     /**
      * Reserved system slugs that cannot be registered by users
      */
@@ -19,18 +22,44 @@ class Profile
         'index', 'feed', 'sitemap', 'robot', 'robots', 'null', 'undefined'
     ];
 
+    /**
+     * Ensure `more_info` column exists on existing production databases automatically
+     */
+    public static function ensureExtendedColumns(): void
+    {
+        if (self::$schemaChecked) {
+            return;
+        }
+        self::$schemaChecked = true;
+
+        try {
+            $db = Database::getConnection();
+            $stmt = $db->query("SHOW COLUMNS FROM `profiles` LIKE 'more_info'");
+            if (!$stmt || !$stmt->fetch()) {
+                $db->exec("ALTER TABLE `profiles` ADD COLUMN `more_info` LONGTEXT NULL AFTER `bio`");
+            }
+            $stmt2 = $db->query("SHOW COLUMNS FROM `profiles` LIKE 'more_info_title'");
+            if (!$stmt2 || !$stmt2->fetch()) {
+                $db->exec("ALTER TABLE `profiles` ADD COLUMN `more_info_title` VARCHAR(255) NULL AFTER `more_info`");
+            }
+        } catch (PDOException $e) {
+            // Silently ignore if table does not exist or permission is restricted
+        }
+    }
+
     public static function create(array $data): int
     {
+        self::ensureExtendedColumns();
         $db = Database::getConnection();
         $stmt = $db->prepare("
             INSERT INTO profiles (
-                user_id, slug, display_name, job_title, company, bio,
+                user_id, slug, display_name, job_title, company, bio, more_info, more_info_title,
                 avatar_url, cover_url, email, phone_work, phone_mobile,
                 website, address, map_link, map_latitude, map_longitude,
                 working_days, working_hours, working_note, default_lang,
                 social_links, template_id, theme_color, theme_mode, is_active
             ) VALUES (
-                :user_id, :slug, :display_name, :job_title, :company, :bio,
+                :user_id, :slug, :display_name, :job_title, :company, :bio, :more_info, :more_info_title,
                 :avatar_url, :cover_url, :email, :phone_work, :phone_mobile,
                 :website, :address, :map_link, :map_latitude, :map_longitude,
                 :working_days, :working_hours, :working_note, :default_lang,
@@ -49,6 +78,8 @@ class Profile
             ':job_title'     => $data['job_title'] ?? null,
             ':company'       => $data['company'] ?? null,
             ':bio'           => $data['bio'] ?? null,
+            ':more_info'     => $data['more_info'] ?? null,
+            ':more_info_title' => $data['more_info_title'] ?? null,
             ':avatar_url'    => $data['avatar_url'] ?? null,
             ':cover_url'     => $data['cover_url'] ?? null,
             ':email'         => $data['email'] ?? null,
@@ -75,6 +106,7 @@ class Profile
 
     public static function findByUserId(int $userId): ?array
     {
+        self::ensureExtendedColumns();
         $db = Database::getConnection();
         $stmt = $db->prepare("SELECT * FROM profiles WHERE user_id = :user_id LIMIT 1");
         $stmt->execute([':user_id' => $userId]);
@@ -90,6 +122,7 @@ class Profile
      */
     public static function findByMobile(string $identifier): ?array
     {
+        self::ensureExtendedColumns();
         $db = Database::getConnection();
         $clean = trim($identifier);
 
@@ -149,6 +182,7 @@ class Profile
 
     public static function updateByUserId(int $userId, array $data): bool
     {
+        self::ensureExtendedColumns();
         $db = Database::getConnection();
         $fields = [];
         $params = [':user_id' => $userId];

@@ -76,6 +76,8 @@ class DashboardController
         $jobTitle    = trim($_POST['job_title'] ?? '');
         $company     = trim($_POST['company'] ?? '');
         $bio         = trim($_POST['bio'] ?? '');
+        $moreInfo    = trim($_POST['more_info'] ?? '');
+        $moreInfoTitle = trim($_POST['more_info_title'] ?? '');
         $phoneMobile = trim($_POST['phone_mobile'] ?? '');
         $phoneWork   = trim($_POST['phone_work'] ?? '');
         $email       = trim($_POST['email'] ?? '');
@@ -133,6 +135,8 @@ class DashboardController
             'job_title'     => $jobTitle,
             'company'       => $company,
             'bio'           => $bio,
+            'more_info'     => $moreInfo,
+            'more_info_title' => $moreInfoTitle,
             'phone_mobile'  => $phoneMobile,
             'phone_work'    => $phoneWork,
             'email'         => $email,
@@ -170,7 +174,7 @@ class DashboardController
         }
 
         Profile::updateByUserId($this->userId, $profileData);
-        Session::setFlash('success', 'تغییرات مشخصات، آدرس اختصاصی، شبکه‌های اجتماعی و ساعات کاری با موفقیت ذخیره شد.');
+        Session::setFlash('success', 'تغییرات مشخصات، توضیحات بیشتر، آدرس اختصاصی، شبکه‌های اجتماعی و ساعات کاری با موفقیت ذخیره شد.');
         Helper::redirect('dashboard/profile');
     }
 
