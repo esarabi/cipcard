@@ -79,6 +79,7 @@ class DashboardController
         $bio         = trim($_POST['bio'] ?? '');
         $moreInfo    = trim($_POST['more_info'] ?? '');
         $moreInfoTitle = trim($_POST['more_info_title'] ?? '');
+        $featuredImageTitle = trim($_POST['featured_image_title'] ?? '');
         $phoneMobile = trim($_POST['phone_mobile'] ?? '');
         $phoneWork   = trim($_POST['phone_work'] ?? '');
         $email       = trim($_POST['email'] ?? '');
@@ -145,6 +146,7 @@ class DashboardController
             'bio'           => $bio,
             'more_info'     => $moreInfo,
             'more_info_title' => $moreInfoTitle,
+            'featured_image_title' => $featuredImageTitle,
             'phone_mobile'  => $phoneMobile,
             'phone_work'    => $phoneWork,
             'email'         => $email,
@@ -200,6 +202,27 @@ class DashboardController
             }
         } elseif (isset($_POST['remove_cover']) && $_POST['remove_cover'] === '1') {
             $profileData['cover_url'] = null;
+        }
+
+        // Handle In-Page Featured Showcase Image Upload
+        if (isset($_FILES['featured_image']) && $_FILES['featured_image']['error'] === UPLOAD_ERR_OK) {
+            $file = $_FILES['featured_image'];
+            if ($file['size'] <= Config::MAX_FILE_SIZE) {
+                $ext = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
+                if (in_array($ext, ['jpg', 'jpeg', 'png', 'webp'], true)) {
+                    if (!is_dir(Config::UPLOAD_GALLERY)) {
+                        mkdir(Config::UPLOAD_GALLERY, 0755, true);
+                    }
+                    $newFileName = 'featured_' . $this->userId . '_' . time() . '.' . $ext;
+                    $dest = Config::UPLOAD_GALLERY . $newFileName;
+                    if (move_uploaded_file($file['tmp_name'], $dest)) {
+                        $profileData['featured_image_url'] = 'uploads/gallery/' . $newFileName;
+                    }
+                }
+            }
+        } elseif (isset($_POST['remove_featured_image']) && $_POST['remove_featured_image'] === '1') {
+            $profileData['featured_image_url'] = null;
+            $profileData['featured_image_title'] = null;
         }
 
         Profile::updateByUserId($this->userId, $profileData);

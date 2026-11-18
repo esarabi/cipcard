@@ -322,6 +322,9 @@ $vcardUrl = \App\Core\Helper::url('vcard/@' . (!empty($profile['slug']) ? $profi
                 <!-- Collapsible Extended Description ("توضیحات بیشتر") -->
                 <?php require __DIR__ . '/../partials/more_info.php'; ?>
 
+                <!-- Featured In-Page Showcase Photo -->
+                <?php require __DIR__ . '/../partials/featured_image.php'; ?>
+
                 <!-- Iranian & International Socials Partial -->
                 <?php require __DIR__ . '/../partials/social_links.php'; ?>
 

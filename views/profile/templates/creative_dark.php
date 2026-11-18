@@ -187,6 +187,9 @@ $vcardUrl = \App\Core\Helper::url('vcard/@' . (!empty($profile['slug']) ? $profi
                 <!-- Collapsible Extended Description ("توضیحات بیشتر") -->
                 <?php require __DIR__ . '/../partials/more_info.php'; ?>
 
+                <!-- Featured In-Page Showcase Photo -->
+                <?php require __DIR__ . '/../partials/featured_image.php'; ?>
+
                 <!-- Direct Contact Channels Card -->
                 <?php if (!empty($profile['phone_mobile']) || !empty($profile['phone_work']) || !empty($profile['email']) || !empty($profile['website'])): ?>
                     <div class="rounded-3xl p-6 sm:p-7 border space-y-4" style="background-color: var(--card-bg); border-color: var(--border); box-shadow: var(--card-shadow);">

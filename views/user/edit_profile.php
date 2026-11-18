@@ -132,6 +132,58 @@
             </div>
         </div>
 
+        <!-- 5. Featured In-Page Showcase Photo Upload (عکس معرفی / نمونه کار در صفحه) -->
+        <div class="p-6 sm:p-8 rounded-3xl bg-brand-surface border border-brand-border/60 space-y-5">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                <div class="space-y-1">
+                    <h3 class="text-xs sm:text-sm font-bold text-white flex items-center gap-2">
+                        <i data-lucide="image" class="w-4 h-4 text-brand-gold"></i>
+                        <span>تصویر شاخص و معرفی در صفحه پروفایل (نمایش تصویر نمونه کار، محصول، فروشگاه، کلینیک یا گواهینامه)</span>
+                    </h3>
+                    <p class="text-[11px] text-gray-400 leading-relaxed">
+                        علاوه بر بنر بالای کارت، می‌توانید ۱ تصویر دلخواه (مانند نمای محیط کار، معرفی محصول، گواهینامه یا نمونه‌کار شاخص) را برای نمایش مستقیم در ستون اصلی صفحه کارت ویزیت هوشمند خود آپلود کنید.
+                    </p>
+                </div>
+                <?php if (!empty($profile['featured_image_url'])): ?>
+                    <label class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-red-500/10 border border-red-500/30 text-red-400 text-xs font-bold cursor-pointer hover:bg-red-500/20 transition-all flex-shrink-0 self-start sm:self-auto">
+                        <input type="checkbox" name="remove_featured_image" value="1" class="rounded accent-red-500">
+                        <span>حذف تصویر شاخص</span>
+                    </label>
+                <?php endif; ?>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
+                <!-- Image Preview (5 cols) -->
+                <div class="md:col-span-5">
+                    <div class="w-full h-44 rounded-2xl overflow-hidden border border-brand-border/60 relative bg-brand-darker flex items-center justify-center p-2">
+                        <?php if (!empty($profile['featured_image_url'])): ?>
+                            <img src="<?= \App\Core\Helper::url($profile['featured_image_url']) ?>" alt="Featured Photo" class="w-full h-full object-cover sm:object-contain rounded-xl">
+                        <?php else: ?>
+                            <div class="text-center p-4 text-gray-500 space-y-1.5">
+                                <i data-lucide="image-plus" class="w-8 h-8 mx-auto text-gray-600"></i>
+                                <span class="block text-xs text-gray-400">تصویری آپلود نشده است</span>
+                                <span class="block text-[10px] text-gray-500">پس از آپلود در این قسمت و در صفحه پروفایل نمایش داده می‌شود</span>
+                            </div>
+                        <?php endif; ?>
+                    </div>
+                </div>
+
+                <!-- Input Controls & Title (7 cols) -->
+                <div class="md:col-span-7 space-y-4">
+                    <div>
+                        <label class="block text-xs font-bold text-gray-300 mb-1.5">تیتر یا عنوان بالای تصویر در صفحه <span class="text-gray-500">(اختیاری)</span></label>
+                        <input type="text" name="featured_image_title" value="<?= \App\Core\Helper::e($profile['featured_image_title'] ?? '') ?>" placeholder="مثال: نمای کلینیک، نمونه کار شاخص، گواهینامه بین‌المللی، کاتالوگ محصولات..." class="w-full px-4 py-3 rounded-xl bg-brand-darker border border-brand-border text-white text-xs focus:border-brand-gold focus:outline-none">
+                    </div>
+
+                    <div class="space-y-1.5">
+                        <label class="block text-xs font-bold text-gray-300">انتخاب فایل تصویر جهت بارگذاری</label>
+                        <input type="file" name="featured_image" accept="image/*" class="w-full text-xs text-gray-400 file:mr-2 file:py-2.5 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-brand-surfaceHover file:text-brand-gold hover:file:bg-brand-gold hover:file:text-black cursor-pointer">
+                        <span class="block text-[10px] text-gray-500">فرمت‌های مجاز: JPG, PNG, WEBP تا حداکثر ۱۵ مگابایت</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <!-- 4. Personal & Corporate Info -->
         <div class="p-6 sm:p-8 rounded-3xl bg-brand-surface border border-brand-border/60 space-y-4">
             <h3 class="text-sm font-bold text-white mb-4 border-r-2 border-brand-gold pr-3">مشخصات هویتی و شغلی</h3>

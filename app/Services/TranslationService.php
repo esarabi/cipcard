@@ -183,6 +183,14 @@ class TranslationService
             'ru' => 'Премиальная смарт-визитка',
             'zh' => '尊贵智能商务名片'
         ],
+        'featured_image' => [
+            'fa' => 'تصویر معرفی و نمونه‌کار',
+            'en' => 'Featured Showcase',
+            'ar' => 'صورة العرض والتعريف',
+            'tr' => 'Öne Çıkan Görsel',
+            'ru' => 'Избранное фото / Презентация',
+            'zh' => '精选展示图片'
+        ],
         'order_your_card' => [
             'fa' => 'سفارش کارت هوشمند CIPCard',
             'en' => 'Order Your CIPCard',

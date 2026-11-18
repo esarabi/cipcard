@@ -160,6 +160,9 @@ $vcardUrl = \App\Core\Helper::url('vcard/@' . (!empty($profile['slug']) ? $profi
                 <!-- Collapsible Extended Description ("توضیحات بیشتر") -->
                 <?php require __DIR__ . '/../partials/more_info.php'; ?>
 
+                <!-- Featured In-Page Showcase Photo -->
+                <?php require __DIR__ . '/../partials/featured_image.php'; ?>
+
                 <!-- Glass Actions Card -->
                 <?php if (!empty($profile['phone_mobile']) || !empty($profile['phone_work']) || !empty($profile['email']) || !empty($profile['website'])): ?>
                     <div class="glass-card rounded-[32px] p-6 sm:p-7 space-y-4 shadow-xl">

@@ -46,6 +46,14 @@ class Profile
             if (!$stmt3 || !$stmt3->fetch()) {
                 $db->exec("ALTER TABLE `profiles` ADD COLUMN `enable_reviews` TINYINT(1) NOT NULL DEFAULT 1 AFTER `more_info_title`");
             }
+            $stmt4 = $db->query("SHOW COLUMNS FROM `profiles` LIKE 'featured_image_url'");
+            if (!$stmt4 || !$stmt4->fetch()) {
+                $db->exec("ALTER TABLE `profiles` ADD COLUMN `featured_image_url` VARCHAR(255) NULL AFTER `cover_url`");
+            }
+            $stmt5 = $db->query("SHOW COLUMNS FROM `profiles` LIKE 'featured_image_title'");
+            if (!$stmt5 || !$stmt5->fetch()) {
+                $db->exec("ALTER TABLE `profiles` ADD COLUMN `featured_image_title` VARCHAR(255) NULL AFTER `featured_image_url`");
+            }
             Review::ensureSchema();
         } catch (PDOException $e) {
             // Silently ignore if table does not exist or permission is restricted
@@ -59,13 +67,13 @@ class Profile
         $stmt = $db->prepare("
             INSERT INTO profiles (
                 user_id, slug, display_name, job_title, company, bio, more_info, more_info_title, enable_reviews,
-                avatar_url, cover_url, email, phone_work, phone_mobile,
+                avatar_url, cover_url, featured_image_url, featured_image_title, email, phone_work, phone_mobile,
                 website, address, map_link, map_latitude, map_longitude,
                 working_days, working_hours, working_note, default_lang,
                 social_links, template_id, theme_color, theme_mode, is_active
             ) VALUES (
                 :user_id, :slug, :display_name, :job_title, :company, :bio, :more_info, :more_info_title, :enable_reviews,
-                :avatar_url, :cover_url, :email, :phone_work, :phone_mobile,
+                :avatar_url, :cover_url, :featured_image_url, :featured_image_title, :email, :phone_work, :phone_mobile,
                 :website, :address, :map_link, :map_latitude, :map_longitude,
                 :working_days, :working_hours, :working_note, :default_lang,
                 :social_links, :template_id, :theme_color, :theme_mode, :is_active
@@ -88,6 +96,8 @@ class Profile
             ':enable_reviews'  => isset($data['enable_reviews']) ? (int)$data['enable_reviews'] : 1,
             ':avatar_url'    => $data['avatar_url'] ?? null,
             ':cover_url'     => $data['cover_url'] ?? null,
+            ':featured_image_url'   => $data['featured_image_url'] ?? null,
+            ':featured_image_title' => $data['featured_image_title'] ?? null,
             ':email'         => $data['email'] ?? null,
             ':phone_work'    => $data['phone_work'] ?? null,
             ':phone_mobile'  => $data['phone_mobile'] ?? null,
