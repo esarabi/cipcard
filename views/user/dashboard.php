@@ -168,18 +168,6 @@
         </div>
     <?php endif; ?>
 
-    <!-- Template Switcher & Color Customizer Form -->
-    <form action="<?= \App\Core\Helper::url('dashboard/switch-template') ?>" method="POST" class="space-y-4">
-        <?= \App\Core\Csrf::field() ?>
-        <?php require __DIR__ . '/partials/template_picker.php'; ?>
-        <div class="flex justify-end">
-            <button type="submit" class="px-8 py-3.5 rounded-2xl bg-gradient-to-r from-brand-goldDark via-brand-gold to-brand-goldLight text-black font-extrabold text-sm shadow-xl shadow-brand-gold/20 hover:brightness-110 active:scale-95 transition-all flex items-center gap-2">
-                <i data-lucide="check" class="w-5 h-5"></i>
-                <span>ذخیره و اعمال قالب و پالت رنگی</span>
-            </button>
-        </div>
-    </form>
-
     <!-- User Orders List (Multiple Orders Support) -->
     <div class="p-6 sm:p-8 rounded-3xl bg-brand-surface border border-brand-border/60 space-y-6">
         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-brand-border/40 pb-4">
