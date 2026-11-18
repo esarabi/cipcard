@@ -285,31 +285,104 @@
             </div>
         </div>
 
-        <!-- 7. Map & Smart GPS Navigation (نمایش روی نقشه و مسیریابی) -->
-        <div class="p-6 sm:p-8 rounded-3xl bg-brand-surface border border-brand-border/60 space-y-4">
+        <!-- 7. Map & Smart GPS Navigation (انتخاب موقعیت از روی نقشه، GPS و مسیریابی) -->
+        <!-- Leaflet Map CSS & JS -->
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin=""/>
+        <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
+        <style>
+            #location-picker-map {
+                z-index: 5;
+                background-color: #121217;
+            }
+            .leaflet-pane {
+                z-index: 10 !important;
+            }
+            .leaflet-top, .leaflet-bottom {
+                z-index: 20 !important;
+            }
+            .leaflet-container {
+                font-family: 'Vazirmatn', sans-serif !important;
+            }
+            html[data-theme="dark"] .leaflet-layer,
+            html[data-theme="dark"] .leaflet-control-zoom-in,
+            html[data-theme="dark"] .leaflet-control-zoom-out,
+            html[data-theme="dark"] .leaflet-control-attribution {
+                filter: brightness(0.88) contrast(1.08);
+            }
+        </style>
+
+        <div class="p-6 sm:p-8 rounded-3xl bg-brand-surface border border-brand-border/60 space-y-5">
             <div class="flex items-center justify-between flex-wrap gap-3">
                 <div class="flex items-center gap-3">
                     <div class="w-10 h-10 rounded-2xl bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 flex items-center justify-center">
                         <i data-lucide="map-pin" class="w-5 h-5"></i>
                     </div>
                     <div>
-                        <h3 class="text-sm font-bold text-white">موقعیت مکانی، نمایش نقشه زنده و مسیریابی هوشمند (نشان، بلد و گوگل‌مپ)</h3>
-                        <p class="text-xs text-gray-400">نقشه زنده در صفحه پروفایل نمایش داده می‌شود و مشتریان با یک کلیک در نشان، بلد یا گوگل مپ مسیریابی می‌کنند.</p>
+                        <h3 class="text-sm font-bold text-white">موقعیت مکانی، انتخاب از روی نقشه و مسیریابی هوشمند (نشان، بلد و گوگل‌مپ)</h3>
+                        <p class="text-xs text-gray-400">موقعیت دقیق خود را با کلیک روی نقشه مشخص کنید، یا با دکمه GPS موقعیت جاری خود را ثبت فرمایید.</p>
                     </div>
                 </div>
-                <button type="button" onclick="detectGpsLocation()" class="px-3.5 py-2 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500 hover:text-black transition-all text-xs font-bold flex items-center gap-1.5">
-                    <i data-lucide="crosshair" class="w-4 h-4"></i>
-                    <span>دریافت موقعیت GPS من</span>
-                </button>
+
+                <div class="flex items-center gap-2 flex-wrap">
+                    <button type="button" onclick="detectGpsLocation()" class="px-3.5 py-2 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500 hover:text-black transition-all text-xs font-bold flex items-center gap-1.5 shadow-sm">
+                        <i data-lucide="crosshair" class="w-4 h-4"></i>
+                        <span>دریافت موقعیت GPS من</span>
+                    </button>
+                    <button type="button" onclick="clearMapLocation()" class="px-3 py-2 rounded-xl bg-red-500/10 border border-red-500/30 text-red-400 hover:bg-red-500/20 transition-all text-xs font-bold flex items-center gap-1">
+                        <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
+                        <span>پاک کردن نقشه</span>
+                    </button>
+                </div>
             </div>
 
-            <div class="space-y-4 pt-2">
+            <div class="space-y-4 pt-1">
+                <!-- Address Input -->
                 <div>
                     <label class="block text-xs font-bold text-gray-300 mb-1.5">نشانی دقیق متنی (خیابان، پلاک، طبقه و واحد)</label>
                     <input type="text" name="address" value="<?= \App\Core\Helper::e($profile['address'] ?? '') ?>" placeholder="مثال: تهران، میدان ونک، خیابان ولیعصر، برج سپهر، طبقه ۵، واحد ۱۰" class="w-full px-4 py-3 rounded-xl bg-brand-darker border border-brand-border text-white text-xs focus:border-brand-gold focus:outline-none">
                 </div>
 
-                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                <!-- Interactive Map Picker -->
+                <div class="space-y-3 pt-1">
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5">
+                        <div class="flex items-center gap-2">
+                            <span class="text-xs font-bold text-gray-200 flex items-center gap-1.5">
+                                <i data-lucide="map" class="w-4 h-4 text-emerald-400"></i>
+                                <span>انتخاب نقطه روی نقشه:</span>
+                            </span>
+                            <span class="text-[11px] text-gray-400">(روی هر نقطه کلیک کنید یا نشانگر قرمز را جابجا نمایید)</span>
+                        </div>
+
+                        <!-- Quick Search in Iran -->
+                        <div class="flex items-center gap-1.5 w-full sm:w-auto">
+                            <div class="relative flex-1 sm:w-64">
+                                <input type="text" id="map-search-query" placeholder="جستجوی شهر، خیابان یا میدان..." onkeydown="if(event.key==='Enter'){event.preventDefault();searchMapLocation();}" class="w-full pl-8 pr-3 py-2 rounded-xl bg-brand-darker border border-brand-border text-xs text-white placeholder-gray-500 focus:border-emerald-500 focus:outline-none">
+                                <i data-lucide="search" class="w-3.5 h-3.5 text-gray-500 absolute left-2.5 top-2.5"></i>
+                            </div>
+                            <button type="button" id="map-search-btn" onclick="searchMapLocation()" class="px-3.5 py-2 rounded-xl bg-brand-surfaceHover border border-brand-border text-gray-200 hover:text-white hover:border-emerald-500 transition-all text-xs font-bold whitespace-nowrap">
+                                جستجو
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Map Container -->
+                    <div class="relative w-full h-72 sm:h-80 rounded-2xl overflow-hidden border border-brand-border/60 bg-brand-darker shadow-inner">
+                        <div id="location-picker-map" class="w-full h-full"></div>
+                    </div>
+
+                    <!-- Status / Coords Badge -->
+                    <div class="flex items-center justify-between flex-wrap gap-2 pt-1 text-xs">
+                        <div id="map-coords-badge">
+                            <!-- Filled dynamically by JavaScript -->
+                        </div>
+                        <span class="text-[11px] text-gray-400">
+                            مختصات به صورت زنده در فیلدهای طول و عرض جغرافیایی زیر ذخیره می‌شوند
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Latitude / Longitude & Map Link Inputs -->
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-1">
                     <div>
                         <label class="block text-xs font-bold text-gray-300 mb-1.5">عرض جغرافیایی (Latitude)</label>
                         <input type="text" name="map_latitude" id="geo-lat" dir="ltr" value="<?= \App\Core\Helper::e($profile['map_latitude'] ?? '') ?>" placeholder="مثلاً: 35.7219" class="w-full px-4 py-3 rounded-xl bg-brand-darker border border-brand-border text-white text-xs focus:border-brand-gold focus:outline-none font-mono text-left">
@@ -461,21 +534,225 @@
 </div>
 
 <script>
+var pickerMap = null;
+var pickerMarker = null;
+
+function initLocationPicker() {
+    var mapContainer = document.getElementById('location-picker-map');
+    var latInput = document.getElementById('geo-lat');
+    var lngInput = document.getElementById('geo-lng');
+    if (!mapContainer || !latInput || !lngInput) return;
+    if (typeof L === 'undefined') {
+        setTimeout(initLocationPicker, 150);
+        return;
+    }
+
+    var initialLat = parseFloat(latInput.value);
+    var initialLng = parseFloat(lngInput.value);
+    var hasInitial = !isNaN(initialLat) && !isNaN(initialLng) && initialLat !== 0 && initialLng !== 0;
+
+    // Default to Tehran coordinates if user hasn't set location yet
+    var defaultCenter = [35.6892, 51.3890];
+    var center = hasInitial ? [initialLat, initialLng] : defaultCenter;
+    var zoom = hasInitial ? 15 : 12;
+
+    pickerMap = L.map('location-picker-map', {
+        center: center,
+        zoom: zoom,
+        zoomControl: true,
+        scrollWheelZoom: true
+    });
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 19,
+        attribution: '&copy; OpenStreetMap'
+    }).addTo(pickerMap);
+
+    // Custom Luxury Pin DivIcon
+    var pinIcon = L.divIcon({
+        className: 'custom-map-pin',
+        html: '<div style="transform: translate(-50%, -100%); display: flex; flex-direction: column; align-items: center; cursor: pointer;">' +
+              '<div style="background: #E11D48; color: #fff; width: 34px; height: 34px; border-radius: 50% 50% 50% 0; transform: rotate(-45deg); display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 12px rgba(0,0,0,0.45); border: 2.5px solid #ffffff;">' +
+              '<div style="transform: rotate(45deg); width: 10px; height: 10px; background: white; border-radius: 50%;"></div>' +
+              '</div>' +
+              '<div style="width: 12px; height: 5px; background: rgba(0,0,0,0.35); border-radius: 50%; filter: blur(1px); margin-top: -2px;"></div>' +
+              '</div>',
+        iconSize: [34, 42],
+        iconAnchor: [17, 42]
+    });
+
+    function setPickerCoords(lat, lng, pan, zoomLevel) {
+        lat = parseFloat(lat.toFixed(6));
+        lng = parseFloat(lng.toFixed(6));
+        latInput.value = lat;
+        lngInput.value = lng;
+
+        if (pickerMarker) {
+            pickerMarker.setLatLng([lat, lng]);
+        } else {
+            pickerMarker = L.marker([lat, lng], { icon: pinIcon, draggable: true }).addTo(pickerMap);
+            pickerMarker.on('dragend', function(e) {
+                var pos = e.target.getLatLng();
+                setPickerCoords(pos.lat, pos.lng, false);
+            });
+        }
+
+        updateCoordsBadge(lat, lng);
+
+        if (pan) {
+            if (zoomLevel) {
+                pickerMap.flyTo([lat, lng], zoomLevel, { duration: 1.2 });
+            } else {
+                pickerMap.panTo([lat, lng]);
+            }
+        }
+    }
+
+    window.setPickerLocation = setPickerCoords;
+
+    if (hasInitial) {
+        setPickerCoords(initialLat, initialLng, false);
+    } else {
+        updateCoordsBadge(null, null);
+    }
+
+    // Click anywhere on map to position the pin
+    pickerMap.on('click', function(e) {
+        setPickerCoords(e.latlng.lat, e.latlng.lng, false);
+    });
+
+    // Listen to manual input adjustments
+    latInput.addEventListener('input', function() {
+        var lat = parseFloat(latInput.value);
+        var lng = parseFloat(lngInput.value);
+        if (!isNaN(lat) && !isNaN(lng)) {
+            setPickerCoords(lat, lng, true);
+        }
+    });
+
+    lngInput.addEventListener('input', function() {
+        var lat = parseFloat(latInput.value);
+        var lng = parseFloat(lngInput.value);
+        if (!isNaN(lat) && !isNaN(lng)) {
+            setPickerCoords(lat, lng, true);
+        }
+    });
+
+    // Invalidate size after layout rendering
+    setTimeout(function() {
+        if (pickerMap) pickerMap.invalidateSize();
+    }, 400);
+}
+
+function updateCoordsBadge(lat, lng) {
+    var el = document.getElementById('map-coords-badge');
+    if (!el) return;
+    if (lat !== null && lng !== null) {
+        el.innerHTML = '<span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-emerald-500/15 border border-emerald-500/30 text-emerald-400 font-mono text-xs font-bold">' +
+                       '<i data-lucide="check-circle" class="w-3.5 h-3.5"></i>' +
+                       '<span>موقعیت انتخابی: ' + lat.toFixed(5) + ' , ' + lng.toFixed(5) + '</span>' +
+                       '</span>';
+    } else {
+        el.innerHTML = '<span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-amber-500/15 border border-amber-500/30 text-amber-400 text-xs font-bold">' +
+                       '<i data-lucide="info" class="w-3.5 h-3.5"></i>' +
+                       '<span>روی نقشه کلیک کنید تا نشانگر در محل دلخواه قرار گیرد</span>' +
+                       '</span>';
+    }
+    if (window.lucide) lucide.createIcons();
+}
+
+function clearMapLocation() {
+    document.getElementById('geo-lat').value = '';
+    document.getElementById('geo-lng').value = '';
+    if (pickerMarker && pickerMap) {
+        pickerMap.removeLayer(pickerMarker);
+        pickerMarker = null;
+    }
+    updateCoordsBadge(null, null);
+}
+
+async function searchMapLocation() {
+    var queryInput = document.getElementById('map-search-query');
+    if (!queryInput) return;
+    var query = queryInput.value.trim();
+    if (!query) {
+        alert('لطفاً نام شهر، خیابان یا میدان مورد نظر را وارد نمایید.');
+        return;
+    }
+
+    var btn = document.getElementById('map-search-btn');
+    if (btn) {
+        btn.disabled = true;
+        btn.innerText = 'در حال جستجو...';
+    }
+
+    try {
+        var url = 'https://nominatim.openstreetmap.org/search?format=json&q=' + encodeURIComponent(query) + '&countrycodes=ir&limit=1';
+        var res = await fetch(url, { headers: { 'Accept-Language': 'fa' } });
+        var data = await res.json();
+        if (data && data.length > 0) {
+            var lat = parseFloat(data[0].lat);
+            var lon = parseFloat(data[0].lon);
+            if (window.setPickerLocation) {
+                window.setPickerLocation(lat, lon, true, 16);
+            }
+        } else {
+            alert('موقعیت مورد نظر در جستجو یافت نشد. می‌توانید با زوم و کلیک روی نقشه، نقطه دقیق را انتخاب نمایید.');
+        }
+    } catch (e) {
+        alert('خطا در برقراری ارتباط با سرویس جستجو. لطفاً مستقیماً از روی نقشه نقطه را انتخاب فرمایید.');
+    } finally {
+        if (btn) {
+            btn.disabled = false;
+            btn.innerText = 'جستجو';
+        }
+    }
+}
+
 function detectGpsLocation() {
     if (!navigator.geolocation) {
         alert('مرورگر شما از قابلیت دریافت موقعیت جغرافیایی پشتیبانی نمی‌کند.');
         return;
     }
+
+    var badge = document.getElementById('map-coords-badge');
+    if (badge) {
+        badge.innerHTML = '<span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-sky-500/15 border border-sky-500/30 text-sky-400 text-xs font-bold animate-pulse">' +
+                          '<i data-lucide="loader" class="w-3.5 h-3.5 animate-spin"></i>' +
+                          '<span>در حال دریافت موقعیت مکانی از GPS دستگاه شما...</span>' +
+                          '</span>';
+        if (window.lucide) lucide.createIcons();
+    }
+
     navigator.geolocation.getCurrentPosition(
         function(position) {
-            document.getElementById('geo-lat').value = position.coords.latitude.toFixed(6);
-            document.getElementById('geo-lng').value = position.coords.longitude.toFixed(6);
-            alert('موقعیت مکانی شما با موفقیت از GPS دریافت و ثبت شد!');
+            var lat = position.coords.latitude;
+            var lng = position.coords.longitude;
+            if (window.setPickerLocation) {
+                window.setPickerLocation(lat, lng, true, 16);
+            } else {
+                document.getElementById('geo-lat').value = lat.toFixed(6);
+                document.getElementById('geo-lng').value = lng.toFixed(6);
+            }
+            alert('موقعیت مکانی شما با موفقیت از GPS دریافت و روی نقشه پین شد!');
         },
         function(error) {
-            alert('خطا در دریافت موقعیت مکانی. لطفاً دسترسی لوکیشن را در مرورگر خود تایید فرمایید.');
+            var msg = 'خطا در دریافت موقعیت مکانی. لطفاً دسترسی لوکیشن (GPS) را در مرورگر یا دستگاه خود تایید فرمایید.';
+            if (error.code === 1) {
+                msg = 'دسترسی به موقعیت مکانی رد شد. لطفاً در تنظیمات مرورگر اجازه دسترسی به لوکیشن را تایید کنید، یا موقعیت را مستقیماً با کلیک روی نقشه انتخاب نمایید.';
+            }
+            alert(msg);
+            var curLat = parseFloat(document.getElementById('geo-lat').value);
+            var curLng = parseFloat(document.getElementById('geo-lng').value);
+            updateCoordsBadge(isNaN(curLat) ? null : curLat, isNaN(curLng) ? null : curLng);
         },
-        { enableHighAccuracy: true, timeout: 10000 }
+        { enableHighAccuracy: true, timeout: 12000, maximumAge: 0 }
     );
+}
+
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initLocationPicker);
+} else {
+    initLocationPicker();
 }
 </script>
