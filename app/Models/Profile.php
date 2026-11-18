@@ -54,6 +54,18 @@ class Profile
             if (!$stmt5 || !$stmt5->fetch()) {
                 $db->exec("ALTER TABLE `profiles` ADD COLUMN `featured_image_title` VARCHAR(255) NULL AFTER `featured_image_url`");
             }
+            $stmt6 = $db->query("SHOW COLUMNS FROM `profiles` LIKE 'seo_title'");
+            if (!$stmt6 || !$stmt6->fetch()) {
+                $db->exec("ALTER TABLE `profiles` ADD COLUMN `seo_title` VARCHAR(255) NULL AFTER `featured_image_title`");
+            }
+            $stmt7 = $db->query("SHOW COLUMNS FROM `profiles` LIKE 'seo_description'");
+            if (!$stmt7 || !$stmt7->fetch()) {
+                $db->exec("ALTER TABLE `profiles` ADD COLUMN `seo_description` TEXT NULL AFTER `seo_title`");
+            }
+            $stmt8 = $db->query("SHOW COLUMNS FROM `profiles` LIKE 'seo_keywords'");
+            if (!$stmt8 || !$stmt8->fetch()) {
+                $db->exec("ALTER TABLE `profiles` ADD COLUMN `seo_keywords` VARCHAR(500) NULL AFTER `seo_description`");
+            }
             Review::ensureSchema();
         } catch (PDOException $e) {
             // Silently ignore if table does not exist or permission is restricted
@@ -253,5 +265,23 @@ class Profile
         $db = Database::getConnection();
         $stmt = $db->prepare("UPDATE profiles SET view_count = view_count + 1 WHERE id = :id");
         $stmt->execute([':id' => $id]);
+    }
+
+    /**
+     * Get all active public profiles for XML Sitemap generation
+     */
+    public static function getAllPublicForSitemap(): array
+    {
+        self::ensureExtendedColumns();
+        $db = Database::getConnection();
+        $stmt = $db->query("
+            SELECT p.id, p.slug, p.updated_at, p.display_name, u.mobile
+            FROM profiles p
+            JOIN users u ON p.user_id = u.id
+            WHERE p.is_active = 1
+              AND u.status = 'active'
+            ORDER BY p.updated_at DESC
+        ");
+        return $stmt ? ($stmt->fetchAll() ?: []) : [];
     }
 }

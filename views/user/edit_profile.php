@@ -524,6 +524,111 @@
             </div>
         </div>
 
+        <!-- ==================== SEARCH ENGINE OPTIMIZATION (SEO) ==================== -->
+        <div class="p-6 sm:p-8 rounded-3xl bg-brand-surface border border-brand-border/60 space-y-6 shadow-xl">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-brand-border/40 pb-4">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-2xl bg-blue-500/10 text-blue-400 border border-blue-500/30 flex items-center justify-center">
+                        <i data-lucide="search" class="w-5 h-5"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-sm font-bold text-white">سئو و بهینه‌سازی برای موتورهای جستجو (Google SEO & Social Share)</h3>
+                        <p class="text-xs text-gray-400">تنظیم عنوان متای گوگل، توضیحات نتایج جستجو و پیش‌نمایش اشتراک‌گذاری در واتساپ و تلگرام</p>
+                    </div>
+                </div>
+                <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 text-xs font-bold">
+                    <i data-lucide="check-circle-2" class="w-3.5 h-3.5"></i>
+                    <span>ثبت خودکار در Sitemap.xml گوگل</span>
+                </span>
+            </div>
+
+            <div class="space-y-4">
+                <!-- SEO Title -->
+                <div>
+                    <div class="flex items-center justify-between mb-1.5">
+                        <label for="seo-title-input" class="block text-xs font-bold text-gray-300">عنوان کارت در گوگل (Meta Title)</label>
+                        <span id="seo-title-counter" class="text-[11px] font-mono text-gray-400">0 / 60</span>
+                    </div>
+                    <input type="text" name="seo_title" id="seo-title-input" maxlength="100" value="<?= \App\Core\Helper::e($profile['seo_title'] ?? '') ?>" placeholder="مثلاً: دکتر رضا علوی | متخصص جراحی عمومی - کارت ویزیت هوشمند" oninput="updateSeoPreview()" class="w-full px-4 py-3 rounded-xl bg-brand-darker border border-brand-border text-white text-xs focus:border-brand-gold focus:outline-none transition-all">
+                    <p class="text-[11px] text-gray-400 mt-1">
+                        * در صورت خالی بودن، به‌طور خودکار از فرمت استاندارد: «نام و نام خانوادگی - عنوان شغلی | شرکت» استفاده می‌شود.
+                    </p>
+                </div>
+
+                <!-- SEO Description -->
+                <div>
+                    <div class="flex items-center justify-between mb-1.5">
+                        <label for="seo-desc-input" class="block text-xs font-bold text-gray-300">توضیحات در نتایج جستجو و شبکه‌های اجتماعی (Meta Description)</label>
+                        <span id="seo-desc-counter" class="text-[11px] font-mono text-gray-400">0 / 160</span>
+                    </div>
+                    <textarea name="seo_description" id="seo-desc-input" rows="3" maxlength="250" placeholder="خلاصه‌ای از تخصص، خدمات، آدرس و راه‌های ارتباطی جهت جلب توجه مخاطبان در نتایج گوگل..." oninput="updateSeoPreview()" class="w-full px-4 py-3 rounded-xl bg-brand-darker border border-brand-border text-white text-xs focus:border-brand-gold focus:outline-none transition-all leading-relaxed"><?= \App\Core\Helper::e($profile['seo_description'] ?? '') ?></textarea>
+                    <p class="text-[11px] text-gray-400 mt-1">
+                        * طول استاندارد بین ۱۲۰ تا ۱۶۰ کاراکتر است. در صورت خالی بودن، از بیوگرافی و توضیحات کارت شما استفاده می‌شود.
+                    </p>
+                </div>
+
+                <!-- SEO Keywords -->
+                <div>
+                    <label for="seo-keywords-input" class="block text-xs font-bold text-gray-300 mb-1.5">کلمات کلیدی مرتبط (Keywords)</label>
+                    <input type="text" name="seo_keywords" id="seo-keywords-input" value="<?= \App\Core\Helper::e($profile['seo_keywords'] ?? '') ?>" placeholder="کارت ویزیت هوشمند, جراح عمومی, بوستان لاله, نوبت دهی, مشاوره پزشکی" class="w-full px-4 py-3 rounded-xl bg-brand-darker border border-brand-border text-white text-xs focus:border-brand-gold focus:outline-none transition-all">
+                    <p class="text-[11px] text-gray-400 mt-1">
+                        * کلمات کلیدی یا تگ‌های تخصص خود را با کاما (,) از یکدیگر جدا کنید.
+                    </p>
+                </div>
+            </div>
+
+            <!-- LIVE GOOGLE SEARCH SERP PREVIEW BOX -->
+            <div class="space-y-2 pt-2">
+                <div class="flex items-center justify-between">
+                    <span class="text-xs font-bold text-gray-300 flex items-center gap-1.5">
+                        <i data-lucide="eye" class="w-4 h-4 text-amber-500"></i>
+                        <span>پیش‌نمایش زنده کارت شما در صفحه نتایج جستجوی گوگل (Google SERP):</span>
+                    </span>
+                    <span class="text-[10px] text-emerald-400 font-bold bg-emerald-500/10 border border-emerald-500/30 px-2 py-0.5 rounded-full">
+                        تولید آنی Schema.org & JSON-LD
+                    </span>
+                </div>
+
+                <!-- Google Simulation Snippet Card -->
+                <div class="p-4 sm:p-5 rounded-2xl bg-white border border-slate-200 text-slate-900 space-y-2 shadow-sm font-sans text-right" dir="rtl">
+                    <div class="flex items-center gap-2 text-[11px] text-slate-500">
+                        <div class="w-4 h-4 rounded-full bg-slate-100 flex items-center justify-center text-[9px] font-bold text-slate-700">G</div>
+                        <span class="dir-ltr text-left font-sans text-slate-600">cipcard.ir › @<span id="preview-slug"><?= \App\Core\Helper::e(!empty($profile['slug']) ? $profile['slug'] : $user['mobile']) ?></span></span>
+                    </div>
+
+                    <h4 id="preview-google-title" class="text-sm sm:text-base font-bold text-[#1a0dab] hover:underline cursor-pointer leading-tight line-clamp-1">
+                        <?= \App\Core\Helper::e(!empty($profile['seo_title']) ? $profile['seo_title'] : ($profile['display_name'] . ' - کارت ویزیت هوشمند CIPCard')) ?>
+                    </h4>
+
+                    <!-- Rich Stars Rating in Google -->
+                    <div class="flex items-center gap-2 text-[11px] text-slate-600">
+                        <span class="text-amber-500 font-bold">★★★★★</span>
+                        <span class="font-bold text-slate-700">رتبه: ۵٫۰</span>
+                        <span class="text-slate-400">• بازخورد مخاطبان</span>
+                    </div>
+
+                    <p id="preview-google-desc" class="text-xs text-slate-600 leading-relaxed line-clamp-2">
+                        <?= \App\Core\Helper::e(!empty($profile['seo_description']) ? $profile['seo_description'] : (!empty($profile['bio']) ? mb_substr(strip_tags($profile['bio']), 0, 150) . '...' : 'کارت ویزیت هوشمند، اطلاعات تماس، آدرس و شبکه‌های اجتماعی در سامانه CIPCard.')) ?>
+                    </p>
+                </div>
+            </div>
+
+            <!-- Google Search Console Sitemap Submission Help Banner -->
+            <div class="p-4 rounded-2xl bg-brand-darker border border-brand-border/60 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs">
+                <div class="flex items-center gap-2.5">
+                    <i data-lucide="file-code" class="w-5 h-5 text-amber-500 shrink-0"></i>
+                    <div>
+                        <span class="font-bold text-white block">آدرس نقشه سایت (Sitemap) برای Google Search Console:</span>
+                        <span class="font-mono text-gray-400 dir-ltr text-right block text-[11px]">https://cipcard.ir/sitemap.xml</span>
+                    </div>
+                </div>
+                <a href="<?= \App\Core\Helper::url('sitemap.xml') ?>" target="_blank" class="px-3 py-1.5 rounded-xl bg-brand-surfaceHover border border-brand-border text-amber-400 hover:text-white text-[11px] font-bold flex items-center gap-1 self-start sm:self-auto transition-all">
+                    <span>مشاهده فایل Sitemap</span>
+                    <i data-lucide="external-link" class="w-3.5 h-3.5"></i>
+                </a>
+            </div>
+        </div>
+
         <div class="pt-4 flex items-center justify-between">
             <button type="submit" class="px-10 py-4 rounded-2xl bg-gradient-to-r from-brand-goldDark via-brand-gold to-brand-goldLight text-black font-extrabold text-sm shadow-xl shadow-brand-gold/20 hover:brightness-110 active:scale-95 transition-all flex items-center gap-2">
                 <i data-lucide="check" class="w-5 h-5"></i>
@@ -915,5 +1020,57 @@ function updateRuleVisual(el, isValid) {
             dot.classList.add('bg-gray-600');
         }
     }
+}
+
+function updateSeoPreview() {
+    var titleInput = document.getElementById('seo-title-input');
+    var descInput = document.getElementById('seo-desc-input');
+    var slugInput = document.getElementById('slug-input');
+    var displayName = '<?= addslashes($profile['display_name'] ?? '') ?>';
+    var jobTitle = '<?= addslashes($profile['job_title'] ?? '') ?>';
+    var defaultSlug = '<?= addslashes(!empty($profile['slug']) ? $profile['slug'] : $user['mobile']) ?>';
+
+    // 1. Slug preview
+    var previewSlug = document.getElementById('preview-slug');
+    if (previewSlug && slugInput) {
+        var cleanSlug = slugInput.value.trim().replace(/^@+/, '');
+        previewSlug.innerText = cleanSlug ? cleanSlug : defaultSlug;
+    }
+
+    // 2. Title preview & counter
+    if (titleInput) {
+        var tVal = titleInput.value.trim();
+        var tLen = titleInput.value.length;
+        var tCounter = document.getElementById('seo-title-counter');
+        if (tCounter) {
+            tCounter.innerText = tLen + ' / 60';
+            tCounter.className = (tLen > 60) ? 'text-[11px] font-mono text-amber-400 font-bold' : (tLen > 0 ? 'text-[11px] font-mono text-emerald-400 font-bold' : 'text-[11px] font-mono text-gray-400');
+        }
+        var gTitle = document.getElementById('preview-google-title');
+        if (gTitle) {
+            gTitle.innerText = tVal ? tVal : (displayName + (jobTitle ? ' - ' + jobTitle : '') + ' - کارت ویزیت هوشمند CIPCard');
+        }
+    }
+
+    // 3. Description preview & counter
+    if (descInput) {
+        var dVal = descInput.value.trim();
+        var dLen = descInput.value.length;
+        var dCounter = document.getElementById('seo-desc-counter');
+        if (dCounter) {
+            dCounter.innerText = dLen + ' / 160';
+            dCounter.className = (dLen > 160) ? 'text-[11px] font-mono text-amber-400 font-bold' : (dLen >= 70 ? 'text-[11px] font-mono text-emerald-400 font-bold' : 'text-[11px] font-mono text-gray-400');
+        }
+        var gDesc = document.getElementById('preview-google-desc');
+        if (gDesc) {
+            gDesc.innerText = dVal ? dVal : 'کارت ویزیت هوشمند، اطلاعات تماس، آدرس و شبکه‌های اجتماعی در سامانه CIPCard.';
+        }
+    }
+}
+
+// Initialize SEO counters on page load
+document.addEventListener('DOMContentLoaded', updateSeoPreview);
+if (document.readyState !== 'loading') {
+    updateSeoPreview();
 }
 </script>

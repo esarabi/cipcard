@@ -106,6 +106,11 @@ class DashboardController
         $workingHours = trim($_POST['working_hours'] ?? '');
         $workingNote  = trim($_POST['working_note'] ?? '');
 
+        // Search Engine Optimization (SEO) & Social Sharing Attributes
+        $seoTitle       = trim($_POST['seo_title'] ?? '');
+        $seoDescription = trim($_POST['seo_description'] ?? '');
+        $seoKeywords    = trim($_POST['seo_keywords'] ?? '');
+
         // Iranian & International Social Networks
         $socialLinks = [
             'eitaa'     => trim($_POST['eitaa'] ?? ''),
@@ -163,6 +168,9 @@ class DashboardController
             'theme_color'   => $themeColor,
             'theme_mode'    => in_array($themeMode, ['light', 'dark'], true) ? $themeMode : 'light',
             'enable_reviews'=> isset($_POST['enable_reviews']) ? 1 : 0,
+            'seo_title'       => $seoTitle !== '' ? $seoTitle : null,
+            'seo_description' => $seoDescription !== '' ? $seoDescription : null,
+            'seo_keywords'    => $seoKeywords !== '' ? $seoKeywords : null,
             'social_links'  => $socialLinks
         ];
 

@@ -64,6 +64,7 @@ use App\Controllers\HomeController;
 use App\Controllers\OrderController;
 use App\Controllers\PaymentController;
 use App\Controllers\ProfileController;
+use App\Controllers\SitemapController;
 use App\Core\Router;
 use App\Core\Session;
 use App\Middleware\AdminMiddleware;
@@ -75,6 +76,12 @@ Session::start();
 
 // Initialize Router
 $router = new Router();
+
+// -------------------------------------------------------------
+// SEO: Dynamic XML Sitemap & robots.txt for Google Search Console
+// -------------------------------------------------------------
+$router->get('/sitemap.xml', [SitemapController::class, 'sitemap']);
+$router->get('/robots.txt', [SitemapController::class, 'robots']);
 
 // -------------------------------------------------------------
 // Public Landing Page & Fast Order Flow
